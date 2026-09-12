@@ -453,6 +453,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6798405946423957441, guid: bd9ef11c9092e4bfd8c64d2df27c36c1, type: 3}
+      propertyPath: m_ReferencePixelsPerUnit
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 7763182051102151289, guid: bd9ef11c9092e4bfd8c64d2df27c36c1, type: 3}
       propertyPath: m_Name
       value: Game Canvas
@@ -667,11 +671,69 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60c86fe6f35aa4af488742b834381bb7, type: 3}
+--- !u!1001 &8945153202024973144
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3520565979364260379, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 19.41311
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520565979364260379, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.10447
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520565979364260379, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -15.0135
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520565979364260379, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520565979364260379, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520565979364260379, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520565979364260379, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520565979364260379, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520565979364260379, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520565979364260379, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7124587321413024625, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
+      propertyPath: m_Name
+      value: Cinemachine
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 124c1a92bb7a14166bb9a8ce4023bc9f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 429814440}
+  - {fileID: 8945153202024973144}
   - {fileID: 54296849}
   - {fileID: 679372910}
   - {fileID: 8844337242113671204}

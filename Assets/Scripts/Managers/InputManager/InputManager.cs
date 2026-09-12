@@ -7,8 +7,6 @@ public class InputManager : PersistentMonoSingleton<InputManager>
 {
 	// Action Maps
 	private const string PlayerActionMap = "Player";
-	private const string DialogueActionMap = "Dialogue";
-	private const string UIActionMap = "UI";
 
 	// References
 	[Tooltip("The Input Action Asset containing all player and UI actions.")]
@@ -16,20 +14,10 @@ public class InputManager : PersistentMonoSingleton<InputManager>
 
 	// Events
 	public event Action<Vector2> OnMovement;
-	public event Action OnZoomPerformed;
-	public event Action OnJumpPerformed;
-	public event Action OnDashPerformed;
-	public event Action OnShootingPerformed;
-	public event Action OnShootingReleased;
-	public event Action OnReloadPerformed;
-	public event Action OnCrouchPerformed;
-	public event Action OnCrouchRelease;
-	public event Action OnChangeGun;
-	public event Action OnInteractPerformed;
-	public event Action OnContinueStoryPerformed;
-	public event Action OnEscapePerformed;
-	public event Action OnBacklogPerformed;
-	public event Action OnAnyInputPerformed;
+	public event Action OnA;
+	public event Action OnB;
+	public event Action OnStart;
+	public event Action OnSelect;
 
 	private InputAction _movementAction;
 	private List<ActionBinding> _bindings = new List<ActionBinding>();
@@ -39,32 +27,20 @@ public class InputManager : PersistentMonoSingleton<InputManager>
 	{
 		base.OnInitialized();
 
-		if (InputActions == null)
-		{
-			Debug.LogError("InputManager: InputActions asset is not assigned!");
-			return;
-		}
-
 		SetupInputActions();
-		EnableUIInput();
 	}
 
 	private void OnEnable()
 	{
-		if (InputActions != null)
-		{
-			EnablePlayerInput();
-			EnableDialogueInput();
-			SubscribeEvents();
-		}
+		EnablePlayerInput();
+		SubscribeEvents();
 	}
 
 	private void OnDisable()
 	{
-		if (IsActiveInstance && InputActions != null)
+		if (IsActiveInstance)
 		{
 			DisablePlayerInput();
-			DisableDialogueInput();
 		}
 		UnsubscribeEvents();
 	}
@@ -74,21 +50,10 @@ public class InputManager : PersistentMonoSingleton<InputManager>
 		_bindings.Clear();
 		_movementAction = InputActions.FindAction("Movement");
 
-		BindAction("ContinueStory", performed: () => OnContinueStoryPerformed?.Invoke());
-		BindAction("Escape", performed: () => OnEscapePerformed?.Invoke());
-		BindAction("Backlog", performed: () => OnBacklogPerformed?.Invoke());
-		BindAction("Zoom", performed: () => OnZoomPerformed?.Invoke());
-		BindAction("Jump", performed: () => OnJumpPerformed?.Invoke());
-		BindAction("Dash", performed: () => OnDashPerformed?.Invoke());
-		BindAction("Interact", performed: () => OnInteractPerformed?.Invoke());
-		BindAction(
-			"Shoot",
-			performed: () => OnShootingPerformed?.Invoke(),
-			canceled: () => OnShootingReleased?.Invoke()
-		);
-		BindAction("Reload", performed: () => OnReloadPerformed?.Invoke());
-		BindAction("Crouch", performed: () => OnCrouchPerformed?.Invoke(), canceled: () => OnCrouchRelease?.Invoke());
-		BindAction("ChangeGun", performed: () => OnChangeGun?.Invoke());
+		BindAction("A", performed: () => OnA?.Invoke());
+		BindAction("B", performed: () => OnB?.Invoke());
+		BindAction("Start", performed: () => OnStart?.Invoke());
+		BindAction("Select", performed: () => OnSelect?.Invoke());
 	}
 
 	private void SubscribeEvents()
@@ -110,46 +75,13 @@ public class InputManager : PersistentMonoSingleton<InputManager>
 	/** Update Methods **/
 	private void Update()
 	{
-		if (!InputActions)
-		{
-			return;
-		}
-
 		UpdateContinuousInputs();
-		CheckAnyInput();
 	}
 
 	private void UpdateContinuousInputs()
 	{
-		if (_movementAction != null)
-		{
-			Vector3 readVector = _movementAction.ReadValue<Vector3>();
-			OnMovement?.Invoke(new Vector2(readVector.x, readVector.z));
-		}
-	}
-
-	/// <summary>
-	/// Checks for any input and invokes the event
-	/// </summary>
-	private void CheckAnyInput()
-	{
-		if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
-		{
-			OnAnyInputPerformed?.Invoke();
-			return;
-		}
-
-		if (
-			Mouse.current != null
-			&& (
-				Mouse.current.leftButton.wasPressedThisFrame
-				|| Mouse.current.rightButton.wasPressedThisFrame
-				|| Mouse.current.middleButton.wasPressedThisFrame
-			)
-		)
-		{
-			OnAnyInputPerformed?.Invoke();
-		}
+		Vector3 readVector = _movementAction.ReadValue<Vector3>();
+		OnMovement?.Invoke(new Vector2(readVector.x, readVector.z));
 	}
 
 	/// <summary>
@@ -157,7 +89,7 @@ public class InputManager : PersistentMonoSingleton<InputManager>
 	/// </summary>
 	public void EnablePlayerInput()
 	{
-		InputActions?.FindActionMap(PlayerActionMap)?.Enable();
+		InputActions.FindActionMap(PlayerActionMap).Enable();
 	}
 
 	/// <summary>
@@ -165,39 +97,7 @@ public class InputManager : PersistentMonoSingleton<InputManager>
 	/// </summary>
 	public void DisablePlayerInput()
 	{
-		InputActions?.FindActionMap(PlayerActionMap)?.Disable();
-	}
-
-	/// <summary>
-	/// Enable UI Input
-	/// </summary>
-	public void EnableUIInput()
-	{
-		InputActions?.FindActionMap(UIActionMap)?.Enable();
-	}
-
-	/// <summary>
-	/// Disable UI Input
-	/// </summary>
-	public void DisableUIInput()
-	{
-		InputActions?.FindActionMap(UIActionMap)?.Disable();
-	}
-
-	/// <summary>
-	///     Enable all Dialogue specific inputs.
-	/// </summary>
-	public void EnableDialogueInput()
-	{
-		InputActions?.FindActionMap(DialogueActionMap)?.Enable();
-	}
-
-	/// <summary>
-	///     Disable all Dialogue specific inputs.
-	/// </summary>
-	public void DisableDialogueInput()
-	{
-		InputActions?.FindActionMap(DialogueActionMap)?.Disable();
+		InputActions.FindActionMap(PlayerActionMap).Disable();
 	}
 
 	/** Action Binding System **/
@@ -234,13 +134,6 @@ public class InputManager : PersistentMonoSingleton<InputManager>
 	private void BindAction(string actionName, Action performed = null, Action canceled = null)
 	{
 		InputAction action = InputActions.FindAction(actionName);
-		if (action != null)
-		{
-			_bindings.Add(new ActionBinding(action, performed, canceled));
-		}
-		else
-		{
-			Debug.LogWarning($"InputManager: Could not find action '{actionName}'");
-		}
+		_bindings.Add(new ActionBinding(action, performed, canceled));
 	}
 }

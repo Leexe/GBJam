@@ -5,7 +5,6 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-
 namespace FMODUnity
 {
     public enum ParameterType

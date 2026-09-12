@@ -520,7 +520,7 @@ namespace FMODUnity
                     if (Environment.Is64BitProcess)
                     {
                         // Add a "64" suffix and try again
-                        string pluginPath64 = GetPluginPath(string.Format("{0}64", pluginName));
+                        string pluginPath64 = GetPluginPath(pluginName + "64");
                         result = coreSystem.loadPlugin(pluginPath64, out handle);
                     }
                 }
@@ -546,9 +546,9 @@ namespace FMODUnity
 
                 if (type == null)
                 {
-                    RuntimeUtils.DebugLogWarning(string.Format(
+                    RuntimeUtils.DebugLogWarningFormat(
                         "FMOD: {0} static plugins specified, but the {1} class was not found.",
-                        StaticPlugins.Count.ToString(), className));
+                        StaticPlugins.Count, className);
                     return;
                 }
 
@@ -557,17 +557,17 @@ namespace FMODUnity
 
                 if (method == null)
                 {
-                    RuntimeUtils.DebugLogWarning(string.Format(
+                    RuntimeUtils.DebugLogWarningFormat(
                         "FMOD: {0} static plugins specified, but the {1}.{2} method was not found.",
-                        StaticPlugins.Count.ToString(), className, RegisterStaticPluginsFunctionName));
+                        StaticPlugins.Count, className, RegisterStaticPluginsFunctionName);
                     return;
                 }
 
                 method.Invoke(null, new object[] { coreSystem, reportResult });
 #else
-                RuntimeUtils.DebugLogWarning(string.Format(
+                RuntimeUtils.DebugLogWarningFormat(
                     "FMOD: {0} static plugins specified, but static plugins are only supported on the IL2CPP scripting backend",
-                    StaticPlugins.Count.ToString()));
+                    StaticPlugins.Count);
 #endif
             }
         }
@@ -667,7 +667,6 @@ namespace FMODUnity
         }
 
         // A property value that can be inherited from the parent or overridden.
-        [Serializable]
         public class Property<T>
         {
             public T Value;
@@ -974,11 +973,6 @@ namespace FMODUnity
                     return DefaultThreadAffinities;
                 }
             }
-        }
-
-        internal virtual FMOD.THREAD_STACK_SIZE GetStackSize()
-        {
-            return FMOD.THREAD_STACK_SIZE.DEFAULT;
         }
 
         internal PropertyThreadAffinityList ThreadAffinitiesProperty { get { return threadAffinities; } }

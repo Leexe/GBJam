@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca859d81018f614f9ff563ffdae9965, type: 3}
+  m_Name: Rupture
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectSO
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: <PotentialCombosDict>k__BackingField
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[StatusEffects.StatusEffectSO,
+        Assembly-CSharp],[StatusEffects.StatusEffectSO, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[StatusEffects.StatusEffectSO,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  <Id>k__BackingField: rupture
+  <Name>k__BackingField: Rupture
+  <Description>k__BackingField: 
+  <IconPrefab>k__BackingField: {fileID: 8883520124083866019, guid: f13e711fd398f4369b7dda4c250d4838, type: 3}
+  <InfiniteDuration>k__BackingField: 0
+  <ActiveDuration>k__BackingField: 1
+  <RefreshableDuration>k__BackingField: 0
+  <EnableTickRate>k__BackingField: 1
+  <TickRate>k__BackingField: 0.2
+  <MaxCount>k__BackingField: 1
+  <BuildUpDecay>k__BackingField: 0.2
+  <BuildUpFreeze>k__BackingField: 0.35
+  <DamageOnActivation>k__BackingField: 0
+  <DamageOnReactivation>k__BackingField: 0
+  <DamageOnTick>k__BackingField: 0
+  <DamageOnExpire>k__BackingField: 0
+  <DamageOnHit>k__BackingField: 0
+  <StackDamageMult>k__BackingField: 1
+  <Modifiers>k__BackingField: []
+  <RepeatedModifiers>k__BackingField: []
+  <VfxEndDelay>k__BackingField: 0
+  <StatusTriggeredVfx>k__BackingField: {fileID: 0}
+  <StatusReactivateVfx>k__BackingField: {fileID: 0}
+  <StatusActivateVfx>k__BackingField: {fileID: 0}
+  <StatusDotVfx>k__BackingField: {fileID: 0}
+  <StatusEndVfx>k__BackingField: {fileID: 0}
+  <StatusTriggeredSfx>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <StatusReactivateSfx>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <StatusActiveSfx>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <StatusDotSfx>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <StatusEndSfx>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 

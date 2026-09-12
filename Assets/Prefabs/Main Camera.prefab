@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 536115592758208838}
   - component: {fileID: 4410300187481203564}
   - component: {fileID: 6935142122659896948}
+  - component: {fileID: 1083920194827104921}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -63,15 +64,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.21818183
-    y: 0.0052137645
-    width: 0.56304985
-    height: 0.98852974
+    x: 0
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.1
   far clip plane: 5000
   field of view: 60
-  orthographic: 0
-  orthographic size: 4.9375
+  orthographic: 1
+  orthographic size: 4.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -193,11 +194,29 @@ MonoBehaviour:
   m_AssetsPPU: 16
   m_RefResolutionX: 160
   m_RefResolutionY: 144
-  m_CropFrame: 1
+  m_CropFrame: 3
   m_GridSnapping: 2
   m_FilterMode: 0
-  m_UpscaleRT: 0
+  m_UpscaleRT: 1
   m_PixelSnapping: 0
-  m_CropFrameX: 0
-  m_CropFrameY: 0
+  m_CropFrameX: 1
+  m_CropFrameY: 1
   m_StretchFill: 0
+--- !u!114 &1083920194827104921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4760498665902606374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 578a611027f0542b9a00498f800afb81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _referenceWidth: 160
+  _referenceHeight: 144
+  _pixelsPerUnit: 16
+  _gridSnapping: 2
+  _cropFrame: 3
+  _gridCenter: {x: 5, y: 4.5}

@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class GridCursorController : MonoBehaviour
 {
-	[Header("Settings")]
+	[Header("Movement Tween")]
 	[SerializeField]
 	[Tooltip("Movement duration")]
-	private float _tweenDuration = 0.06f;
+	private float _movementDuration = 0.06f;
 
 	[SerializeField]
 	[Tooltip("Hold for this long before move repeat")]
@@ -16,6 +16,20 @@ public class GridCursorController : MonoBehaviour
 	[Tooltip("Move repeat rate")]
 	private float _repeatRate = 0.1f;
 
+	[Header("Scale Tween")]
+	[SerializeField]
+	[Tooltip("Scale Tween")]
+	private float _idleDuration = 2f;
+
+	[SerializeField]
+	[Range(0, 1)]
+	[Tooltip("Scale Tween")]
+	private float _scaleRange = 0.1f;
+
+	[SerializeField]
+	private Ease _scaleEase = Ease.InOutSine;
+
+	[Header("Cursor Settings")]
 	[SerializeField]
 	private Vector2Int _cursorSize = new Vector2Int(2, 2);
 
@@ -24,12 +38,21 @@ public class GridCursorController : MonoBehaviour
 	private bool _isHolding;
 	private float _holdTimer;
 	private Tween _cursorTween;
+	private Tween _scaleTween;
+	private Vector3 _initialScale = Vector3.one;
+
+	private void Awake()
+	{
+		_initialScale = transform.localScale;
+	}
 
 	private void OnEnable()
 	{
 		InputManager.Instance.OnMovement += HandleMovementInput;
 		InputManager.Instance.OnConfirm += HandleConfirmPressed;
 		InputManager.Instance.OnCancel += HandleCancelPressed;
+
+		StartScaleTween();
 	}
 
 	private void OnDisable()
@@ -40,6 +63,10 @@ public class GridCursorController : MonoBehaviour
 			InputManager.Instance.OnConfirm -= HandleConfirmPressed;
 			InputManager.Instance.OnCancel -= HandleCancelPressed;
 		}
+
+		_cursorTween.Stop();
+		_scaleTween.Stop();
+		transform.localScale = _initialScale;
 	}
 
 	private void Start()
@@ -48,6 +75,27 @@ public class GridCursorController : MonoBehaviour
 		int startY = (GridManager.Instance.GetMaxRows - _cursorSize.y) / 2;
 		_gridCoordinates = new Vector2Int(startX, startY);
 		transform.position = GridManager.Instance.GridToWorld(startX, startY, _cursorSize.x, _cursorSize.y);
+	}
+
+	private void StartScaleTween()
+	{
+		_scaleTween.Stop();
+		transform.localScale = _initialScale;
+		_scaleTween = Tween.Scale(
+			transform,
+			startValue: _initialScale,
+			endValue: _initialScale * (1f + _scaleRange),
+			duration: _idleDuration * 0.5f,
+			ease: _scaleEase,
+			cycles: -1,
+			cycleMode: CycleMode.Yoyo
+		);
+	}
+
+	private void StopScaleTween()
+	{
+		_scaleTween.Stop();
+		transform.localScale = _initialScale;
 	}
 
 	private void Update()
@@ -114,6 +162,6 @@ public class GridCursorController : MonoBehaviour
 		Vector3 targetPos = GridManager.Instance.GridToWorld(x, y, _cursorSize.x, _cursorSize.y);
 
 		_cursorTween.Stop();
-		_cursorTween = Tween.Position(transform, targetPos, _tweenDuration, Ease.OutQuad);
+		_cursorTween = Tween.Position(transform, targetPos, _movementDuration, Ease.OutQuad);
 	}
 }

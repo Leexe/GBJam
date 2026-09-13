@@ -181,8 +181,11 @@ public class GridManager : MonoSingleton<GridManager>
 		{
 			for (int y = position.y; y < position.y + height; y++)
 			{
-				SetGridType(x, y, GridType.Empty);
-				SetGridTower(x, y, null);
+				if (GetGridNode(x, y).Type == GridType.Tower)
+				{
+					SetGridType(x, y, GridType.Empty);
+					SetGridTower(x, y, null);
+				}
 			}
 		}
 
@@ -222,7 +225,7 @@ public class GridManager : MonoSingleton<GridManager>
 
 	public bool IsValidGridArea(int x, int y, int width, int height)
 	{
-		return x >= 0 && (x + width) <= Columns && y >= 0 && (y + height) <= Rows;
+		return x >= 0 && x + width <= Columns && y >= 0 && y + height <= Rows;
 	}
 
 	public bool IsValidGridArea(Vector2Int position, Vector2Int size)
@@ -233,6 +236,11 @@ public class GridManager : MonoSingleton<GridManager>
 	public GridNode GetGridNode(Vector2Int position)
 	{
 		return !IsValidGridPos(position) ? null : _grid[position.x, position.y];
+	}
+
+	public GridNode GetGridNode(int x, int y)
+	{
+		return !IsValidGridPos(x, y) ? null : _grid[x, y];
 	}
 
 	// Helper Methods

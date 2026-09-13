@@ -173,12 +173,12 @@ public class GridCursorController : MonoBehaviour
 		UpdateVisual();
 	}
 
-	public void Move(Vector2Int delta)
+	private void Move(Vector2Int delta)
 	{
 		SetPosition(_gridCoordinates.x + delta.x, _gridCoordinates.y + delta.y);
 	}
 
-	public void SetPosition(int x, int y)
+	private void SetPosition(int x, int y)
 	{
 		if (!GridManager.Instance.IsValidGridArea(x, y, _cursorSize.x, _cursorSize.y))
 		{
@@ -193,13 +193,13 @@ public class GridCursorController : MonoBehaviour
 		UpdateVisual();
 	}
 
-	public void SetCursorType(CursorType type)
+	private void SetCursorType(CursorType type)
 	{
 		_cursorType = type;
 		UpdateVisual();
 	}
 
-	public void UpdateVisual()
+	private void UpdateVisual()
 	{
 		bool canPlace = GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
 		Sprite[] frames = GetCurrentFrames(canPlace);

@@ -50,6 +50,8 @@ public class GridManager : MonoSingleton<GridManager>
 
 	private const int Rows = 8;
 	private const int Columns = 10;
+	public int GetMaxRows => Rows;
+	public int GetMaxColumns => Columns;
 
 	private GridNode[,] _grid = new GridNode[Columns, Rows];
 	public List<GridNode> Path { get; private set; } = new();
@@ -177,6 +179,11 @@ public class GridManager : MonoSingleton<GridManager>
 		return gridPos.x >= 0 && gridPos.x < Columns && gridPos.y >= 0 && gridPos.y < Rows;
 	}
 
+	public bool IsValidGridPos(int x, int y)
+	{
+		return x >= 0 && x < Columns && y >= 0 && y < Rows;
+	}
+
 	public GridNode GetGridNode(Vector2Int position)
 	{
 		return !IsValidGridPos(position) ? null : _grid[position.x, position.y];
@@ -223,7 +230,7 @@ public class GridManager : MonoSingleton<GridManager>
 
 				if (_showCoordinateLabels)
 				{
-					GUIStyle style = new GUIStyle
+					var style = new GUIStyle
 					{
 						normal = { textColor = Color.white },
 						fontSize = 8,

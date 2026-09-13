@@ -43,7 +43,10 @@ public class GridManager : MonoSingleton<GridManager>
 
 	[Header("Temp Game Data Fields")]
 	[SerializeField]
-	private bool _debugVisualization;
+	private bool _debugVisualization = true;
+
+	[SerializeField]
+	private bool _showCoordinateLabels = true;
 
 	private const int Rows = 8;
 	private const int Columns = 10;
@@ -202,6 +205,7 @@ public class GridManager : MonoSingleton<GridManager>
 	}
 
 	// Debug
+#if UNITY_EDITOR
 	private void OnDrawGizmos()
 	{
 		if (!_debugVisualization)
@@ -216,6 +220,17 @@ public class GridManager : MonoSingleton<GridManager>
 				Vector3 center = GridToWorld(new Vector2Int(x, y));
 				Gizmos.color = Color.lightGreen;
 				Gizmos.DrawWireCube(center, new Vector3(0.95f, 0.95f, 0.05f));
+
+				if (_showCoordinateLabels)
+				{
+					GUIStyle style = new GUIStyle
+					{
+						normal = { textColor = Color.white },
+						fontSize = 8,
+						alignment = TextAnchor.MiddleCenter,
+					};
+					UnityEditor.Handles.Label(center, $"({x},{y})", style);
+				}
 			}
 		}
 		if (Path.Count > 1)
@@ -227,4 +242,5 @@ public class GridManager : MonoSingleton<GridManager>
 			}
 		}
 	}
+#endif
 }

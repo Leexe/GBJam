@@ -258,6 +258,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0.21818183
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
+      propertyPath: m_NormalizedViewPortRect.y
+      value: 0.049009386
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 0.56304985
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 0.9009385
+      objectReference: {fileID: 0}
     - target: {fileID: 8549151056627862277, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -372,7 +388,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.417, y: -0.74}
+  m_AnchoredPosition: {x: -1.94, y: -0.1079998}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &610628839
@@ -466,26 +482,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &619783994 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1029895365837833581, guid: b9e8ee2757a0349328e448f4f5e1fecf, type: 3}
-  m_PrefabInstance: {fileID: 2166564428409288408}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &619783997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 619783994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32656ba38a1ca4d3d8608aa62a0d64ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GridCursorController
-  _tweenDuration: 0.1
-  _repeatDelay: 0.3
-  _repeatRate: 0.15
 --- !u!1 &679372909
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,8 +597,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.5
-  m_fontSizeBase: 0.5
+  m_fontSize: 0.49
+  m_fontSizeBase: 0.49
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1101,8 +1097,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.5
-  m_fontSizeBase: 0.5
+  m_fontSize: 0.49
+  m_fontSizeBase: 0.49
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1227,14 +1223,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GridCursor
       objectReference: {fileID: 0}
-    - target: {fileID: 7619431103778109135, guid: b9e8ee2757a0349328e448f4f5e1fecf, type: 3}
-      propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7619431103778109135, guid: b9e8ee2757a0349328e448f4f5e1fecf, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8927649584995199917, guid: b9e8ee2757a0349328e448f4f5e1fecf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.5
@@ -1278,10 +1266,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1029895365837833581, guid: b9e8ee2757a0349328e448f4f5e1fecf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 619783997}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9e8ee2757a0349328e448f4f5e1fecf, type: 3}
 --- !u!1001 &4274040416219938894
 PrefabInstance:

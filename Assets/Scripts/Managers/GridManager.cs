@@ -135,47 +135,72 @@ public class GridManager : MonoSingleton<GridManager>
 		Path.Add(_grid[_enemyWaypoints[^1].x, _enemyWaypoints[^1].y]);
 	}
 
-	public bool PlaceTower(Vector2Int position, GameObject placedTower)
+	public bool CanPlaceTower(Vector2Int position, int width = 2, int height = 2)
 	{
-		if (!IsValidGridPos(position) || !_grid[position.x, position.y].CanPlaceTower)
+		if (!IsValidGridArea(position.x, position.y, width, height))
 		{
 			return false;
 		}
 
-		SetGridType(position, GridType.Tower);
-		SetGridTower(position, placedTower);
+		for (int x = position.x; x < position.x + width; x++)
+		{
+			for (int y = position.y; y < position.y + height; y++)
+			{
+				if (!_grid[x, y].CanPlaceTower)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public bool PlaceTower(Vector2Int position, GameObject placedTower, int width = 2, int height = 2)
+	{
+		if (!CanPlaceTower(position, width, height))
+		{
+			return false;
+		}
+
+		for (int x = position.x; x < position.x + width; x++)
+		{
+			for (int y = position.y; y < position.y + height; y++)
+			{
+				SetGridType(x, y, GridType.Tower);
+				SetGridTower(x, y, placedTower);
+			}
+		}
+
 		OnTowerPlaced?.Invoke(position, placedTower);
 		return true;
 	}
 
-	public void RemoveTower(Vector2Int position)
+	public void RemoveTower(Vector2Int position, int width = 2, int height = 2)
 	{
-		if (!IsValidGridPos(position) || _grid[position.x, position.y].Type != GridType.Tower)
+		for (int x = position.x; x < position.x + width; x++)
 		{
-			return;
+			for (int y = position.y; y < position.y + height; y++)
+			{
+				SetGridType(x, y, GridType.Empty);
+				SetGridTower(x, y, null);
+			}
 		}
 
-		SetGridType(position, GridType.Empty);
-		SetGridTower(position, null);
 		OnTowerRemoved?.Invoke(position);
 	}
 
-	public Vector3 GridToWorld(int x, int y)
+	public Vector3 GridToWorld(int x, int y, int width = 1, int height = 1)
 	{
 		return new Vector3(
-			_originPosition.x + ((x + 0.5f) * _cellSize),
-			_originPosition.y + ((y + 0.5f) * _cellSize),
+			_originPosition.x + ((x + (width * 0.5f)) * _cellSize),
+			_originPosition.y + ((y + (height * 0.5f)) * _cellSize),
 			0f
 		);
 	}
 
-	public Vector3 GridToWorld(Vector2Int position)
+	public Vector3 GridToWorld(Vector2Int position, int width = 1, int height = 1)
 	{
-		return new Vector3(
-			_originPosition.x + ((position.x + 0.5f) * _cellSize),
-			_originPosition.y + ((position.y + 0.5f) * _cellSize),
-			0f
-		);
+		return GridToWorld(position.x, position.y, width, height);
 	}
 
 	public Vector2Int WorldToGrid(Vector3 worldPosition)
@@ -193,6 +218,16 @@ public class GridManager : MonoSingleton<GridManager>
 	public bool IsValidGridPos(int x, int y)
 	{
 		return x >= 0 && x < Columns && y >= 0 && y < Rows;
+	}
+
+	public bool IsValidGridArea(int x, int y, int width, int height)
+	{
+		return x >= 0 && (x + width) <= Columns && y >= 0 && (y + height) <= Rows;
+	}
+
+	public bool IsValidGridArea(Vector2Int position, Vector2Int size)
+	{
+		return IsValidGridArea(position.x, position.y, size.x, size.y);
 	}
 
 	public GridNode GetGridNode(Vector2Int position)

@@ -16,6 +16,9 @@ public class GridCursorController : MonoBehaviour
 	[Tooltip("Move repeat rate")]
 	private float _repeatRate = 0.1f;
 
+	[SerializeField]
+	private Vector2Int _cursorSize = new Vector2Int(2, 2);
+
 	private Vector2Int _gridCoordinates;
 	private Vector2Int _currentDirection;
 	private bool _isHolding;
@@ -25,6 +28,8 @@ public class GridCursorController : MonoBehaviour
 	private void OnEnable()
 	{
 		InputManager.Instance.OnMovement += HandleMovementInput;
+		InputManager.Instance.OnConfirm += HandleConfirmPressed;
+		InputManager.Instance.OnCancel += HandleCancelPressed;
 	}
 
 	private void OnDisable()
@@ -32,15 +37,17 @@ public class GridCursorController : MonoBehaviour
 		if (InputManager.Instance != null)
 		{
 			InputManager.Instance.OnMovement -= HandleMovementInput;
+			InputManager.Instance.OnConfirm -= HandleConfirmPressed;
+			InputManager.Instance.OnCancel -= HandleCancelPressed;
 		}
 	}
 
 	private void Start()
 	{
-		int startX = GridManager.Instance.GetMaxColumns / 2;
-		int startY = GridManager.Instance.GetMaxRows / 2;
+		int startX = (GridManager.Instance.GetMaxColumns - _cursorSize.x) / 2;
+		int startY = (GridManager.Instance.GetMaxRows - _cursorSize.y) / 2;
 		_gridCoordinates = new Vector2Int(startX, startY);
-		transform.position = GridManager.Instance.GridToWorld(startX, startY);
+		transform.position = GridManager.Instance.GridToWorld(startX, startY, _cursorSize.x, _cursorSize.y);
 	}
 
 	private void Update()
@@ -83,12 +90,12 @@ public class GridCursorController : MonoBehaviour
 
 	private void HandleConfirmPressed()
 	{
-		GridManager.Instance.PlaceTower(_gridCoordinates, null);
+		GridManager.Instance.PlaceTower(_gridCoordinates, null, _cursorSize.x, _cursorSize.y);
 	}
 
 	private void HandleCancelPressed()
 	{
-		GridManager.Instance.RemoveTower(_gridCoordinates);
+		GridManager.Instance.RemoveTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
 	}
 
 	public void Move(Vector2Int delta)
@@ -98,13 +105,13 @@ public class GridCursorController : MonoBehaviour
 
 	public void SetPosition(int x, int y)
 	{
-		if (!GridManager.Instance.IsValidGridPos(x, y))
+		if (!GridManager.Instance.IsValidGridArea(x, y, _cursorSize.x, _cursorSize.y))
 		{
 			return;
 		}
 
 		_gridCoordinates = new Vector2Int(x, y);
-		Vector3 targetPos = GridManager.Instance.GridToWorld(x, y);
+		Vector3 targetPos = GridManager.Instance.GridToWorld(x, y, _cursorSize.x, _cursorSize.y);
 
 		_cursorTween.Stop();
 		_cursorTween = Tween.Position(transform, targetPos, _tweenDuration, Ease.OutQuad);

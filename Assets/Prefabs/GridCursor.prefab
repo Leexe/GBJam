@@ -104,7 +104,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32656ba38a1ca4d3d8608aa62a0d64ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridCursorController
-  _tweenDuration: 0.1
+  _movementDuration: 0.06
   _repeatDelay: 0.2
   _repeatRate: 0.1
+  _frameRate: 0.25
   _cursorSize: {x: 2, y: 2}
+  _cursorType: 0
+  _spriteRenderer: {fileID: 7619431103778109135}
+  _cornersDefault:
+  - {fileID: 1016044219, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  - {fileID: -232203743, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  _cornersInvalid:
+  - {fileID: 890275905, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  - {fileID: 2047017122, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  _crossFrames:
+  - {fileID: 1277468338, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  - {fileID: -1434375366, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  _crossInvalidFrames:
+  - {fileID: -1018172613, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  - {fileID: 127292203, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  _boxFrames:
+  - {fileID: 820661776, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  - {fileID: 1438241680, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  - {fileID: 1403616454, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  - {fileID: -1570655479, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  _pointerFrames:
+  - {fileID: 1841975618, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  - {fileID: 1449679628, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  _dotFrames:
+  - {fileID: 1296124201, guid: 542e896b058b446c69d2d521902b4952, type: 3}

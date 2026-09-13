@@ -1,5 +1,15 @@
 using PrimeTween;
+using Sirenix.OdinInspector;
 using UnityEngine;
+
+public enum CursorType
+{
+	Corners,
+	Box,
+	Cross,
+	Pointer,
+	Dot,
+}
 
 public class GridCursorController : MonoBehaviour
 {
@@ -16,35 +26,56 @@ public class GridCursorController : MonoBehaviour
 	[Tooltip("Move repeat rate")]
 	private float _repeatRate = 0.1f;
 
-	[Header("Scale Tween")]
+	[Header("Animation Settings")]
 	[SerializeField]
-	[Tooltip("Scale Tween")]
-	private float _idleDuration = 2f;
-
-	[SerializeField]
-	[Range(0, 1)]
-	[Tooltip("Scale Tween")]
-	private float _scaleRange = 0.1f;
-
-	[SerializeField]
-	private Ease _scaleEase = Ease.InOutSine;
+	[Tooltip("Time between sprite swaps in seconds")]
+	private float _frameRate = 0.25f;
 
 	[Header("Cursor Settings")]
 	[SerializeField]
 	private Vector2Int _cursorSize = new Vector2Int(2, 2);
 
+	[SerializeField]
+	private CursorType _cursorType = CursorType.Corners;
+
+	[SerializeField]
+	private SpriteRenderer _spriteRenderer;
+
+	[TabGroup("Cursor Image Types", "Corners")]
+	[SerializeField]
+	private Sprite[] _cornersDefault;
+
+	[TabGroup("Cursor Image Types", "Corners")]
+	[SerializeField]
+	private Sprite[] _cornersInvalid;
+
+	[TabGroup("Cursor Image Types", "Cross")]
+	[SerializeField]
+	private Sprite[] _crossFrames;
+
+	[TabGroup("Cursor Image Types", "Cross")]
+	[SerializeField]
+	private Sprite[] _crossInvalidFrames;
+
+	[TabGroup("Cursor Image Types", "Box")]
+	[SerializeField]
+	private Sprite[] _boxFrames;
+
+	[TabGroup("Cursor Image Types", "Pointer")]
+	[SerializeField]
+	private Sprite[] _pointerFrames;
+
+	[TabGroup("Cursor Image Types", "Dot")]
+	[SerializeField]
+	private Sprite[] _dotFrames;
+
 	private Vector2Int _gridCoordinates;
 	private Vector2Int _currentDirection;
 	private bool _isHolding;
 	private float _holdTimer;
+	private int _currentFrame;
 	private Tween _cursorTween;
-	private Tween _scaleTween;
-	private Vector3 _initialScale = Vector3.one;
-
-	private void Awake()
-	{
-		_initialScale = transform.localScale;
-	}
+	private Sequence _animTween;
 
 	private void OnEnable()
 	{
@@ -52,7 +83,7 @@ public class GridCursorController : MonoBehaviour
 		InputManager.Instance.OnConfirm += HandleConfirmPressed;
 		InputManager.Instance.OnCancel += HandleCancelPressed;
 
-		StartScaleTween();
+		StartAnimation();
 	}
 
 	private void OnDisable()
@@ -65,8 +96,7 @@ public class GridCursorController : MonoBehaviour
 		}
 
 		_cursorTween.Stop();
-		_scaleTween.Stop();
-		transform.localScale = _initialScale;
+		_animTween.Stop();
 	}
 
 	private void Start()
@@ -75,27 +105,22 @@ public class GridCursorController : MonoBehaviour
 		int startY = (GridManager.Instance.GetMaxRows - _cursorSize.y) / 2;
 		_gridCoordinates = new Vector2Int(startX, startY);
 		transform.position = GridManager.Instance.GridToWorld(startX, startY, _cursorSize.x, _cursorSize.y);
+		UpdateVisual();
 	}
 
-	private void StartScaleTween()
+	private void StartAnimation()
 	{
-		_scaleTween.Stop();
-		transform.localScale = _initialScale;
-		_scaleTween = Tween.Scale(
-			transform,
-			startValue: _initialScale,
-			endValue: _initialScale * (1f + _scaleRange),
-			duration: _idleDuration * 0.5f,
-			ease: _scaleEase,
-			cycles: -1,
-			cycleMode: CycleMode.Yoyo
-		);
+		_animTween.Stop();
+		_animTween = Sequence
+			.Create(-1)
+			.Chain(Tween.Delay(_frameRate))
+			.ChainCallback(this, target => target.AdvanceFrame());
 	}
 
-	private void StopScaleTween()
+	private void AdvanceFrame()
 	{
-		_scaleTween.Stop();
-		transform.localScale = _initialScale;
+		_currentFrame++;
+		UpdateVisual();
 	}
 
 	private void Update()
@@ -139,11 +164,13 @@ public class GridCursorController : MonoBehaviour
 	private void HandleConfirmPressed()
 	{
 		GridManager.Instance.PlaceTower(_gridCoordinates, null, _cursorSize.x, _cursorSize.y);
+		UpdateVisual();
 	}
 
 	private void HandleCancelPressed()
 	{
 		GridManager.Instance.RemoveTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
+		UpdateVisual();
 	}
 
 	public void Move(Vector2Int delta)
@@ -163,5 +190,32 @@ public class GridCursorController : MonoBehaviour
 
 		_cursorTween.Stop();
 		_cursorTween = Tween.Position(transform, targetPos, _movementDuration, Ease.OutQuad);
+		UpdateVisual();
+	}
+
+	public void SetCursorType(CursorType type)
+	{
+		_cursorType = type;
+		UpdateVisual();
+	}
+
+	public void UpdateVisual()
+	{
+		bool canPlace = GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
+		Sprite[] frames = GetCurrentFrames(canPlace);
+		_spriteRenderer.sprite = frames[_currentFrame % frames.Length];
+	}
+
+	private Sprite[] GetCurrentFrames(bool canPlace)
+	{
+		return _cursorType switch
+		{
+			CursorType.Corners => canPlace ? _cornersDefault : _cornersInvalid,
+			CursorType.Box => _boxFrames,
+			CursorType.Pointer => _pointerFrames,
+			CursorType.Cross => canPlace ? _crossFrames : _crossInvalidFrames,
+			CursorType.Dot => _dotFrames,
+			_ => _cornersDefault,
+		};
 	}
 }

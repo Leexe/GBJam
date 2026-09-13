@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7354596220760951671}
-  - component: {fileID: 3342862067836889729}
+  - component: {fileID: 8285369450261359416}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3342862067836889729
+--- !u!114 &8285369450261359416
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,9 +41,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3656448511289887761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d80b9b03baf045cb9f2d0c227c9647a, type: 3}
+  m_Script: {fileID: 11500000, guid: 4cf67fff13224f61a6229746ab4dee4d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProjectilePool
+  m_EditorClassIdentifier: Assembly-CSharp::GridManager
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -52,6 +52,25 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  _projectilePrefab: {fileID: 2650592981762568670, guid: bc82aad4379144bccaf5ba2362db1274, type: 3}
-  _initialSize: 100
+    SerializationNodes:
+    - Name: OnTileStateChanged
+      Entry: 6
+      Data: 
+    - Name: OnTowerPlaced
+      Entry: 6
+      Data: 
+    - Name: OnTowerRemoved
+      Entry: 6
+      Data: 
+  _enemyWaypoints:
+  - {x: 0, y: 11}
+  - {x: 5, y: 11}
+  - {x: 5, y: 4}
+  - {x: 14, y: 4}
+  - {x: 14, y: 12}
+  - {x: 17, y: 12}
+  _obstacles: []
+  _originPosition: {x: 0, y: 0}
+  _cellSize: 0.5
+  _debugVisualization: 1
+  _showCoordinateLabels: 1

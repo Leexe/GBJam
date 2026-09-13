@@ -22,9 +22,6 @@ public class Enemy : MonoBehaviour
 	public EnemySO Data => _data;
 	public float CurrentHealth => _currentHealth;
 
-	public Action<Enemy> OnDied;
-	public Action<Enemy> OnReachedGoal;
-
 	public void Initialize(EnemySO data)
 	{
 		_data = data;
@@ -47,6 +44,11 @@ public class Enemy : MonoBehaviour
 
 	private void UpdateAnimation()
 	{
+		if (!_data)
+		{
+			return;
+		}
+
 		if (_data.SpriteList.Count <= 1)
 		{
 			return;
@@ -96,13 +98,13 @@ public class Enemy : MonoBehaviour
 
 	private void Die()
 	{
-		OnDied?.Invoke(this);
+		GameManager.Instance.GiveGold(_data.GoldReward);
 		Deactivate();
 	}
 
 	private void ReachGoal()
 	{
-		OnReachedGoal?.Invoke(this);
+		GameManager.Instance.DamageHealth(_data.Damage);
 		Deactivate();
 	}
 

@@ -17,7 +17,7 @@ namespace Febucci.TextAnimatorForUnity
         [Conditional("FEBUCCI_TEXT_ANIMATOR_DEBUG")]
         public static void Debug(string text, UnityEngine.Object context = null)
         {
-            UnityEngine.Debug.Log(PREFIX + text, context);
+            // UnityEngine.Debug.Log(PREFIX + text, context);
         }
 
         [Conditional("FEBUCCI_TEXT_ANIMATOR_DEBUG")]

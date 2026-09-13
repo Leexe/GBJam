@@ -1313,47 +1313,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[0].y
-      value: 6
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[1].x
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[1].y
-      value: 6
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[2].x
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[2].y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[3].x
-      value: 7
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[3].y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[4].x
-      value: 7
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[4].y
-      value: 6
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[5].x
-      value: 8
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2637171318429294033, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _enemyWaypoints.Array.data[5].y
-      value: 6
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3656448511289887761, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: m_Name

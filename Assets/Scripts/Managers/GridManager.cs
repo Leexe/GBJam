@@ -41,6 +41,9 @@ public class GridManager : MonoSingleton<GridManager>
 	[SerializeField]
 	private Vector2 _originPosition;
 
+	[SerializeField]
+	private float _cellSize = 0.5f;
+
 	[Header("Temp Game Data Fields")]
 	[SerializeField]
 	private bool _debugVisualization = true;
@@ -48,8 +51,8 @@ public class GridManager : MonoSingleton<GridManager>
 	[SerializeField]
 	private bool _showCoordinateLabels = true;
 
-	private const int Rows = 8;
-	private const int Columns = 10;
+	private const int Rows = 16;
+	private const int Columns = 20;
 	public int GetMaxRows => Rows;
 	public int GetMaxColumns => Columns;
 
@@ -159,18 +162,26 @@ public class GridManager : MonoSingleton<GridManager>
 
 	public Vector3 GridToWorld(int x, int y)
 	{
-		return new Vector3(_originPosition.x + (x + 0.5f), _originPosition.y + (y + 0.5f), 0f);
+		return new Vector3(
+			_originPosition.x + ((x + 0.5f) * _cellSize),
+			_originPosition.y + ((y + 0.5f) * _cellSize),
+			0f
+		);
 	}
 
 	public Vector3 GridToWorld(Vector2Int position)
 	{
-		return new Vector3(_originPosition.x + (position.x + 0.5f), _originPosition.y + (position.y + 0.5f), 0f);
+		return new Vector3(
+			_originPosition.x + ((position.x + 0.5f) * _cellSize),
+			_originPosition.y + ((position.y + 0.5f) * _cellSize),
+			0f
+		);
 	}
 
 	public Vector2Int WorldToGrid(Vector3 worldPosition)
 	{
-		int x = Mathf.FloorToInt(worldPosition.x - _originPosition.x);
-		int y = Mathf.FloorToInt(worldPosition.y - _originPosition.y);
+		int x = Mathf.FloorToInt((worldPosition.x - _originPosition.x) / _cellSize);
+		int y = Mathf.FloorToInt((worldPosition.y - _originPosition.y) / _cellSize);
 		return new Vector2Int(x, y);
 	}
 
@@ -226,7 +237,7 @@ public class GridManager : MonoSingleton<GridManager>
 			{
 				Vector3 center = GridToWorld(new Vector2Int(x, y));
 				Gizmos.color = Color.lightGreen;
-				Gizmos.DrawWireCube(center, new Vector3(0.95f, 0.95f, 0.05f));
+				Gizmos.DrawWireCube(center, new Vector3(_cellSize * 0.95f, _cellSize * 0.95f, 0.05f));
 
 				if (_showCoordinateLabels)
 				{
@@ -236,7 +247,7 @@ public class GridManager : MonoSingleton<GridManager>
 						fontSize = 8,
 						alignment = TextAnchor.MiddleCenter,
 					};
-					UnityEditor.Handles.Label(center, $"({x},{y})", style);
+					UnityEditor.Handles.Label(center, $"{x},{y}", style);
 				}
 			}
 		}

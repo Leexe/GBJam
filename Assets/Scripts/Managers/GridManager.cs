@@ -57,7 +57,7 @@ public class GridManager : MonoSingleton<GridManager>
 	public int GetMaxColumns => Columns;
 
 	private readonly GridNode[] _grid = new GridNode[Columns * Rows];
-	public List<GridNode> Path { get; private set; } = new();
+	public List<Vector2Int> EnemyWaypoints => _enemyWaypoints;
 
 	private int ToIndex(int x, int y) => x + (y * Columns);
 
@@ -107,11 +107,8 @@ public class GridManager : MonoSingleton<GridManager>
 			return;
 		}
 
-		Path.Clear();
-
 		// Mark Spawn Point
 		SetGridType(_enemyWaypoints[0], GridType.Spawn);
-		Path.Add(_grid[ToIndex(_enemyWaypoints[0])]);
 
 		// Mark Path
 		for (int i = 0; i < _enemyWaypoints.Count - 1; i++)
@@ -128,7 +125,6 @@ public class GridManager : MonoSingleton<GridManager>
 				if (_grid[ToIndex(current)].Type != GridType.Spawn)
 				{
 					SetGridType(current, GridType.Path);
-					Path.Add(_grid[ToIndex(current)]);
 				}
 				current = new(current.x + dx, current.y + dy);
 			}
@@ -136,7 +132,6 @@ public class GridManager : MonoSingleton<GridManager>
 
 		// Mark Goal Point
 		SetGridType(_enemyWaypoints[^1], GridType.Goal);
-		Path.Add(_grid[ToIndex(_enemyWaypoints[^1])]);
 	}
 
 	public bool CanPlaceTower(Vector2Int position, int width = 2, int height = 2)
@@ -298,12 +293,12 @@ public class GridManager : MonoSingleton<GridManager>
 				}
 			}
 		}
-		if (Path.Count > 1)
+		if (_enemyWaypoints.Count > 1)
 		{
 			Gizmos.color = Color.yellow;
-			for (int i = 0; i < Path.Count - 1; i++)
+			for (int i = 0; i < _enemyWaypoints.Count - 1; i++)
 			{
-				Gizmos.DrawLine(GridToWorld(Path[i].Position), GridToWorld(Path[i + 1].Position));
+				Gizmos.DrawLine(GridToWorld(_enemyWaypoints[i]), GridToWorld(_enemyWaypoints[i + 1]));
 			}
 		}
 	}

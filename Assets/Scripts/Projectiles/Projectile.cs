@@ -32,6 +32,7 @@ public class Projectile : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
+		other.GetComponent<Enemy>().TakeDamage(_damage);
 		_remainingPierce--;
 		if (_remainingPierce <= 0)
 		{

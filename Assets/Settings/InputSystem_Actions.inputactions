@@ -16,7 +16,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "A",
+                    "name": "Confirm",
                     "type": "Button",
                     "id": "b7ad2f5a-e3a7-4c90-b54e-d4cce250e9d0",
                     "expectedControlType": "",
@@ -25,7 +25,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "B",
+                    "name": "Cancel",
                     "type": "Button",
                     "id": "a69ed673-dd87-4419-b69e-3b230f31c842",
                     "expectedControlType": "",
@@ -159,7 +159,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "A",
+                    "action": "Confirm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -170,7 +170,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "B",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

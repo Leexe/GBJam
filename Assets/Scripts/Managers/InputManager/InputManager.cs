@@ -14,8 +14,8 @@ public class InputManager : PersistentMonoSingleton<InputManager>
 
 	// Events
 	public event Action<Vector2> OnMovement;
-	public event Action OnA;
-	public event Action OnB;
+	public event Action OnConfirm;
+	public event Action OnCancel;
 	public event Action OnStart;
 	public event Action OnSelect;
 
@@ -50,8 +50,8 @@ public class InputManager : PersistentMonoSingleton<InputManager>
 		_bindings.Clear();
 		_movementAction = InputActions.FindAction("Movement");
 
-		BindAction("A", performed: () => OnA?.Invoke());
-		BindAction("B", performed: () => OnB?.Invoke());
+		BindAction("Confirm", performed: () => OnConfirm?.Invoke());
+		BindAction("Cancel", performed: () => OnCancel?.Invoke());
 		BindAction("Start", performed: () => OnStart?.Invoke());
 		BindAction("Select", performed: () => OnSelect?.Invoke());
 	}

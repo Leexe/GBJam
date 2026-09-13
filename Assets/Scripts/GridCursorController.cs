@@ -81,6 +81,16 @@ public class GridCursorController : MonoBehaviour
 		Move(dir);
 	}
 
+	private void HandleConfirmPressed()
+	{
+		GridManager.Instance.PlaceTower(_gridCoordinates, null);
+	}
+
+	private void HandleCancelPressed()
+	{
+		GridManager.Instance.RemoveTower(_gridCoordinates);
+	}
+
 	public void Move(Vector2Int delta)
 	{
 		SetPosition(_gridCoordinates.x + delta.x, _gridCoordinates.y + delta.y);

@@ -56,8 +56,12 @@ public class GridManager : MonoSingleton<GridManager>
 	public int GetMaxRows => Rows;
 	public int GetMaxColumns => Columns;
 
-	private GridNode[,] _grid = new GridNode[Columns, Rows];
+	private readonly GridNode[] _grid = new GridNode[Columns * Rows];
 	public List<GridNode> Path { get; private set; } = new();
+
+	private int ToIndex(int x, int y) => x + (y * Columns);
+
+	private int ToIndex(Vector2Int pos) => pos.x + (pos.y * Columns);
 
 	// Events
 	[HideInInspector]
@@ -81,7 +85,7 @@ public class GridManager : MonoSingleton<GridManager>
 		{
 			for (int y = 0; y < Rows; y++)
 			{
-				_grid[x, y] = new GridNode(new Vector2Int(x, y), GridType.Empty, null);
+				_grid[ToIndex(x, y)] = new GridNode(new Vector2Int(x, y), GridType.Empty, null);
 			}
 		}
 
@@ -107,7 +111,7 @@ public class GridManager : MonoSingleton<GridManager>
 
 		// Mark Spawn Point
 		SetGridType(_enemyWaypoints[0], GridType.Spawn);
-		Path.Add(_grid[_enemyWaypoints[0].x, _enemyWaypoints[0].y]);
+		Path.Add(_grid[ToIndex(_enemyWaypoints[0])]);
 
 		// Mark Path
 		for (int i = 0; i < _enemyWaypoints.Count - 1; i++)
@@ -121,10 +125,10 @@ public class GridManager : MonoSingleton<GridManager>
 			Vector2Int current = start;
 			while (current != end)
 			{
-				if (_grid[current.x, current.y].Type != GridType.Spawn)
+				if (_grid[ToIndex(current)].Type != GridType.Spawn)
 				{
 					SetGridType(current, GridType.Path);
-					Path.Add(_grid[current.x, current.y]);
+					Path.Add(_grid[ToIndex(current)]);
 				}
 				current = new(current.x + dx, current.y + dy);
 			}
@@ -132,7 +136,7 @@ public class GridManager : MonoSingleton<GridManager>
 
 		// Mark Goal Point
 		SetGridType(_enemyWaypoints[^1], GridType.Goal);
-		Path.Add(_grid[_enemyWaypoints[^1].x, _enemyWaypoints[^1].y]);
+		Path.Add(_grid[ToIndex(_enemyWaypoints[^1])]);
 	}
 
 	public bool CanPlaceTower(Vector2Int position, int width = 2, int height = 2)
@@ -146,7 +150,7 @@ public class GridManager : MonoSingleton<GridManager>
 		{
 			for (int y = position.y; y < position.y + height; y++)
 			{
-				if (!_grid[x, y].CanPlaceTower)
+				if (!_grid[ToIndex(x, y)].CanPlaceTower)
 				{
 					return false;
 				}
@@ -235,34 +239,34 @@ public class GridManager : MonoSingleton<GridManager>
 
 	public GridNode GetGridNode(Vector2Int position)
 	{
-		return !IsValidGridPos(position) ? null : _grid[position.x, position.y];
+		return !IsValidGridPos(position) ? null : _grid[ToIndex(position)];
 	}
 
 	public GridNode GetGridNode(int x, int y)
 	{
-		return !IsValidGridPos(x, y) ? null : _grid[x, y];
+		return !IsValidGridPos(x, y) ? null : _grid[ToIndex(x, y)];
 	}
 
 	// Helper Methods
 
 	private void SetGridTower(Vector2Int position, GameObject tower)
 	{
-		_grid[position.x, position.y].PlacedTower = tower;
+		_grid[ToIndex(position)].PlacedTower = tower;
 	}
 
 	private void SetGridTower(int x, int y, GameObject tower)
 	{
-		_grid[x, y].PlacedTower = tower;
+		_grid[ToIndex(x, y)].PlacedTower = tower;
 	}
 
 	private void SetGridType(Vector2Int position, GridType type)
 	{
-		_grid[position.x, position.y].Type = type;
+		_grid[ToIndex(position)].Type = type;
 	}
 
 	private void SetGridType(int x, int y, GridType type)
 	{
-		_grid[x, y].Type = type;
+		_grid[ToIndex(x, y)].Type = type;
 	}
 
 	// Debug

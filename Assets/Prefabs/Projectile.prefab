@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7456705601198952460}
   - component: {fileID: 534103407353436857}
   - component: {fileID: 2824277563729386721}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb5f74ee76e174cc5921796a8062a53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
+  _enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!212 &534103407353436857
 SpriteRenderer:
   serializedVersion: 2

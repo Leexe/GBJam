@@ -11,14 +11,6 @@ public class Projectile : MonoBehaviour
 	private int _remainingPierce;
 	private float _lifetimeTimer;
 
-	private void Awake()
-	{
-		if (_enemyLayerMask == 0)
-		{
-			_enemyLayerMask = LayerMask.GetMask("Enemy");
-		}
-	}
-
 	public void Initialize(Transform target, ProjectileSO projectileData)
 	{
 		_target = target;

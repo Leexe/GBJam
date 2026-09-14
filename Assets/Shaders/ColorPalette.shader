@@ -43,7 +43,8 @@ Shader "Fullscreen/ColorPalette"
                 float2 uv = input.texcoord.xy;
                 half4 screenColor = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_PointClamp, uv);
 
-                half luminance = saturate(dot(screenColor.rgb, half3(0.299, 0.587, 0.114)));
+                half3 srgbColor = LinearToSRGB(screenColor.rgb);
+                half luminance = saturate(dot(srgbColor, half3(0.299, 0.587, 0.114)));
                 half4 paletteColor = SAMPLE_TEXTURE2D(_ColorRamp, sampler_PointClamp, float2(luminance, 0.5));
 
                 return half4(paletteColor.rgb, screenColor.a);

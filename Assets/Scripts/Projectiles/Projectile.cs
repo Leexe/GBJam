@@ -2,11 +2,22 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+	[SerializeField]
+	private LayerMask _enemyLayerMask;
+
 	private Transform _target;
 	private float _damage;
 	private float _speed;
 	private int _remainingPierce;
 	private float _lifetimeTimer;
+
+	private void Awake()
+	{
+		if (_enemyLayerMask == 0)
+		{
+			_enemyLayerMask = LayerMask.GetMask("Enemy");
+		}
+	}
 
 	public void Initialize(Transform target, ProjectileSO projectileData)
 	{
@@ -32,11 +43,19 @@ public class Projectile : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		other.GetComponent<Enemy>().TakeDamage(_damage);
-		_remainingPierce--;
-		if (_remainingPierce <= 0)
+		if ((_enemyLayerMask.value & (1 << other.gameObject.layer)) == 0)
 		{
-			Deactivate();
+			return;
+		}
+
+		if (other.TryGetComponent<Enemy>(out var enemy))
+		{
+			enemy.TakeDamage(_damage);
+			_remainingPierce--;
+			if (_remainingPierce <= 0)
+			{
+				Deactivate();
+			}
 		}
 	}
 

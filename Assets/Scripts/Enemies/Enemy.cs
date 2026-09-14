@@ -22,6 +22,9 @@ public class Enemy : MonoBehaviour
 	public EnemySO Data => _data;
 	public float CurrentHealth => _currentHealth;
 
+	[HideInInspector]
+	public Action<Enemy> OnDeath;
+
 	public void Initialize(EnemySO data)
 	{
 		_data = data;
@@ -111,6 +114,7 @@ public class Enemy : MonoBehaviour
 	private void Deactivate()
 	{
 		_damageTween.Complete();
+		OnDeath?.Invoke(this);
 		EnemyPool.Instance.Release(this);
 	}
 }

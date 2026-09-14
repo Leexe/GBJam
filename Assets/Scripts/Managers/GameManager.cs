@@ -7,6 +7,9 @@ public class GameManager : MonoSingleton<GameManager>
 	[SerializeField]
 	private LevelSO _levelSO;
 
+	[SerializeField]
+	private WaveController _waveController;
+
 	[Header("Settings")]
 	[SerializeField]
 	private int _maxHealth = 100;
@@ -15,6 +18,8 @@ public class GameManager : MonoSingleton<GameManager>
 	private int _gold;
 
 	public int Health => _health;
+	public int Gold => _gold;
+	public WaveController WaveController => _waveController;
 
 	// Events
 	[HideInInspector]
@@ -32,6 +37,8 @@ public class GameManager : MonoSingleton<GameManager>
 	private void Start()
 	{
 		_health = _maxHealth;
+		_waveController.Initialize(_levelSO);
+		_waveController.StartNextWave();
 	}
 
 	public void DamageHealth(int amount)
@@ -50,8 +57,14 @@ public class GameManager : MonoSingleton<GameManager>
 		_gold += amount;
 	}
 
+	public void WinGame()
+	{
+		OnWin?.Invoke();
+	}
+
 	private void LoseGame()
 	{
+		_waveController.StopWaves();
 		OnLose?.Invoke();
 	}
 }

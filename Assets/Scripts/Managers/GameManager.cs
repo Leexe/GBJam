@@ -14,6 +14,9 @@ public class GameManager : MonoSingleton<GameManager>
 	[SerializeField]
 	private int _maxHealth = 100;
 
+	[SerializeField]
+	private int _startingGold = 100;
+
 	private int _health;
 	private int _gold;
 
@@ -34,9 +37,13 @@ public class GameManager : MonoSingleton<GameManager>
 	[HideInInspector]
 	public Action OnGoldGain;
 
+	[HideInInspector]
+	public Action OnGoldSpend;
+
 	private void Start()
 	{
 		_health = _maxHealth;
+		_gold = _startingGold;
 		_waveController.Initialize(_levelSO);
 		_waveController.StartNextWave();
 	}
@@ -53,8 +60,22 @@ public class GameManager : MonoSingleton<GameManager>
 
 	public void GiveGold(int amount)
 	{
-		OnGoldGain?.Invoke();
 		_gold += amount;
+		OnGoldGain?.Invoke();
+	}
+
+	public bool CanAfford(int amount) => _gold >= amount;
+
+	public bool SpendGold(int amount)
+	{
+		if (!CanAfford(amount))
+		{
+			return false;
+		}
+
+		_gold -= amount;
+		OnGoldSpend?.Invoke();
+		return true;
 	}
 
 	public void WinGame()

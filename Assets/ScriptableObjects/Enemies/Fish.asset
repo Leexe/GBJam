@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Fish
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
   Name: Fish
+  Description: Fodder enemies that spawn in large numbers
   Health: 10
   Speed: 1.25
   Damage: 1

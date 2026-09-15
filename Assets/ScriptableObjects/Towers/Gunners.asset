@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 449f067aa70a40e2b6a647c7011048b2, type: 3}
-  m_Name: TowerSO
+  m_Name: Gunners
   m_EditorClassIdentifier: Assembly-CSharp::TowerSO
   <Name>k__BackingField: Tower Man
   <Id>k__BackingField: towerman
   <Description>k__BackingField: Tower man is the first tower to be created
-  <TowerType>k__BackingField: 0
+  <TowerType>k__BackingField: 1
   <Icon>k__BackingField: {fileID: 21300000, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
-  <Range>k__BackingField: 1
+  <Range>k__BackingField: 2
   <Damage>k__BackingField: 10
   <AttackRate>k__BackingField: 1
   <ProjectileData>k__BackingField: {fileID: 0}
   <Cost>k__BackingField: 50
-  <SellRefund>k__BackingField: 25

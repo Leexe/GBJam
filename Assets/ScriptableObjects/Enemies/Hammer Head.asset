@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Hammer Head
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
   Name: Hammer Head
+  Description: Slow but very hearty
   Health: 125
   Speed: 0.7
-  Damage: 10
-  GoldReward: 20
+  Damage: 25
+  GoldReward: 25
   SpriteList:
   - {fileID: -1612831136, guid: 414503ea5d5d243ef9e5cc2cf7c7d376, type: 3}

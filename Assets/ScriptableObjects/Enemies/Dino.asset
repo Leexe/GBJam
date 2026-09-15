@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Dino
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
   Name: Dino
+  Description: These obominations speeds up when they take damage
   Health: 100
-  Speed: 1
+  Speed: 1.1
   Damage: 25
   GoldReward: 50
   SpriteList:

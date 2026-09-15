@@ -73,4 +73,4 @@ MonoBehaviour:
   _originPosition: {x: 0, y: 0}
   _cellSize: 0.5
   _debugVisualization: 1
-  _showCoordinateLabels: 1
+  _showCoordinateLabels: 0

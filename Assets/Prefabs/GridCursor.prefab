@@ -110,6 +110,7 @@ MonoBehaviour:
   _frameRate: 0.75
   _cursorSize: {x: 2, y: 2}
   _cursorType: 0
+  _selectionCursorType: 1
   _spriteRenderer: {fileID: 7619431103778109135}
   _cornersDefault:
   - {fileID: 1016044219, guid: 542e896b058b446c69d2d521902b4952, type: 3}
@@ -133,3 +134,6 @@ MonoBehaviour:
   - {fileID: 1449679628, guid: 542e896b058b446c69d2d521902b4952, type: 3}
   _dotFrames:
   - {fileID: 1296124201, guid: 542e896b058b446c69d2d521902b4952, type: 3}
+  _availableTowers:
+  - {fileID: 11400000, guid: 4a98a5bf427b5441b9a196ae98fa878a, type: 2}
+  - {fileID: 11400000, guid: 1523e0b2abd0d4dca817a3cc2f4550fd, type: 2}

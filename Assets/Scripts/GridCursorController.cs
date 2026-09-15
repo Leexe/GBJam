@@ -202,13 +202,17 @@ public class GridCursorController : MonoBehaviour
 	{
 		if (_isSelectingTower)
 		{
-			GridManager.Instance.PlaceTower(
-				_gridCoordinates,
-				_availableTowers[_selectedTower],
-				_cursorSize.x,
-				_cursorSize.y
-			);
-			SetTowerSelectionMode(false);
+			TowerSO selected = _availableTowers[_selectedTower];
+			if (!GameManager.Instance.CanAfford(selected.Cost))
+			{
+				return;
+			}
+
+			if (GridManager.Instance.PlaceTower(_gridCoordinates, selected, _cursorSize.x, _cursorSize.y))
+			{
+				GameManager.Instance.SpendGold(selected.Cost);
+				SetTowerSelectionMode(false);
+			}
 			return;
 		}
 

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2255371238312810372}
   - component: {fileID: 6295420734134252027}
+  - component: {fileID: 6527504037228101234}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -44,3 +45,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787bb52a08e72497f87418961d38b660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: OnLose
+      Entry: 6
+      Data: 
+    - Name: OnWin
+      Entry: 6
+      Data: 
+    - Name: OnDamage
+      Entry: 6
+      Data: 
+    - Name: OnGoldGain
+      Entry: 6
+      Data: 
+    - Name: OnGoldSpend
+      Entry: 6
+      Data: 
+  _levelSO: {fileID: 11400000, guid: 67e37d82ca124433a8c32c498ee16d63, type: 2}
+  _waveController: {fileID: 6527504037228101234}
+  _maxHealth: 100
+  _startingGold: 100
+--- !u!114 &6527504037228101234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105653295703535813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fd8629d490704e6fbf4b43a5bcdc28b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaveController
+  _timeBetweenWaves: 10

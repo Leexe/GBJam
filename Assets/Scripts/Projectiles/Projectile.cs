@@ -32,7 +32,10 @@ public class Projectile : MonoBehaviour
 		}
 
 		transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
-		transform.rotation = Quaternion.LookRotation(transform.position - _target.position);
+		if (transform.position - _target.position != Vector3.zero)
+		{
+			transform.rotation = Quaternion.LookRotation(transform.position - _target.position);
+		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
@@ -50,7 +53,7 @@ public class Projectile : MonoBehaviour
 				hit.GetComponent<Enemy>()?.TakeDamage(_damage);
 			}
 		}
-		else if (other.TryGetComponent<Enemy>(out var enemy))
+		else if (other.TryGetComponent<Enemy>(out Enemy enemy))
 		{
 			enemy.TakeDamage(_damage);
 		}

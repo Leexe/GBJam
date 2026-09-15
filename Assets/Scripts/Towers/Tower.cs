@@ -69,10 +69,7 @@ public class Tower : MonoBehaviour
 		_position = transform.localPosition;
 		_rangeSqr = data.Range * data.Range;
 		_attackInterval = 1f / data.AttackRate;
-		if (_spriteRenderer)
-		{
-			_spriteRenderer.transform.localPosition = Vector3.zero;
-		}
+		_spriteRenderer.transform.localPosition = Vector3.zero;
 	}
 
 	private void OnDisable()
@@ -172,5 +169,10 @@ public class Tower : MonoBehaviour
 			Gizmos.color = Color.yellow;
 			Gizmos.DrawWireSphere(transform.position, _data.Range);
 		}
+	}
+
+	public void OnRemove()
+	{
+		GameManager.Instance.GiveGold(Data.SellGold);
 	}
 }

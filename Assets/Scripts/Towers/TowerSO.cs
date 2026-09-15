@@ -49,6 +49,7 @@ public class TowerSO : ScriptableObject
 
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Combat")]
+	[field: Required]
 	[field: ShowIf(nameof(TowerType), TowerType.Projectile)]
 	public ProjectileSO ProjectileData { get; private set; }
 
@@ -57,7 +58,5 @@ public class TowerSO : ScriptableObject
 	[field: TabGroup("Tab", "Economy")]
 	public int Cost { get; private set; } = 50;
 
-	[field: SerializeField]
-	[field: TabGroup("Tab", "Economy")]
-	public int SellRefund { get; private set; } = 25;
+	public int SellGold => Cost / 2;
 }

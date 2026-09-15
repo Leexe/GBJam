@@ -34,6 +34,7 @@ public class TowerPool : MonoSingleton<TowerPool>
 
 	public void Release(Tower tower)
 	{
+		tower.OnRemove();
 		tower.gameObject.SetActive(false);
 		_pool.Enqueue(tower);
 	}

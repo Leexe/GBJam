@@ -58,6 +58,7 @@ public class GridManager : MonoSingleton<GridManager>
 
 	private readonly GridNode[] _grid = new GridNode[Columns * Rows];
 	public List<Vector2Int> EnemyWaypoints => _enemyWaypoints;
+	public float TotalPathDistance { get; private set; }
 
 	private int ToIndex(int x, int y) => x + (y * Columns);
 
@@ -105,6 +106,15 @@ public class GridManager : MonoSingleton<GridManager>
 		if (_enemyWaypoints.Count <= 1)
 		{
 			return;
+		}
+
+		TotalPathDistance = 0f;
+		for (int i = 0; i < _enemyWaypoints.Count - 1; i++)
+		{
+			TotalPathDistance += Vector3.Distance(
+				GridToWorld(_enemyWaypoints[i]),
+				GridToWorld(_enemyWaypoints[i + 1])
+			);
 		}
 
 		// Mark Spawn Point

@@ -107,7 +107,7 @@ MonoBehaviour:
   _movementDuration: 0.06
   _repeatDelay: 0.2
   _repeatRate: 0.1
-  _frameRate: 0.25
+  _frameRate: 0.75
   _cursorSize: {x: 2, y: 2}
   _cursorType: 0
   _spriteRenderer: {fileID: 7619431103778109135}

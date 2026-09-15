@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PrimeTween;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -69,11 +70,15 @@ public class GridCursorController : MonoBehaviour
 	[SerializeField]
 	private Sprite[] _dotFrames;
 
+	[Header("Available Towers")]
+	private List<TowerSO> _availableTowers;
+
 	private Vector2Int _gridCoordinates;
 	private Vector2Int _currentDirection;
 	private bool _isHolding;
 	private float _holdTimer;
 	private int _currentFrame;
+	private int _selectedTower;
 	private Tween _cursorTween;
 	private Sequence _animTween;
 
@@ -163,7 +168,12 @@ public class GridCursorController : MonoBehaviour
 
 	private void HandleConfirmPressed()
 	{
-		GridManager.Instance.PlaceTower(_gridCoordinates, null, _cursorSize.x, _cursorSize.y);
+		GridManager.Instance.PlaceTower(
+			_gridCoordinates,
+			_availableTowers[_selectedTower],
+			_cursorSize.x,
+			_cursorSize.y
+		);
 		UpdateVisual();
 	}
 

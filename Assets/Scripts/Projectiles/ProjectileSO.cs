@@ -5,37 +5,42 @@ using UnityEngine;
 public class ProjectileSO : ScriptableObject
 {
 	[Header("Context")]
+	[TabGroup("Tab", "Context")]
 	[field: SerializeField]
-	[field: TabGroup("Tab/Context")]
 	public string Name { get; private set; }
 
+	[TabGroup("Tab", "Context")]
 	[field: SerializeField]
-	[field: TabGroup("Tab/Context")]
 	public string Id { get; private set; }
 
 	[Header("Data")]
+	[TabGroup("Tab", "Data")]
 	[field: SerializeField]
-	[field: TabGroup("Tab/Data")]
 	public float Speed { get; private set; } = 8f;
 
+	[TabGroup("Tab", "Data")]
 	[field: SerializeField]
-	[field: TabGroup("Tab/Data")]
 	public float Damage { get; private set; } = 10f;
 
+	[TabGroup("Tab", "Data")]
 	[field: SerializeField]
-	[field: TabGroup("Tab/Data")]
 	public float Lifetime { get; private set; } = 4f;
 
+	[TabGroup("Tab", "Data")]
 	[field: SerializeField]
-	[field: TabGroup("Tab/Data")]
-	public float AoeRadius { get; private set; }
-
-	[field: SerializeField]
-	[field: TabGroup("Tab/Data")]
 	public int PierceCount { get; private set; } = 1;
 
-	[Header("Visuals")]
+	[TabGroup("Tab", "Data")]
 	[field: SerializeField]
-	[field: TabGroup("Tab/Visuals")]
+	public bool IsAoe { get; private set; }
+
+	[TabGroup("Tab", "Data")]
+	[ShowIf(nameof(IsAoe))]
+	[field: SerializeField]
+	public float AoeRadius { get; private set; } = 1.5f;
+
+	[Header("Visuals")]
+	[TabGroup("Tab", "Visuals")]
+	[field: SerializeField]
 	public Sprite Sprite { get; private set; }
 }

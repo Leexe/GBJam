@@ -18,9 +18,12 @@ public class Enemy : MonoBehaviour
 	private Tween _damageTween;
 	private float _frameTimer;
 	private int _currentFrame;
+	private float _totalDistance;
 
 	public EnemySO Data => _data;
 	public float CurrentHealth => _currentHealth;
+	public float DistanceTraveled { get; private set; }
+	public float TravelProgress { get; private set; }
 
 	[HideInInspector]
 	public Action<Enemy> OnDeath;
@@ -30,6 +33,9 @@ public class Enemy : MonoBehaviour
 		_data = data;
 		_currentHealth = data.Health;
 		_waypoints = GridManager.Instance.EnemyWaypoints;
+		_totalDistance = GridManager.Instance.TotalPathDistance;
+		DistanceTraveled = 0f;
+		TravelProgress = 0f;
 		_currentWaypointIndex = 1;
 		_currentFrame = 0;
 		_frameTimer = 0f;
@@ -76,7 +82,11 @@ public class Enemy : MonoBehaviour
 			_spriteRenderer.flipX = diff.x < 0;
 		}
 
+		Vector3 prevPosition = transform.position;
 		transform.position = Vector3.MoveTowards(transform.position, target, _data.Speed * Time.deltaTime);
+
+		DistanceTraveled += Vector3.Distance(prevPosition, transform.position);
+		TravelProgress = Mathf.Clamp01(DistanceTraveled / _totalDistance);
 
 		if (Vector3.Distance(transform.position, target) < 0.001f)
 		{
@@ -84,6 +94,7 @@ public class Enemy : MonoBehaviour
 			if (_currentWaypointIndex >= _waypoints.Count)
 			{
 				ReachGoal();
+				return;
 			}
 		}
 	}

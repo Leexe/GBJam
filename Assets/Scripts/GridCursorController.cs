@@ -40,6 +40,9 @@ public class GridCursorController : MonoBehaviour
 	private CursorType _cursorType = CursorType.Corners;
 
 	[SerializeField]
+	private CursorType _selectionCursorType = CursorType.Box;
+
+	[SerializeField]
 	private SpriteRenderer _spriteRenderer;
 
 	[TabGroup("Cursor Image Types", "Corners")]
@@ -71,7 +74,8 @@ public class GridCursorController : MonoBehaviour
 	private Sprite[] _dotFrames;
 
 	[Header("Available Towers")]
-	private List<TowerSO> _availableTowers;
+	[SerializeField]
+	private List<TowerSO> _availableTowers = new();
 
 	private Vector2Int _gridCoordinates;
 	private Vector2Int _currentDirection;
@@ -79,6 +83,8 @@ public class GridCursorController : MonoBehaviour
 	private float _holdTimer;
 	private int _currentFrame;
 	private int _selectedTower;
+	private bool _isSelectingTower;
+	private CursorType _defaultCursorType;
 	private Tween _cursorTween;
 	private Sequence _animTween;
 
@@ -93,6 +99,11 @@ public class GridCursorController : MonoBehaviour
 
 	private void OnDisable()
 	{
+		if (_isSelectingTower)
+		{
+			SetTowerSelectionMode(false);
+		}
+
 		if (InputManager.Instance != null)
 		{
 			InputManager.Instance.OnMovement -= HandleMovementInput;
@@ -106,6 +117,7 @@ public class GridCursorController : MonoBehaviour
 
 	private void Start()
 	{
+		_defaultCursorType = _cursorType;
 		int startX = (GridManager.Instance.GetMaxColumns - _cursorSize.x) / 2;
 		int startY = (GridManager.Instance.GetMaxRows - _cursorSize.y) / 2;
 		_gridCoordinates = new Vector2Int(startX, startY);
@@ -117,8 +129,8 @@ public class GridCursorController : MonoBehaviour
 	{
 		_animTween.Stop();
 		_animTween = Sequence
-			.Create(-1)
-			.Chain(Tween.Delay(_frameRate))
+			.Create(-1, useUnscaledTime: true)
+			.Chain(Tween.Delay(_frameRate, useUnscaledTime: true))
 			.ChainCallback(this, target => target.AdvanceFrame());
 	}
 
@@ -135,10 +147,20 @@ public class GridCursorController : MonoBehaviour
 			return;
 		}
 
-		_holdTimer += Time.deltaTime;
+		_holdTimer += Time.unscaledDeltaTime;
 		if (_holdTimer >= _repeatDelay)
 		{
-			Move(_currentDirection);
+			if (_isSelectingTower)
+			{
+				if (_currentDirection.x != 0)
+				{
+					CycleTower(_currentDirection.x);
+				}
+			}
+			else
+			{
+				Move(_currentDirection);
+			}
 			_holdTimer -= _repeatRate;
 		}
 	}
@@ -163,23 +185,66 @@ public class GridCursorController : MonoBehaviour
 		_currentDirection = dir;
 		_isHolding = true;
 		_holdTimer = 0f;
+
+		if (_isSelectingTower)
+		{
+			if (dir.x != 0)
+			{
+				CycleTower(dir.x);
+			}
+			return;
+		}
+
 		Move(dir);
 	}
 
 	private void HandleConfirmPressed()
 	{
-		GridManager.Instance.PlaceTower(
-			_gridCoordinates,
-			_availableTowers[_selectedTower],
-			_cursorSize.x,
-			_cursorSize.y
-		);
-		UpdateVisual();
+		if (_isSelectingTower)
+		{
+			GridManager.Instance.PlaceTower(
+				_gridCoordinates,
+				_availableTowers[_selectedTower],
+				_cursorSize.x,
+				_cursorSize.y
+			);
+			SetTowerSelectionMode(false);
+			return;
+		}
+
+		if (GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
+		{
+			SetTowerSelectionMode(true);
+		}
 	}
 
 	private void HandleCancelPressed()
 	{
-		GridManager.Instance.RemoveTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
+		if (_isSelectingTower)
+		{
+			SetTowerSelectionMode(false);
+			return;
+		}
+
+		if (GridManager.Instance.RemoveTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
+		{
+			UpdateVisual();
+		}
+	}
+
+	private void SetTowerSelectionMode(bool enable)
+	{
+		_isSelectingTower = enable;
+		Time.timeScale = enable ? 0f : 1f;
+		_isHolding = false;
+		_currentDirection = Vector2Int.zero;
+		_holdTimer = 0f;
+		SetCursorType(enable ? _selectionCursorType : _defaultCursorType);
+	}
+
+	public void CycleTower(int offset)
+	{
+		_selectedTower = (_selectedTower + offset + _availableTowers.Count) % _availableTowers.Count;
 		UpdateVisual();
 	}
 
@@ -212,11 +277,11 @@ public class GridCursorController : MonoBehaviour
 	private void UpdateVisual()
 	{
 		bool canPlace = GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
-		Sprite[] frames = GetCurrentFrames(canPlace);
+		Sprite[] frames = ChangeCursorVisual(canPlace);
 		_spriteRenderer.sprite = frames[_currentFrame % frames.Length];
 	}
 
-	private Sprite[] GetCurrentFrames(bool canPlace)
+	private Sprite[] ChangeCursorVisual(bool canPlace)
 	{
 		return _cursorType switch
 		{

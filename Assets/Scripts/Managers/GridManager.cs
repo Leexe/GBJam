@@ -111,10 +111,7 @@ public class GridManager : MonoSingleton<GridManager>
 		TotalPathDistance = 0f;
 		for (int i = 0; i < _enemyWaypoints.Count - 1; i++)
 		{
-			TotalPathDistance += Vector3.Distance(
-				GridToWorld(_enemyWaypoints[i]),
-				GridToWorld(_enemyWaypoints[i + 1])
-			);
+			TotalPathDistance += Vector3.Distance(GridToWorld(_enemyWaypoints[i]), GridToWorld(_enemyWaypoints[i + 1]));
 		}
 
 		// Mark Spawn Point
@@ -164,9 +161,38 @@ public class GridManager : MonoSingleton<GridManager>
 		return true;
 	}
 
-	public bool PlaceTower(Vector2Int position, GameObject placedTower, int width = 2, int height = 2)
+	public bool PlaceTower(Vector2Int position, TowerSO towerSO, int width = 2, int height = 2)
 	{
 		if (!CanPlaceTower(position, width, height))
+		{
+			return false;
+		}
+
+		Vector3 worldPos = GridToWorld(position, width, height);
+		Tower tower = TowerPool.Instance.Get(worldPos, towerSO);
+
+		for (int x = position.x; x < position.x + width; x++)
+		{
+			for (int y = position.y; y < position.y + height; y++)
+			{
+				SetGridType(x, y, GridType.Tower);
+				SetGridTower(x, y, tower.gameObject);
+			}
+		}
+
+		OnTowerPlaced?.Invoke(position, tower.gameObject);
+		return true;
+	}
+
+	public bool CanRemoveTower(Vector2Int position, int width = 2, int height = 2)
+	{
+		if (!IsValidGridArea(position.x, position.y, width, height))
+		{
+			return false;
+		}
+
+		GameObject target = GetGridNode(position.x, position.y).PlacedTower;
+		if (!target)
 		{
 			return false;
 		}
@@ -175,30 +201,37 @@ public class GridManager : MonoSingleton<GridManager>
 		{
 			for (int y = position.y; y < position.y + height; y++)
 			{
-				SetGridType(x, y, GridType.Tower);
-				SetGridTower(x, y, placedTower);
-			}
-		}
-
-		OnTowerPlaced?.Invoke(position, placedTower);
-		return true;
-	}
-
-	public void RemoveTower(Vector2Int position, int width = 2, int height = 2)
-	{
-		for (int x = position.x; x < position.x + width; x++)
-		{
-			for (int y = position.y; y < position.y + height; y++)
-			{
-				if (GetGridNode(x, y).Type == GridType.Tower)
+				if (GetGridNode(x, y).PlacedTower != target)
 				{
-					SetGridType(x, y, GridType.Empty);
-					SetGridTower(x, y, null);
+					return false;
 				}
 			}
 		}
 
+		return true;
+	}
+
+	public bool RemoveTower(Vector2Int position, int width = 2, int height = 2)
+	{
+		if (!CanRemoveTower(position, width, height))
+		{
+			return false;
+		}
+
+		Tower tower = GetGridNode(position.x, position.y).PlacedTower.GetComponent<Tower>();
+
+		for (int x = position.x; x < position.x + width; x++)
+		{
+			for (int y = position.y; y < position.y + height; y++)
+			{
+				SetGridType(x, y, GridType.Empty);
+				SetGridTower(x, y, null);
+			}
+		}
+
+		TowerPool.Instance.Release(tower);
 		OnTowerRemoved?.Invoke(position);
+		return true;
 	}
 
 	public Vector3 GridToWorld(int x, int y, int width = 1, int height = 1)

@@ -9,6 +9,7 @@ public class HealthUI : MonoBehaviour
 	private void OnEnable()
 	{
 		GameManager.Instance.OnDamage += UpdateText;
+		GameManager.Instance.OnLose += UpdateText;
 	}
 
 	private void OnDisable()
@@ -16,6 +17,7 @@ public class HealthUI : MonoBehaviour
 		if (GameManager.Instance != null)
 		{
 			GameManager.Instance.OnDamage -= UpdateText;
+			GameManager.Instance.OnLose -= UpdateText;
 		}
 	}
 

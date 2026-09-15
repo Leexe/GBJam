@@ -6,6 +6,9 @@ using UnityEngine;
 public class EnemySO : ScriptableObject
 {
 	public string Name;
+
+	[TextArea(3, 10)]
+	public string Description;
 	public float Health;
 	public float Speed;
 	public int Damage;

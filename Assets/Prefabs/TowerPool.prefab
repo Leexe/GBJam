@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 8986227530467678082}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.21705, y: 3.41809, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -53,5 +53,5 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _towerPrefab: {fileID: 0}
-  _initialSize: 20
+  _towerPrefab: {fileID: 2526572217067446585, guid: aa44f41cd2e9b444db6e8e15aba6892e, type: 3}
+  _initialSize: 30

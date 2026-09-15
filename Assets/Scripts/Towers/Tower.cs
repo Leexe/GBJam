@@ -21,6 +21,10 @@ public class Tower : MonoBehaviour
 	[SerializeField]
 	private TowerPriorityType _priorityType = TowerPriorityType.First;
 
+	[Header("Visual")]
+	[SerializeField]
+	private SpriteRenderer _spriteRenderer;
+
 	[Header("Attack Animation")]
 	[SerializeField]
 	private float _launchDistance = 0.1f;
@@ -46,10 +50,11 @@ public class Tower : MonoBehaviour
 	private float _attackInterval;
 	private float _rangeSqr;
 	private Vector3 _position;
+	private Sequence _attackSequence;
 
 	private void Awake()
 	{
-		_position = transform.position;
+		_position = transform.localPosition;
 		if (_data)
 		{
 			_rangeSqr = _data.Range * _data.Range;
@@ -61,9 +66,19 @@ public class Tower : MonoBehaviour
 	{
 		_data = data;
 		_attackTimer = 0f;
-		_position = transform.position;
+		_position = transform.localPosition;
 		_rangeSqr = data.Range * data.Range;
 		_attackInterval = 1f / data.AttackRate;
+		if (_spriteRenderer)
+		{
+			_spriteRenderer.transform.localPosition = Vector3.zero;
+		}
+	}
+
+	private void OnDisable()
+	{
+		_attackSequence.Stop();
+		_spriteRenderer.transform.localPosition = Vector3.zero;
 	}
 
 	private void Update()
@@ -127,14 +142,15 @@ public class Tower : MonoBehaviour
 		Vector3 direction = (target.transform.position - _position).normalized;
 		Vector3 targetPos = _position + (direction * _launchDistance);
 
-		Sequence
+		_attackSequence.Stop();
+		_attackSequence = Sequence
 			.Create()
-			.Chain(Tween.Position(transform, targetPos, launchDuration, _launchEase))
+			.Chain(Tween.Position(_spriteRenderer.transform, targetPos, launchDuration, _launchEase))
 			.ChainCallback(() =>
 			{
 				PerformAttack(target);
 			})
-			.Chain(Tween.Position(transform, _position, returnDuration, _returnEase));
+			.Chain(Tween.Position(_spriteRenderer.transform, _position, returnDuration, _returnEase));
 	}
 
 	private void PerformAttack(Enemy target)

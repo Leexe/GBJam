@@ -50,27 +50,25 @@ public class MainMenuController : MonoBehaviour
 		{
 			_canvas = GetComponent<Canvas>();
 		}
-		if (_canvas != null)
+		if (_canvas != null && _canvas.worldCamera == null)
 		{
-			_canvas.renderMode = RenderMode.ScreenSpaceCamera;
-			if (_canvas.worldCamera == null)
-			{
-				_canvas.worldCamera = Camera.main;
-			}
-			_canvas.planeDistance = 10f;
+			_canvas.worldCamera = Camera.main;
 		}
 	}
 
 	private void OnEnable()
 	{
-		TrySubscribe();
+		if (InputManager.Instance != null)
+		{
+			SubscribeInput();
+		}
 		if (_settingsController != null) _settingsController.OnBackRequested += ReturnToMainMenu;
 		if (_creditsController != null) _creditsController.OnBackRequested += ReturnToMainMenu;
 	}
 
 	private void OnDisable()
 	{
-		Unsubscribe();
+		UnsubscribeInput();
 		if (_settingsController != null) _settingsController.OnBackRequested -= ReturnToMainMenu;
 		if (_creditsController != null) _creditsController.OnBackRequested -= ReturnToMainMenu;
 		_cursorTween.Stop();
@@ -78,7 +76,10 @@ public class MainMenuController : MonoBehaviour
 
 	private void Start()
 	{
-		TrySubscribe();
+		if (!_isSubscribed)
+		{
+			SubscribeInput();
+		}
 		SetState(MenuState.Splash);
 
 		if (_fadeOverlay != null)
@@ -90,11 +91,6 @@ public class MainMenuController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!_isSubscribed)
-		{
-			TrySubscribe();
-		}
-
 		if (_currentState == MenuState.Splash)
 		{
 			_splashTimer += Time.deltaTime;
@@ -105,7 +101,7 @@ public class MainMenuController : MonoBehaviour
 		}
 	}
 
-	private void TrySubscribe()
+	private void SubscribeInput()
 	{
 		if (_isSubscribed || InputManager.Instance == null) return;
 
@@ -116,7 +112,7 @@ public class MainMenuController : MonoBehaviour
 		_isSubscribed = true;
 	}
 
-	private void Unsubscribe()
+	private void UnsubscribeInput()
 	{
 		if (!_isSubscribed || InputManager.Instance == null) return;
 

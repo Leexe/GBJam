@@ -15,7 +15,7 @@ public class CreditsMenuController : MonoBehaviour
 
 	private bool _isActive;
 
-	public Action OnBackRequested;
+	public event Action OnBackRequested;
 
 	public void Open()
 	{

@@ -30,7 +30,7 @@ public class SettingsMenuController : MonoBehaviour
 	private int _currentRow;
 	private bool _isActive;
 
-	public Action OnBackRequested;
+	public event Action OnBackRequested;
 
 	public void Open()
 	{

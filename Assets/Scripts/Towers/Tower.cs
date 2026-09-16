@@ -25,6 +25,9 @@ public class Tower : MonoBehaviour
 	[SerializeField]
 	private SpriteRenderer _spriteRenderer;
 
+	[SerializeField]
+	private SpriteRenderer _rangeIndicator;
+
 	[Header("Attack Animation")]
 	[SerializeField]
 	private float _launchDistance = 0.1f;
@@ -59,6 +62,7 @@ public class Tower : MonoBehaviour
 		{
 			_rangeSqr = _data.Range * _data.Range;
 			_attackInterval = 1f / _data.AttackRate;
+			UpdateRangeIndicator();
 		}
 	}
 
@@ -70,12 +74,31 @@ public class Tower : MonoBehaviour
 		_rangeSqr = data.Range * data.Range;
 		_attackInterval = 1f / data.AttackRate;
 		_spriteRenderer.transform.localPosition = Vector3.zero;
+		UpdateRangeIndicator();
+	}
+
+	private void UpdateRangeIndicator()
+	{
+		_rangeIndicator.transform.localPosition = Vector3.zero;
+		float diameter = _data.Range * 2f;
+		_rangeIndicator.transform.localScale = new Vector3(diameter, diameter, 1f);
+	}
+
+	public void OnCursorEnter()
+	{
+		_rangeIndicator.gameObject.SetActive(true);
+	}
+
+	public void OnCursorExit()
+	{
+		_rangeIndicator.gameObject.SetActive(false);
 	}
 
 	private void OnDisable()
 	{
 		_attackSequence.Stop();
 		_spriteRenderer.transform.localPosition = Vector3.zero;
+		_rangeIndicator.gameObject.SetActive(false);
 	}
 
 	private void Update()

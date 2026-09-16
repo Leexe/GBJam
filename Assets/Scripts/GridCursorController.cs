@@ -87,6 +87,7 @@ public class GridCursorController : MonoBehaviour
 	private CursorType _defaultCursorType;
 	private Tween _cursorTween;
 	private Sequence _animTween;
+	private Tower _currentHoveredTower;
 
 	private void OnEnable()
 	{
@@ -113,6 +114,12 @@ public class GridCursorController : MonoBehaviour
 
 		_cursorTween.Stop();
 		_animTween.Stop();
+
+		if (_currentHoveredTower != null)
+		{
+			_currentHoveredTower.OnCursorExit();
+			_currentHoveredTower = null;
+		}
 	}
 
 	private void Start()
@@ -283,6 +290,35 @@ public class GridCursorController : MonoBehaviour
 		bool canPlace = GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
 		Sprite[] frames = ChangeCursorVisual(canPlace);
 		_spriteRenderer.sprite = frames[_currentFrame % frames.Length];
+		UpdateHoveredTower();
+	}
+
+	private void UpdateHoveredTower()
+	{
+		Tower hovered = GetTowerAtCursor();
+		if (_currentHoveredTower != hovered)
+		{
+			_currentHoveredTower?.OnCursorExit();
+			_currentHoveredTower = hovered;
+			_currentHoveredTower?.OnCursorEnter();
+		}
+	}
+
+	private Tower GetTowerAtCursor()
+	{
+		for (int x = _gridCoordinates.x; x < _gridCoordinates.x + _cursorSize.x; x++)
+		{
+			for (int y = _gridCoordinates.y; y < _gridCoordinates.y + _cursorSize.y; y++)
+			{
+				GridNode node = GridManager.Instance.GetGridNode(x, y);
+				if (node?.PlacedTower != null)
+				{
+					return node.PlacedTower.GetComponent<Tower>();
+				}
+			}
+		}
+
+		return null;
 	}
 
 	private Sprite[] ChangeCursorVisual(bool canPlace)

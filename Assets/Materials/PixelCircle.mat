@@ -30,8 +30,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _DashCount: 20
     - _Dashed: 0
-    - _DashCount: 24
     - _DitherFill: 0
     - _Thickness: 1
     m_Colors:

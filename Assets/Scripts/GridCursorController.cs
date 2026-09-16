@@ -304,22 +304,7 @@ public class GridCursorController : MonoBehaviour
 		}
 	}
 
-	private Tower GetTowerAtCursor()
-	{
-		for (int x = _gridCoordinates.x; x < _gridCoordinates.x + _cursorSize.x; x++)
-		{
-			for (int y = _gridCoordinates.y; y < _gridCoordinates.y + _cursorSize.y; y++)
-			{
-				GridNode node = GridManager.Instance.GetGridNode(x, y);
-				if (node?.PlacedTower != null)
-				{
-					return node.PlacedTower.GetComponent<Tower>();
-				}
-			}
-		}
-
-		return null;
-	}
+	private Tower GetTowerAtCursor() => GridManager.Instance.GetTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
 
 	private Sprite[] ChangeCursorVisual(bool canPlace)
 	{

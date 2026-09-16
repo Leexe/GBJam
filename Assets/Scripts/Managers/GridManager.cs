@@ -211,6 +211,13 @@ public class GridManager : MonoSingleton<GridManager>
 		return true;
 	}
 
+	public Tower GetTower(Vector2Int position, int width = 2, int height = 2)
+	{
+		return CanRemoveTower(position, width, height)
+			? GetGridNode(position.x, position.y).PlacedTower.GetComponent<Tower>()
+			: null;
+	}
+
 	public bool RemoveTower(Vector2Int position, int width = 2, int height = 2)
 	{
 		if (!CanRemoveTower(position, width, height))

@@ -20,5 +20,5 @@ MonoBehaviour:
   <Range>k__BackingField: 2
   <Damage>k__BackingField: 10
   <AttackRate>k__BackingField: 1
-  <ProjectileData>k__BackingField: {fileID: 0}
+  <ProjectileData>k__BackingField: {fileID: 11400000, guid: f75493b7748ee4c55b813a3fb38fb037, type: 2}
   <Cost>k__BackingField: 50

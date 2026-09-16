@@ -54,7 +54,7 @@ public class Tower : MonoBehaviour
 
 	private void Awake()
 	{
-		_position = transform.localPosition;
+		_position = transform.position;
 		if (_data)
 		{
 			_rangeSqr = _data.Range * _data.Range;
@@ -66,7 +66,7 @@ public class Tower : MonoBehaviour
 	{
 		_data = data;
 		_attackTimer = 0f;
-		_position = transform.localPosition;
+		_position = transform.position;
 		_rangeSqr = data.Range * data.Range;
 		_attackInterval = 1f / data.AttackRate;
 		_spriteRenderer.transform.localPosition = Vector3.zero;

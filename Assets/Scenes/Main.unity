@@ -1794,7 +1794,7 @@ Tilemap:
       - {fileID: 770337640, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: -1446112507, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: 1011081742, guid: bea6fa778df2144479665321bee8bb53, type: 3}
-      m_AnimationSpeed: 0.34216756
+      m_AnimationSpeed: 0.48953158
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:

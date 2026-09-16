@@ -18,9 +18,11 @@ public class GameManager : MonoSingleton<GameManager>
 	private int _startingGold = 100;
 
 	private int _health;
+	private float _time;
 	private int _gold;
 
 	public int Health => _health;
+	public float Time => _time;
 	public int Gold => _gold;
 	public WaveController WaveController => _waveController;
 
@@ -46,6 +48,11 @@ public class GameManager : MonoSingleton<GameManager>
 		_gold = _startingGold;
 		_waveController.Initialize(_levelSO);
 		_waveController.StartNextWave();
+	}
+
+	private void Update()
+	{
+		_time += UnityEngine.Time.deltaTime;
 	}
 
 	public void DamageHealth(int amount)

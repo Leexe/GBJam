@@ -85,4 +85,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fd8629d490704e6fbf4b43a5bcdc28b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveController
-  _timeBetweenWaves: 10
+  _timeBetweenWaves: 5

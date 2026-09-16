@@ -107,6 +107,11 @@ public class Tower : MonoBehaviour
 		for (int i = 0; i < enemies.Count; i++)
 		{
 			Enemy enemy = enemies[i];
+			if (enemy.CurrentHealth <= 0f)
+			{
+				continue;
+			}
+
 			float sqrDist = (enemy.transform.position - _position).sqrMagnitude;
 			if (sqrDist > _rangeSqr)
 			{

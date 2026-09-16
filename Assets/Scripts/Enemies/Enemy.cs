@@ -5,20 +5,37 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+	[Header("Visuals & Animation")]
 	[SerializeField]
 	private SpriteRenderer _spriteRenderer;
 
 	[SerializeField]
 	private float _frameRate = 0.2f;
 
+	[Header("Hit Stop")]
+	[SerializeField]
+	private float _hitStopDuration = 0.06f;
+
+	[SerializeField]
+	private float _hitStopCooldown = 0.2f;
+
+	[Header("Death")]
+	[SerializeField]
+	private ParticleSystem _deathParticles;
+
+	[SerializeField]
+	private float _particleLingerDuration = 0.5f;
+
 	private EnemySO _data;
 	private float _currentHealth;
 	private List<Vector2Int> _waypoints;
 	private int _currentWaypointIndex;
-	private Tween _damageTween;
+	private Sequence _deathSequence;
 	private float _frameTimer;
 	private int _currentFrame;
 	private float _totalDistance;
+	private float _hitStopTimer;
+	private float _hitStopCooldownTimer;
 
 	public EnemySO Data => _data;
 	public float CurrentHealth => _currentHealth;
@@ -39,30 +56,37 @@ public class Enemy : MonoBehaviour
 		_currentWaypointIndex = 1;
 		_currentFrame = 0;
 		_frameTimer = 0f;
+		_hitStopTimer = 0f;
+		_hitStopCooldownTimer = 0f;
 
 		transform.position = GridManager.Instance.GridToWorld(_waypoints[0]);
+		transform.localScale = Vector3.one;
+		_spriteRenderer.gameObject.SetActive(true);
+		_spriteRenderer.transform.localPosition = Vector3.zero;
+		_spriteRenderer.transform.localScale = Vector3.one;
 		_spriteRenderer.sprite = _data.SpriteList[0];
 		_spriteRenderer.flipX = false;
+		_deathParticles.gameObject.SetActive(false);
 	}
 
 	private void Update()
 	{
+		if (_currentHealth <= 0f)
+		{
+			return;
+		}
+
+		if (_hitStopCooldownTimer > 0f)
+		{
+			_hitStopCooldownTimer -= Time.deltaTime;
+		}
+
 		UpdateAnimation();
 		UpdateMovement();
 	}
 
 	private void UpdateAnimation()
 	{
-		if (!_data)
-		{
-			return;
-		}
-
-		if (_data.SpriteList.Count <= 1)
-		{
-			return;
-		}
-
 		_frameTimer += Time.deltaTime;
 		if (_frameTimer >= _frameRate)
 		{
@@ -74,6 +98,12 @@ public class Enemy : MonoBehaviour
 
 	private void UpdateMovement()
 	{
+		if (_hitStopTimer > 0f)
+		{
+			_hitStopTimer -= Time.deltaTime;
+			return;
+		}
+
 		Vector3 target = GridManager.Instance.GridToWorld(_waypoints[_currentWaypointIndex]);
 		Vector3 diff = target - transform.position;
 
@@ -102,7 +132,12 @@ public class Enemy : MonoBehaviour
 	public void TakeDamage(float amount)
 	{
 		_currentHealth -= amount;
-		_damageTween = Tween.PunchScale(transform, new Vector3(0.15f, 0.15f, 0f), 0.1f);
+
+		if (_hitStopCooldownTimer <= 0f)
+		{
+			_hitStopTimer = _hitStopDuration;
+			_hitStopCooldownTimer = _hitStopCooldown;
+		}
 
 		if (_currentHealth <= 0f)
 		{
@@ -112,8 +147,12 @@ public class Enemy : MonoBehaviour
 
 	private void Die()
 	{
+		_deathSequence.Stop();
 		GameManager.Instance.GiveGold(_data.GoldReward);
-		Deactivate();
+		_spriteRenderer.gameObject.SetActive(false);
+		_deathParticles.gameObject.SetActive(true);
+		_deathParticles.Play();
+		_deathSequence = Sequence.Create().ChainDelay(_particleLingerDuration).ChainCallback(Deactivate);
 	}
 
 	private void ReachGoal()
@@ -124,7 +163,14 @@ public class Enemy : MonoBehaviour
 
 	private void Deactivate()
 	{
-		_damageTween.Complete();
+		_deathSequence.Stop();
+		_hitStopTimer = 0f;
+		_hitStopCooldownTimer = 0f;
+		_deathParticles.gameObject.SetActive(false);
+		_spriteRenderer.gameObject.SetActive(true);
+		_spriteRenderer.transform.localPosition = Vector3.zero;
+		_spriteRenderer.transform.localScale = Vector3.one;
+		transform.localScale = Vector3.one;
 		OnDeath?.Invoke(this);
 		EnemyPool.Instance.Release(this);
 	}

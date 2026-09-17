@@ -9,6 +9,7 @@ public class GoldUI : MonoBehaviour
 	private void OnEnable()
 	{
 		GameManager.Instance.OnGoldGain += UpdateText;
+		GameManager.Instance.OnGoldSpend += UpdateText;
 	}
 
 	private void OnDisable()
@@ -16,6 +17,7 @@ public class GoldUI : MonoBehaviour
 		if (GameManager.Instance != null)
 		{
 			GameManager.Instance.OnGoldGain -= UpdateText;
+			GameManager.Instance.OnGoldSpend -= UpdateText;
 		}
 	}
 

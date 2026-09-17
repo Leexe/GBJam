@@ -14,6 +14,13 @@ public enum CursorType
 
 public class GridCursorController : MonoBehaviour
 {
+	[Header("Ghost Preview")]
+	[SerializeField]
+	private SpriteRenderer _ghostTowerRenderer;
+
+	[SerializeField]
+	private SpriteRenderer _ghostRangeIndicator;
+
 	[Header("Movement Tween")]
 	[SerializeField]
 	[Tooltip("Movement duration")]
@@ -251,12 +258,34 @@ public class GridCursorController : MonoBehaviour
 		_currentDirection = Vector2Int.zero;
 		_holdTimer = 0f;
 		SetCursorType(enable ? _selectionCursorType : _defaultCursorType);
+		UpdateGhostVisual();
 	}
 
 	public void CycleTower(int offset)
 	{
 		_selectedTower = (_selectedTower + offset + _availableTowers.Count) % _availableTowers.Count;
 		UpdateVisual();
+		UpdateGhostVisual();
+	}
+
+	private void UpdateGhostVisual()
+	{
+		_ghostTowerRenderer.gameObject.SetActive(_isSelectingTower);
+		_ghostRangeIndicator.gameObject.SetActive(_isSelectingTower);
+
+		if (!_isSelectingTower)
+		{
+			return;
+		}
+
+		TowerSO selected = _availableTowers[_selectedTower];
+		_ghostTowerRenderer.sprite = selected.Icon;
+		_ghostTowerRenderer.color = GameManager.Instance.CanAfford(selected.Cost)
+			? new Color(1f, 1f, 1f, 0.5f)
+			: new Color(0.8f, 0.3f, 0.3f, 0.5f);
+
+		float diameter = selected.Range * 2f;
+		_ghostRangeIndicator.transform.localScale = new Vector3(diameter, diameter, 1f);
 	}
 
 	private void Move(Vector2Int delta)

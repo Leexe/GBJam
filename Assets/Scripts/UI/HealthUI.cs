@@ -28,6 +28,6 @@ public class HealthUI : MonoBehaviour
 
 	private void UpdateText()
 	{
-		_healthText.text = Mathf.Clamp01(GameManager.Instance.Health).ToString();
+		_healthText.text = Mathf.Clamp(GameManager.Instance.Health, 0, 100).ToString();
 	}
 }

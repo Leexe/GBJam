@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using Modifiers;
 using UnityEngine;
 
 public class WaveController : MonoBehaviour
@@ -13,13 +15,21 @@ public class WaveController : MonoBehaviour
 	private int _activeEnemies;
 	private int _activeSpawners;
 	private bool _isStopped;
+	private bool _isSpawningPaused;
 
 	public int CurrentWaveIndex => _currentWaveIndex;
 	public int TotalWaves => _levelSO.WaveDataList.Count;
 	public bool IsWaveInProgress => _activeEnemies > 0 || _activeSpawners > 0;
+	public bool IsSpawningPaused => _isSpawningPaused;
 
 	[HideInInspector]
 	public Action<int> OnWaveStarted;
+
+	[HideInInspector]
+	public Action<int, List<TowerModifierSO>> OnWaveItemsOffered;
+
+	[HideInInspector]
+	public Action<int, List<TowerModifierSO>> OnWaveModifiersOffered;
 
 	[HideInInspector]
 	public Action<int> OnWaveCompleted;
@@ -32,7 +42,12 @@ public class WaveController : MonoBehaviour
 		_levelSO = levelSO;
 		_currentWaveIndex = 0;
 		_isStopped = false;
+		_isSpawningPaused = false;
 	}
+
+	public void PauseSpawning() => _isSpawningPaused = true;
+
+	public void ResumeSpawning() => _isSpawningPaused = false;
 
 	public void StartNextWave()
 	{
@@ -49,6 +64,13 @@ public class WaveController : MonoBehaviour
 
 		_activeEnemies = waveData.TotalEnemies;
 		_activeSpawners = waveData.SpawnGroups.Count;
+
+		if (_levelSO.DoesWaveGiveItems(_currentWaveIndex))
+		{
+			List<TowerModifierSO> choices = _levelSO.GetItemChoicesForWave(_currentWaveIndex);
+			OnWaveItemsOffered?.Invoke(_currentWaveIndex, choices);
+			OnWaveModifiersOffered?.Invoke(_currentWaveIndex, choices);
+		}
 
 		foreach (SpawnGroup t in waveData.SpawnGroups)
 		{
@@ -75,6 +97,11 @@ public class WaveController : MonoBehaviour
 
 		for (int i = 0; i < group.Count; i++)
 		{
+			while (_isSpawningPaused)
+			{
+				yield return null;
+			}
+
 			SpawnEnemy(group.Enemy);
 			if (i < group.Count - 1)
 			{

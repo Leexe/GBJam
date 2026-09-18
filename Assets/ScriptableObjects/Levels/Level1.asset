@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   LevelName: Level 1
   WaveDataList:
-  - SpawnGroups:
+  - GivesItems: 0
+    ItemChoicesCount: 3
+    OverrideLevelItemPool: 0
+    CustomItemPool: []
+    SpawnGroups:
     - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
       Count: 5
       Interval: 1
@@ -23,7 +27,11 @@ MonoBehaviour:
       Count: 5
       Interval: 0.5
       StartDelay: 4
-  - SpawnGroups:
+  - GivesItems: 1
+    ItemChoicesCount: 3
+    OverrideLevelItemPool: 0
+    CustomItemPool: []
+    SpawnGroups:
     - Enemy: {fileID: 11400000, guid: a3cec9b5c6a6c4668ad9bbc2b043cf74, type: 2}
       Count: 8
       Interval: 0.8
@@ -32,3 +40,20 @@ MonoBehaviour:
       Count: 1
       Interval: 2.5
       StartDelay: 6
+  DefaultItemChoicesCount: 3
+  ItemPool:
+  - {fileID: 11400000, guid: c238c0b22817843eeb75cd27fc08e4f9, type: 2}
+  - {fileID: 11400000, guid: 416789e5be76f45ea999aefdd5d849d4, type: 2}
+  - {fileID: 11400000, guid: 44e251a0398804b99862871cbd154528, type: 2}
+  - {fileID: 11400000, guid: b39cb8673a5c849629b9fa8f0e9670ac, type: 2}
+  - {fileID: 11400000, guid: 0379f9938e7c24986b4d56b947454175, type: 2}
+  - {fileID: 11400000, guid: 69d66757760614f54850c288d4bd2136, type: 2}
+  - {fileID: 11400000, guid: ea475c21af23749eba75fe752862745d, type: 2}
+  - {fileID: 11400000, guid: 9f0c389e26c6646abb70d16425157e54, type: 2}
+  - {fileID: 11400000, guid: 8dd790e5b7bf44166a535cec43e0b1d7, type: 2}
+  - {fileID: 11400000, guid: c6ba79578dcea43df9865f37e65b2034, type: 2}
+  - {fileID: 11400000, guid: 2cd634e387377456ca7fef14785c9df8, type: 2}
+  - {fileID: 11400000, guid: dc4d4e04f971047be97bb2fdc99e5373, type: 2}
+  - {fileID: 11400000, guid: 61bd033870d8a4573b38389765e1f8f9, type: 2}
+  - {fileID: 11400000, guid: 0b57c89fd8c494c7b9b393a0a1466655, type: 2}
+  - {fileID: 11400000, guid: ae67caea6a1f842c797767bd57818b88, type: 2}

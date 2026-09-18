@@ -5,6 +5,7 @@ public enum TowerType
 {
 	Melee,
 	Projectile,
+	Explosive,
 }
 
 [CreateAssetMenu(fileName = "TowerSO", menuName = "Game/TowerSO", order = 0)]
@@ -50,7 +51,7 @@ public class TowerSO : ScriptableObject
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Combat")]
 	[field: Required]
-	[field: ShowIf(nameof(TowerType), TowerType.Projectile)]
+	[field: HideIf(nameof(TowerType), TowerType.Melee)]
 	public ProjectileSO ProjectileData { get; private set; }
 
 	[Header("Economy")]

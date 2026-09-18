@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PrimeTween;
+using StatusEffects;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -8,6 +9,9 @@ public class Enemy : MonoBehaviour
 	[Header("Visuals & Animation")]
 	[SerializeField]
 	private SpriteRenderer _spriteRenderer;
+
+	[SerializeField]
+	private StatusEffectController _statusController;
 
 	[SerializeField]
 	private float _frameRate = 0.2f;
@@ -36,11 +40,14 @@ public class Enemy : MonoBehaviour
 	private float _totalDistance;
 	private float _hitStopTimer;
 	private float _hitStopCooldownTimer;
+	private float _speedMultiplier = 1f;
+	private float _speedBuffTimer;
 
 	public EnemySO Data => _data;
 	public float CurrentHealth => _currentHealth;
 	public float DistanceTraveled { get; private set; }
 	public float TravelProgress { get; private set; }
+	public StatusEffectController StatusController => _statusController;
 
 	[HideInInspector]
 	public Action<Enemy> OnDeath;
@@ -58,6 +65,8 @@ public class Enemy : MonoBehaviour
 		_frameTimer = 0f;
 		_hitStopTimer = 0f;
 		_hitStopCooldownTimer = 0f;
+		_speedMultiplier = 1f;
+		_speedBuffTimer = 0f;
 
 		transform.position = GridManager.Instance.GridToWorld(_waypoints[0]);
 		transform.localScale = Vector3.one;
@@ -67,6 +76,8 @@ public class Enemy : MonoBehaviour
 		_spriteRenderer.sprite = _data.SpriteList[0];
 		_spriteRenderer.flipX = false;
 		_deathParticles.gameObject.SetActive(false);
+
+		_statusController.Initialize();
 	}
 
 	private void Update()
@@ -80,6 +91,17 @@ public class Enemy : MonoBehaviour
 		{
 			_hitStopCooldownTimer -= Time.deltaTime;
 		}
+
+		if (_speedBuffTimer > 0f)
+		{
+			_speedBuffTimer -= Time.deltaTime;
+			if (_speedBuffTimer <= 0f)
+			{
+				_speedMultiplier = 1f;
+			}
+		}
+
+		_statusController.UpdateEffects(Time.deltaTime);
 
 		UpdateAnimation();
 		UpdateMovement();
@@ -113,7 +135,11 @@ public class Enemy : MonoBehaviour
 		}
 
 		Vector3 prevPosition = transform.position;
-		transform.position = Vector3.MoveTowards(transform.position, target, _data.Speed * Time.deltaTime);
+		transform.position = Vector3.MoveTowards(
+			transform.position,
+			target,
+			_data.Speed * _speedMultiplier * Time.deltaTime
+		);
 
 		DistanceTraveled += Vector3.Distance(prevPosition, transform.position);
 		TravelProgress = Mathf.Clamp01(DistanceTraveled / _totalDistance);
@@ -127,6 +153,25 @@ public class Enemy : MonoBehaviour
 				return;
 			}
 		}
+	}
+
+	public void BuffSpeed(float multiplier, float duration)
+	{
+		_speedMultiplier = multiplier;
+		_speedBuffTimer = duration;
+	}
+
+	public void DisplaceToward(Vector3 center, float maxDistance)
+	{
+		Vector3 direction = (center - transform.position).normalized;
+		float distance = Mathf.Min(maxDistance, Vector3.Distance(transform.position, center));
+		transform.position += direction * distance;
+	}
+
+	public void DisplaceAwayFrom(Vector3 center, float distance)
+	{
+		Vector3 direction = (transform.position - center).normalized;
+		transform.position += direction * distance;
 	}
 
 	public void TakeDamage(float amount)
@@ -166,6 +211,9 @@ public class Enemy : MonoBehaviour
 		_deathSequence.Stop();
 		_hitStopTimer = 0f;
 		_hitStopCooldownTimer = 0f;
+		_speedMultiplier = 1f;
+		_speedBuffTimer = 0f;
+		_statusController.ClearStatusEffects();
 		_deathParticles.gameObject.SetActive(false);
 		_spriteRenderer.gameObject.SetActive(true);
 		_spriteRenderer.transform.localPosition = Vector3.zero;

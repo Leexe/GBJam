@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -12,6 +13,13 @@ public class Projectile : MonoBehaviour
 	private float _aoeRadius;
 	private float _lifetimeTimer;
 
+	private bool _useDistanceScaling;
+	private Vector3 _originPosition;
+	private float _minDistance;
+	private float _maxDistance;
+	private Action<Collider2D[], Vector3> _onExplosionHit;
+	private Action<Enemy, float> _onEnemyHit;
+
 	public void Initialize(Transform target, ProjectileSO projectileData)
 	{
 		_target = target;
@@ -20,6 +28,31 @@ public class Projectile : MonoBehaviour
 		_remainingPierce = projectileData.PierceCount;
 		_aoeRadius = projectileData.IsAoe ? projectileData.AoeRadius : 0f;
 		_lifetimeTimer = projectileData.Lifetime;
+		_useDistanceScaling = false;
+		_onExplosionHit = null;
+		_onEnemyHit = null;
+	}
+
+	public void SetDamage(float damage) => _damage = damage;
+
+	public void SetAoeRadius(float aoeRadius) => _aoeRadius = aoeRadius;
+
+	public void SetDistanceDamageScaler(Vector3 origin, float minDistance, float maxDistance)
+	{
+		_useDistanceScaling = true;
+		_originPosition = origin;
+		_minDistance = minDistance;
+		_maxDistance = maxDistance;
+	}
+
+	public void AddExplosionHitListener(Action<Collider2D[], Vector3> callback)
+	{
+		_onExplosionHit += callback;
+	}
+
+	public void AddEnemyHitListener(Action<Enemy, float> callback)
+	{
+		_onEnemyHit += callback;
 	}
 
 	private void Update()
@@ -45,17 +78,38 @@ public class Projectile : MonoBehaviour
 			return;
 		}
 
+		float finalDamage = _damage;
+		if (_useDistanceScaling)
+		{
+			float dist = Vector3.Distance(_originPosition, transform.position);
+			if (dist < _minDistance)
+			{
+				finalDamage *= 0.15f;
+			}
+			else
+			{
+				float t = Mathf.Clamp01((dist - _minDistance) / Mathf.Max(0.1f, _maxDistance - _minDistance));
+				finalDamage *= Mathf.Lerp(1f, 2.5f, t);
+			}
+		}
+
 		if (_aoeRadius > 0f)
 		{
 			Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, _aoeRadius, _enemyLayerMask);
-			foreach (Collider2D hit in hits)
+			for (int i = 0; i < hits.Length; i++)
 			{
-				hit.GetComponent<Enemy>()?.TakeDamage(_damage);
+				if (hits[i].TryGetComponent<Enemy>(out Enemy hitEnemy))
+				{
+					hitEnemy.TakeDamage(finalDamage);
+					_onEnemyHit?.Invoke(hitEnemy, finalDamage);
+				}
 			}
+			_onExplosionHit?.Invoke(hits, transform.position);
 		}
 		else if (other.TryGetComponent<Enemy>(out Enemy enemy))
 		{
-			enemy.TakeDamage(_damage);
+			enemy.TakeDamage(finalDamage);
+			_onEnemyHit?.Invoke(enemy, finalDamage);
 		}
 
 		_remainingPierce--;
@@ -67,6 +121,9 @@ public class Projectile : MonoBehaviour
 
 	private void Deactivate()
 	{
+		_onExplosionHit = null;
+		_onEnemyHit = null;
+		_useDistanceScaling = false;
 		ProjectilePool.Instance.Release(this);
 	}
 }

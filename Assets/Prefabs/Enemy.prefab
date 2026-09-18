@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 7397358140639710812}
   - component: {fileID: 9142188923440408714}
   - component: {fileID: 4560543576988294933}
+  - component: {fileID: 9201928374650192834}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
@@ -189,11 +190,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   _spriteRenderer: {fileID: 6061778917475968761}
+  _statusController: {fileID: 9201928374650192834}
   _frameRate: 0.2
   _hitStopDuration: 0.2
   _hitStopCooldown: 0.4
   _deathParticles: {fileID: 3748604589200538133}
   _particleLingerDuration: 0.7
+--- !u!114 &9201928374650192834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7366383870159367820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c607be1a79a47fa9206294c1d39da1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: StatusEffects::StatusEffectController
+  _spriteRenderer: {fileID: 6061778917475968761}
+  _burnTintColor: {r: 1, g: 0.55, b: 0.3, a: 1}
 --- !u!1 &8491855180035489716
 GameObject:
   m_ObjectHideFlags: 0

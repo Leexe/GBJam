@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3efaabbf69979451aa95ed7b4d8f2461, type: 3}
+  m_Name: ScorchedPowder
+  m_EditorClassIdentifier: Modifiers::ScorchedPowderModifierSO
+  <Id>k__BackingField: scorched_powder
+  <Name>k__BackingField: Scorched powder
+  <Description>k__BackingField: Increase attack per second but if it fires continuously for 5 seconds, tower gets overheated for 2 seconds.
+  <Icon>k__BackingField: {fileID: 0}
+  <Category>k__BackingField: 1
+  <StatModifiers>k__BackingField:
+  - StatName: 2
+    FlatAdd: 0
+    PercentIncreaseAdd: 30
+    ModifierMult: 1
+    FinalMult: 1
+  <ContinuousFireThreshold>k__BackingField: 5
+  <OverheatDuration>k__BackingField: 2

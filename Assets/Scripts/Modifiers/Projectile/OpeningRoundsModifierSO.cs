@@ -2,16 +2,16 @@ using UnityEngine;
 
 namespace Modifiers
 {
-	[CreateAssetMenu(fileName = "ExecutionersRounds", menuName = "Game/Modifiers/Projectile/ExecutionersRounds")]
-	public class ExecutionersRoundsModifierSO : TowerModifierSO
+	[CreateAssetMenu(fileName = "OpeningRounds", menuName = "Game/Modifiers/Projectile/OpeningRounds")]
+	public class OpeningRoundsModifierSO : TowerModifierSO
 	{
 		public override TowerModifierInstance CreateInstance(Tower owner) =>
-			new ExecutionersRoundsInstance(this, owner);
+			new OpeningRoundsInstance(this, owner);
 	}
 
-	public class ExecutionersRoundsInstance : TowerModifierInstance
+	public class OpeningRoundsInstance : TowerModifierInstance
 	{
-		public ExecutionersRoundsInstance(TowerModifierSO data, Tower owner)
+		public OpeningRoundsInstance(TowerModifierSO data, Tower owner)
 			: base(data, owner) { }
 
 		public override bool CanTarget(Enemy target)

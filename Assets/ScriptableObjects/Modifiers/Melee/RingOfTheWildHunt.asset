@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8775e386e6e554561902a52c302889f6, type: 3}
+  m_Name: RingOfTheWildHunt
+  m_EditorClassIdentifier: Modifiers::RingOfTheWildHuntModifierSO
+  <Id>k__BackingField: ring_of_the_wild_hunt
+  <Name>k__BackingField: Ring of the Wild Hunt
+  <Description>k__BackingField: Dmg randomly ranges from +5 base to -5, increase attack speed
+  <Icon>k__BackingField: {fileID: 0}
+  <Category>k__BackingField: 3
+  <StatModifiers>k__BackingField:
+  - StatName: 2
+    FlatAdd: 0
+    PercentIncreaseAdd: 20
+    ModifierMult: 1
+    FinalMult: 1
+  <DamageVariationRange>k__BackingField: 5

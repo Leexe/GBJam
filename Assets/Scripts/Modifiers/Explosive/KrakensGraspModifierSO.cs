@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Modifiers
@@ -6,6 +7,7 @@ namespace Modifiers
 	public class KrakensGraspModifierSO : TowerModifierSO
 	{
 		[field: SerializeField]
+		[field: TabGroup("Info", "Settings")]
 		public float PullStrength { get; private set; } = 0.6f;
 
 		public override TowerModifierInstance CreateInstance(Tower owner) => new KrakensGraspInstance(this, owner);

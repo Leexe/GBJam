@@ -1,29 +1,33 @@
+using Sirenix.OdinInspector;
 using StatusEffects;
 using UnityEngine;
 
 namespace Modifiers
 {
-	[CreateAssetMenu(fileName = "OverheatingSwing", menuName = "Game/Modifiers/Melee/OverheatingSwing")]
-	public class OverheatingSwingModifierSO : TowerModifierSO
+	[CreateAssetMenu(fileName = "InfernalHarpoon", menuName = "Game/Modifiers/Melee/InfernalHarpoon")]
+	public class InfernalHarpoonModifierSO : TowerModifierSO
 	{
 		[field: SerializeField]
+		[field: TabGroup("Info", "Settings")]
 		public int AttacksToProc { get; private set; } = 5;
 
 		[field: SerializeField]
+		[field: TabGroup("Info", "Settings")]
 		public float OverheatDuration { get; private set; } = 2f;
 
 		[field: SerializeField]
+		[field: TabGroup("Info", "Settings")]
 		public StatusEffectSO BurnEffectSO { get; private set; }
 
-		public override TowerModifierInstance CreateInstance(Tower owner) => new OverheatingSwingInstance(this, owner);
+		public override TowerModifierInstance CreateInstance(Tower owner) => new InfernalHarpoonInstance(this, owner);
 	}
 
-	public class OverheatingSwingInstance : TowerModifierInstance
+	public class InfernalHarpoonInstance : TowerModifierInstance
 	{
-		private readonly OverheatingSwingModifierSO _so;
+		private readonly InfernalHarpoonModifierSO _so;
 		private int _attackCounter;
 
-		public OverheatingSwingInstance(OverheatingSwingModifierSO data, Tower owner)
+		public InfernalHarpoonInstance(InfernalHarpoonModifierSO data, Tower owner)
 			: base(data, owner)
 		{
 			_so = data;

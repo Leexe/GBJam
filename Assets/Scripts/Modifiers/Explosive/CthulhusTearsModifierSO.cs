@@ -1,23 +1,25 @@
+using Sirenix.OdinInspector;
 using StatusEffects;
 using UnityEngine;
 
 namespace Modifiers
 {
-	[CreateAssetMenu(fileName = "ExtinguishingBlast", menuName = "Game/Modifiers/Explosive/ExtinguishingBlast")]
-	public class ExtinguishingBlastModifierSO : TowerModifierSO
+	[CreateAssetMenu(fileName = "CthulhusTears", menuName = "Game/Modifiers/Explosive/CthulhusTears")]
+	public class CthulhusTearsModifierSO : TowerModifierSO
 	{
 		[field: SerializeField]
+		[field: TabGroup("Info", "Settings")]
 		public StatusEffectSO StatusEffectToRemove { get; private set; }
 
 		public override TowerModifierInstance CreateInstance(Tower owner) =>
-			new ExtinguishingBlastInstance(this, owner);
+			new CthulhusTearsInstance(this, owner);
 	}
 
-	public class ExtinguishingBlastInstance : TowerModifierInstance
+	public class CthulhusTearsInstance : TowerModifierInstance
 	{
-		private readonly ExtinguishingBlastModifierSO _so;
+		private readonly CthulhusTearsModifierSO _so;
 
-		public ExtinguishingBlastInstance(ExtinguishingBlastModifierSO data, Tower owner)
+		public CthulhusTearsInstance(CthulhusTearsModifierSO data, Tower owner)
 			: base(data, owner)
 		{
 			_so = data;

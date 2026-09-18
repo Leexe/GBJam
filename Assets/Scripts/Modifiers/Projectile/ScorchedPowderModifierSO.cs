@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Modifiers
@@ -6,9 +7,11 @@ namespace Modifiers
 	public class ScorchedPowderModifierSO : TowerModifierSO
 	{
 		[field: SerializeField]
+		[field: TabGroup("Info", "Settings")]
 		public float ContinuousFireThreshold { get; private set; } = 5f;
 
 		[field: SerializeField]
+		[field: TabGroup("Info", "Settings")]
 		public float OverheatDuration { get; private set; } = 2f;
 
 		public override TowerModifierInstance CreateInstance(Tower owner) => new ScorchedPowderInstance(this, owner);

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfade00de161f4b5e8db8daa4a9a964c, type: 3}
+  m_Name: KrakensGrasp
+  m_EditorClassIdentifier: Modifiers::KrakensGraspModifierSO
+  <Id>k__BackingField: krakens_grasp
+  <Name>k__BackingField: Kraken's Grasp
+  <Description>k__BackingField: explosions pull enemies to the center of explosion, decrease dmg
+  <Icon>k__BackingField: {fileID: 0}
+  <Category>k__BackingField: 2
+  <StatModifiers>k__BackingField:
+  - StatName: 1
+    FlatAdd: -4
+    PercentIncreaseAdd: 0
+    ModifierMult: 1
+    FinalMult: 1
+  <PullStrength>k__BackingField: 0.6

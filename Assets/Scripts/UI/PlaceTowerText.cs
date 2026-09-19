@@ -77,8 +77,7 @@ public class PlaceTowerText : MonoBehaviour
 
 	private bool IsCursorOnTopHalf()
 	{
-		Camera cam = _camera != null ? _camera : Camera.main;
-		Vector3 viewportPoint = cam.WorldToViewportPoint(_cursorController.TargetWorldPosition);
+		Vector3 viewportPoint = _camera.WorldToViewportPoint(_cursorController.TargetWorldPosition);
 		return viewportPoint.y >= _topHalfThreshold;
 	}
 }

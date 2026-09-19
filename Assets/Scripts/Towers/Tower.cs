@@ -37,6 +37,9 @@ public class Tower : MonoBehaviour
 
 	[Header("Attack Animation")]
 	[SerializeField]
+	private float _animationFrameDuration = 0.08f;
+
+	[SerializeField]
 	private float _launchDistance = 0.1f;
 
 	[SerializeField]
@@ -74,6 +77,7 @@ public class Tower : MonoBehaviour
 		{
 			SetupStats();
 			EquipInitialModifiers();
+			SetInitialVisual();
 		}
 	}
 
@@ -87,6 +91,14 @@ public class Tower : MonoBehaviour
 
 		SetupStats();
 		EquipInitialModifiers();
+		SetInitialVisual();
+	}
+
+	private void SetInitialVisual()
+	{
+		_spriteRenderer.flipX = false;
+		_spriteRenderer.sprite =
+			_data.BottomSprites != null && _data.BottomSprites.Length > 0 ? _data.BottomSprites[0] : _data.Icon;
 	}
 
 	private void SetupStats()
@@ -291,10 +303,61 @@ public class Tower : MonoBehaviour
 			_modifierInstances[i].OnAttack(target);
 		}
 
+		Vector3 direction = target.transform.position - _position;
+		_spriteRenderer.flipX = direction.x < 0f;
+
+		if (_data.TopSprites != null && _data.TopSprites.Length > 0)
+		{
+			Sprite[] animSprites = direction.y >= 0f ? _data.TopSprites : _data.BottomSprites;
+			PlayAttackAnimation(target, animSprites);
+		}
+		else
+		{
+			PlayFallbackAttack(target, direction.normalized);
+		}
+	}
+
+	private void PlayAttackAnimation(Enemy target, Sprite[] animSprites)
+	{
+		_attackSequence.Stop();
+		_spriteRenderer.transform.localPosition = Vector3.zero;
+
+		float frameDuration = Mathf.Min(_animationFrameDuration, _attackInterval / (animSprites.Length + 1));
+		_attackSequence = Sequence.Create();
+
+		_spriteRenderer.sprite = animSprites[0];
+
+		_attackSequence
+			.Chain(Tween.Delay(frameDuration))
+			.ChainCallback(() =>
+			{
+				_spriteRenderer.sprite = animSprites[1];
+				PerformAttack(target);
+			});
+
+		for (int i = 2; i < animSprites.Length; i++)
+		{
+			int frameIndex = i;
+			_attackSequence
+				.Chain(Tween.Delay(frameDuration))
+				.ChainCallback(() =>
+				{
+					_spriteRenderer.sprite = animSprites[frameIndex];
+				});
+		}
+
+		_attackSequence
+			.Chain(Tween.Delay(frameDuration))
+			.ChainCallback(() =>
+			{
+				_spriteRenderer.sprite = animSprites[0];
+			});
+	}
+
+	private void PlayFallbackAttack(Enemy target, Vector3 direction)
+	{
 		float launchDuration = _attackInterval * _launchReturnRatio.x;
 		float returnDuration = _attackInterval * _launchReturnRatio.y;
-
-		Vector3 direction = (target.transform.position - _position).normalized;
 		Vector3 targetPos = _position + (direction * _launchDistance);
 
 		_attackSequence.Stop();

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449f067aa70a40e2b6a647c7011048b2, type: 3}
+  m_Name: Morter
+  m_EditorClassIdentifier: Assembly-CSharp::TowerSO
+  <Name>k__BackingField: Morter
+  <Id>k__BackingField: morter
+  <Description>k__BackingField: Heavy artillery launching explosive shells over distances
+  <TowerType>k__BackingField: 2
+  <Icon>k__BackingField: {fileID: -1747877315, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
+  <TopSprites>k__BackingField:
+  - {fileID: -166640528, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
+  - {fileID: -1599538528, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
+  - {fileID: 935887004, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
+  <BottomSprites>k__BackingField:
+  - {fileID: -1747877315, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
+  - {fileID: -327697174, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
+  - {fileID: 1122999061, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
+  <Range>k__BackingField: 4
+  <Damage>k__BackingField: 40
+  <AttackRate>k__BackingField: 0.5
+  <ProjectileData>k__BackingField: {fileID: 11400000, guid: f75493b7748ee4c55b813a3fb38fb037, type: 2}
+  <Cost>k__BackingField: 100

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449f067aa70a40e2b6a647c7011048b2, type: 3}
+  m_Name: Balista
+  m_EditorClassIdentifier: Assembly-CSharp::TowerSO
+  <Name>k__BackingField: Balista
+  <Id>k__BackingField: balista
+  <Description>k__BackingField: Long-range siege weapon that pierces through foes
+  <TowerType>k__BackingField: 1
+  <Icon>k__BackingField: {fileID: -902878273, guid: ef687f4af8f7b408d9c5e9ed82eedbd7, type: 3}
+  <TopSprites>k__BackingField:
+  - {fileID: -395935708, guid: ef687f4af8f7b408d9c5e9ed82eedbd7, type: 3}
+  - {fileID: -90236162, guid: ef687f4af8f7b408d9c5e9ed82eedbd7, type: 3}
+  - {fileID: 1819249989, guid: ef687f4af8f7b408d9c5e9ed82eedbd7, type: 3}
+  <BottomSprites>k__BackingField:
+  - {fileID: -902878273, guid: ef687f4af8f7b408d9c5e9ed82eedbd7, type: 3}
+  - {fileID: -871579768, guid: ef687f4af8f7b408d9c5e9ed82eedbd7, type: 3}
+  - {fileID: -334288173, guid: ef687f4af8f7b408d9c5e9ed82eedbd7, type: 3}
+  <Range>k__BackingField: 3.5
+  <Damage>k__BackingField: 25
+  <AttackRate>k__BackingField: 0.8
+  <ProjectileData>k__BackingField: {fileID: 11400000, guid: f75493b7748ee4c55b813a3fb38fb037, type: 2}
+  <Cost>k__BackingField: 75

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BoreasBellows
   m_EditorClassIdentifier: Modifiers::BoreasBellowsModifierSO
   <Id>k__BackingField: boreas_bellows
-  <Name>k__BackingField: Boreas’ Bellows
-  <Description>k__BackingField: explosives push enemies (but they can be pushed further)
+  <Name>k__BackingField: "Boreas\u2019 Bellows"
+  <Description>k__BackingField: Explosives push enemies (but they can be pushed further)
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 2
   <StatModifiers>k__BackingField: []

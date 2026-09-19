@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: CthulhusTears
   m_EditorClassIdentifier: Modifiers::CthulhusTearsModifierSO
   <Id>k__BackingField: cthulhus_tears
-  <Name>k__BackingField: Cthulhu’s Tears
-  <Description>k__BackingField: increase explosion radio but removes burn status on hit
+  <Name>k__BackingField: "Cthulhu\u2019s Tears"
+  <Description>k__BackingField: Increase explosion radio but removes burn status
+    on hit
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 2
   <StatModifiers>k__BackingField:

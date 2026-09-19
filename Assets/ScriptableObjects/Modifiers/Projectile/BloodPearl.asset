@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::BloodPearlModifierSO
   <Id>k__BackingField: blood_pearl
   <Name>k__BackingField: Blood pearl
-  <Description>k__BackingField: double dmg to half health enemies, cannot target full health enemies
+  <Description>k__BackingField: Double dmg to half health enemies, cannot target
+    full health enemies
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 1
   <StatModifiers>k__BackingField: []

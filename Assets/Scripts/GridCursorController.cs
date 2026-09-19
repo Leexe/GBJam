@@ -84,6 +84,10 @@ public class GridCursorController : MonoBehaviour
 	[SerializeField]
 	private List<TowerSO> _availableTowers = new();
 
+	[Header("Tower Selector")]
+	[SerializeField]
+	private TowerSelector _towerSelector;
+
 	private Vector2Int _gridCoordinates;
 	private Vector2Int _currentDirection;
 	private bool _isHolding;
@@ -91,6 +95,7 @@ public class GridCursorController : MonoBehaviour
 	private int _currentFrame;
 	private int _selectedTower;
 	private bool _isSelectingTower;
+	private bool _isPlacingTower;
 	private CursorType _defaultCursorType;
 	private Tween _cursorTween;
 	private Sequence _animTween;
@@ -102,14 +107,18 @@ public class GridCursorController : MonoBehaviour
 		InputManager.Instance.OnConfirm += HandleConfirmPressed;
 		InputManager.Instance.OnCancel += HandleCancelPressed;
 
+		_towerSelector.OnTowerChanged += HandleTowerSelectorChanged;
+		_towerSelector.OnTowerConfirmed += HandleTowerConfirmed;
+		_towerSelector.OnClosed += HandleTowerSelectorClosed;
+
 		StartAnimation();
 	}
 
 	private void OnDisable()
 	{
-		if (_isSelectingTower)
+		if (_isSelectingTower || _isPlacingTower)
 		{
-			SetTowerSelectionMode(false);
+			SetPlacingTowerMode(false);
 		}
 
 		if (InputManager.Instance != null)
@@ -117,6 +126,13 @@ public class GridCursorController : MonoBehaviour
 			InputManager.Instance.OnMovement -= HandleMovementInput;
 			InputManager.Instance.OnConfirm -= HandleConfirmPressed;
 			InputManager.Instance.OnCancel -= HandleCancelPressed;
+		}
+
+		if (_towerSelector != null)
+		{
+			_towerSelector.OnTowerChanged -= HandleTowerSelectorChanged;
+			_towerSelector.OnTowerConfirmed -= HandleTowerConfirmed;
+			_towerSelector.OnClosed -= HandleTowerSelectorClosed;
 		}
 
 		_cursorTween.Stop();
@@ -156,7 +172,7 @@ public class GridCursorController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!_isHolding)
+		if (!_isHolding || _towerSelector.IsOpen)
 		{
 			return;
 		}
@@ -164,17 +180,7 @@ public class GridCursorController : MonoBehaviour
 		_holdTimer += Time.unscaledDeltaTime;
 		if (_holdTimer >= _repeatDelay)
 		{
-			if (_isSelectingTower)
-			{
-				if (_currentDirection.x != 0)
-				{
-					CycleTower(_currentDirection.x);
-				}
-			}
-			else
-			{
-				Move(_currentDirection);
-			}
+			Move(_currentDirection);
 			_holdTimer -= _repeatRate;
 		}
 	}
@@ -200,12 +206,8 @@ public class GridCursorController : MonoBehaviour
 		_isHolding = true;
 		_holdTimer = 0f;
 
-		if (_isSelectingTower)
+		if (_towerSelector.IsOpen)
 		{
-			if (dir.x != 0)
-			{
-				CycleTower(dir.x);
-			}
 			return;
 		}
 
@@ -214,18 +216,24 @@ public class GridCursorController : MonoBehaviour
 
 	private void HandleConfirmPressed()
 	{
-		if (_isSelectingTower)
+		if (_towerSelector.IsOpen)
 		{
-			TowerSO selected = _availableTowers[_selectedTower];
-			if (!GameManager.Instance.CanAfford(selected.Cost))
-			{
-				return;
-			}
+			return;
+		}
 
-			if (GridManager.Instance.PlaceTower(_gridCoordinates, selected, _cursorSize.x, _cursorSize.y))
+		if (_isPlacingTower)
+		{
+			if (GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
 			{
-				GameManager.Instance.SpendGold(selected.Cost);
-				SetTowerSelectionMode(false);
+				TowerSO selected = _availableTowers[_selectedTower];
+				if (
+					GameManager.Instance.CanAfford(selected.Cost)
+					&& GridManager.Instance.PlaceTower(_gridCoordinates, selected, _cursorSize.x, _cursorSize.y)
+				)
+				{
+					GameManager.Instance.SpendGold(selected.Cost);
+					SetPlacingTowerMode(false);
+				}
 			}
 			return;
 		}
@@ -233,14 +241,21 @@ public class GridCursorController : MonoBehaviour
 		if (GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
 		{
 			SetTowerSelectionMode(true);
+			_towerSelector.Open(_gridCoordinates, _cursorSize, _availableTowers, _selectedTower);
 		}
 	}
 
 	private void HandleCancelPressed()
 	{
-		if (_isSelectingTower)
+		if (_towerSelector.IsOpen)
 		{
-			SetTowerSelectionMode(false);
+			return;
+		}
+
+		if (_isPlacingTower)
+		{
+			_isPlacingTower = false;
+			_towerSelector.Open(_gridCoordinates, _cursorSize, _availableTowers, _selectedTower);
 			return;
 		}
 
@@ -250,9 +265,42 @@ public class GridCursorController : MonoBehaviour
 		}
 	}
 
+	private void HandleTowerSelectorChanged(TowerSO tower)
+	{
+		int index = _availableTowers.IndexOf(tower);
+		if (index >= 0)
+		{
+			_selectedTower = index;
+		}
+
+		UpdateGhostVisual();
+	}
+
+	private void HandleTowerConfirmed(TowerSO tower)
+	{
+		int index = _availableTowers.IndexOf(tower);
+		if (index >= 0)
+		{
+			_selectedTower = index;
+		}
+		SetPlacingTowerMode(true);
+	}
+
+	private void HandleTowerSelectorClosed()
+	{
+		if (!_isPlacingTower)
+		{
+			SetTowerSelectionMode(false);
+		}
+	}
+
 	private void SetTowerSelectionMode(bool enable)
 	{
 		_isSelectingTower = enable;
+		if (!enable)
+		{
+			_isPlacingTower = false;
+		}
 		Time.timeScale = enable ? 0f : 1f;
 		_isHolding = false;
 		_currentDirection = Vector2Int.zero;
@@ -261,28 +309,35 @@ public class GridCursorController : MonoBehaviour
 		UpdateGhostVisual();
 	}
 
-	public void CycleTower(int offset)
+	private void SetPlacingTowerMode(bool enable)
 	{
-		_selectedTower = (_selectedTower + offset + _availableTowers.Count) % _availableTowers.Count;
+		_isPlacingTower = enable;
+		_isSelectingTower = false;
+		Time.timeScale = enable ? 0f : 1f;
+		_isHolding = false;
+		_currentDirection = Vector2Int.zero;
+		_holdTimer = 0f;
+		SetCursorType(enable ? _selectionCursorType : _defaultCursorType);
 		UpdateVisual();
-		UpdateGhostVisual();
 	}
 
 	private void UpdateGhostVisual()
 	{
-		_ghostTowerRenderer.gameObject.SetActive(_isSelectingTower);
-		_ghostRangeIndicator.gameObject.SetActive(_isSelectingTower);
+		bool show = _isSelectingTower || _isPlacingTower;
+		_ghostTowerRenderer.gameObject.SetActive(show);
+		_ghostRangeIndicator.gameObject.SetActive(show);
 
-		if (!_isSelectingTower)
+		if (!show)
 		{
 			return;
 		}
 
 		TowerSO selected = _availableTowers[_selectedTower];
 		_ghostTowerRenderer.sprite = selected.Icon;
-		_ghostTowerRenderer.color = GameManager.Instance.CanAfford(selected.Cost)
-			? new Color(1f, 1f, 1f, 0.5f)
-			: new Color(0.8f, 0.3f, 0.3f, 0.5f);
+		bool canPlace = GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
+		bool canAfford = GameManager.Instance.CanAfford(selected.Cost);
+		_ghostTowerRenderer.color =
+			(canPlace && canAfford) ? new Color(1f, 1f, 1f, 0.5f) : new Color(0.8f, 0.3f, 0.3f, 0.5f);
 
 		float diameter = selected.Range * 2f;
 		_ghostRangeIndicator.transform.localScale = new Vector3(diameter, diameter, 1f);
@@ -304,7 +359,7 @@ public class GridCursorController : MonoBehaviour
 		Vector3 targetPos = GridManager.Instance.GridToWorld(x, y, _cursorSize.x, _cursorSize.y);
 
 		_cursorTween.Stop();
-		_cursorTween = Tween.Position(transform, targetPos, _movementDuration, Ease.OutQuad);
+		_cursorTween = Tween.Position(transform, targetPos, _movementDuration, Ease.OutQuad, useUnscaledTime: true);
 		UpdateVisual();
 	}
 
@@ -320,6 +375,7 @@ public class GridCursorController : MonoBehaviour
 		Sprite[] frames = ChangeCursorVisual(canPlace);
 		_spriteRenderer.sprite = frames[_currentFrame % frames.Length];
 		UpdateHoveredTower();
+		UpdateGhostVisual();
 	}
 
 	private void UpdateHoveredTower()

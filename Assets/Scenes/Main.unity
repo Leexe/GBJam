@@ -1777,6 +1777,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 62406692261766579, guid: bd9ef11c9092e4bfd8c64d2df27c36c1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 6.55
+      objectReference: {fileID: 0}
     - target: {fileID: 503993243039567020, guid: bd9ef11c9092e4bfd8c64d2df27c36c1, type: 3}
       propertyPath: m_text
       value: 4/5
@@ -1861,6 +1865,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2240106278703839654, guid: bd9ef11c9092e4bfd8c64d2df27c36c1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1652944451, guid: 2fb48c7241c654c48bf38a6de438108b, type: 3}
     - target: {fileID: 2541984560144035536, guid: bd9ef11c9092e4bfd8c64d2df27c36c1, type: 3}
       propertyPath: m_SizeDelta.y
       value: -6.61
@@ -4073,7 +4081,7 @@ Tilemap:
       - {fileID: 770337640, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: -1446112507, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: 1011081742, guid: bea6fa778df2144479665321bee8bb53, type: 3}
-      m_AnimationSpeed: 0.45889986
+      m_AnimationSpeed: 0.46624234
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:

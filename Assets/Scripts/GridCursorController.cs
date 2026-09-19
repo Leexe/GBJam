@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PrimeTween;
 using Sirenix.OdinInspector;
@@ -14,6 +15,15 @@ public enum CursorType
 
 public class GridCursorController : MonoBehaviour
 {
+	public bool IsPlacingTower => _isPlacingTower;
+	public bool IsSelectingTower => _isSelectingTower;
+	public Vector2Int GridCoordinates => _gridCoordinates;
+	public Vector3 TargetWorldPosition =>
+		GridManager.Instance.GridToWorld(_gridCoordinates.x, _gridCoordinates.y, _cursorSize.x, _cursorSize.y);
+
+	public event Action<bool> OnPlacementModeChanged;
+	public event Action<Vector2Int> OnCursorMoved;
+
 	[Header("Ghost Preview")]
 	[SerializeField]
 	private SpriteRenderer _ghostTowerRenderer;
@@ -128,12 +138,9 @@ public class GridCursorController : MonoBehaviour
 			InputManager.Instance.OnCancel -= HandleCancelPressed;
 		}
 
-		if (_towerSelector != null)
-		{
-			_towerSelector.OnTowerChanged -= HandleTowerSelectorChanged;
-			_towerSelector.OnTowerConfirmed -= HandleTowerConfirmed;
-			_towerSelector.OnClosed -= HandleTowerSelectorClosed;
-		}
+		_towerSelector.OnTowerChanged -= HandleTowerSelectorChanged;
+		_towerSelector.OnTowerConfirmed -= HandleTowerConfirmed;
+		_towerSelector.OnClosed -= HandleTowerSelectorClosed;
 
 		_cursorTween.Stop();
 		_animTween.Stop();
@@ -153,6 +160,7 @@ public class GridCursorController : MonoBehaviour
 		_gridCoordinates = new Vector2Int(startX, startY);
 		transform.position = GridManager.Instance.GridToWorld(startX, startY, _cursorSize.x, _cursorSize.y);
 		UpdateVisual();
+		OnCursorMoved?.Invoke(_gridCoordinates);
 	}
 
 	private void StartAnimation()
@@ -254,7 +262,8 @@ public class GridCursorController : MonoBehaviour
 
 		if (_isPlacingTower)
 		{
-			_isPlacingTower = false;
+			SetPlacingTowerMode(false);
+			SetTowerSelectionMode(true);
 			_towerSelector.Open(_gridCoordinates, _cursorSize, _availableTowers, _selectedTower);
 			return;
 		}
@@ -307,6 +316,7 @@ public class GridCursorController : MonoBehaviour
 		_holdTimer = 0f;
 		SetCursorType(enable ? _selectionCursorType : _defaultCursorType);
 		UpdateGhostVisual();
+		OnPlacementModeChanged?.Invoke(_isPlacingTower);
 	}
 
 	private void SetPlacingTowerMode(bool enable)
@@ -319,6 +329,7 @@ public class GridCursorController : MonoBehaviour
 		_holdTimer = 0f;
 		SetCursorType(enable ? _selectionCursorType : _defaultCursorType);
 		UpdateVisual();
+		OnPlacementModeChanged?.Invoke(_isPlacingTower);
 	}
 
 	private void UpdateGhostVisual()
@@ -361,6 +372,7 @@ public class GridCursorController : MonoBehaviour
 		_cursorTween.Stop();
 		_cursorTween = Tween.Position(transform, targetPos, _movementDuration, Ease.OutQuad, useUnscaledTime: true);
 		UpdateVisual();
+		OnCursorMoved?.Invoke(_gridCoordinates);
 	}
 
 	private void SetCursorType(CursorType type)

@@ -763,6 +763,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 504314686}
+  - component: {fileID: 504314687}
+  - component: {fileID: 504314688}
   m_Layer: 5
   m_Name: Place Tower Text
   m_TagString: Untagged
@@ -791,6 +793,37 @@ RectTransform:
   m_AnchoredPosition: {x: -60, y: 30}
   m_SizeDelta: {x: 120, y: 15}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &504314687
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504314685}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &504314688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504314685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b7c4d2e1f0a9b8c7d6e5f4a3b2c1d0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceTowerText
+  _canvasGroup: {fileID: 504314687}
+  _rectTransform: {fileID: 504314686}
+  _cursorController: {fileID: 2166564428409288410}
+  _camera: {fileID: 429814441}
+  _primaryPosition: {x: -60, y: 30}
+  _secondaryPosition: {x: -60, y: -45}
+  _topHalfThreshold: 0.5
 --- !u!1 &517894620
 GameObject:
   m_ObjectHideFlags: 0
@@ -1610,7 +1643,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Place the Mercanry
+  m_text: Place the Mercenary
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bf721bf9ddb7d424387b013a9db6eaaf, type: 2}
   m_sharedMaterial: {fileID: -9183609040536202896, guid: bf721bf9ddb7d424387b013a9db6eaaf, type: 2}
@@ -4040,7 +4073,7 @@ Tilemap:
       - {fileID: 770337640, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: -1446112507, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: 1011081742, guid: bea6fa778df2144479665321bee8bb53, type: 3}
-      m_AnimationSpeed: 0.38161236
+      m_AnimationSpeed: 0.40446967
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -4845,6 +4878,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8927649584995199917, guid: b9e8ee2757a0349328e448f4f5e1fecf, type: 3}
   m_PrefabInstance: {fileID: 2166564428409288408}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2166564428409288410 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6240809817333210860, guid: b9e8ee2757a0349328e448f4f5e1fecf, type: 3}
+  m_PrefabInstance: {fileID: 2166564428409288408}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32656ba38a1ca4d3d8608aa62a0d64ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridCursorController
 --- !u!1001 &4274040416219938894
 PrefabInstance:
   m_ObjectHideFlags: 0

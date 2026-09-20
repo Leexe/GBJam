@@ -71,8 +71,6 @@ MonoBehaviour:
       Data: 
   _levelSO: {fileID: 11400000, guid: 67e37d82ca124433a8c32c498ee16d63, type: 2}
   _waveController: {fileID: 6527504037228101234}
-  _maxHealth: 100
-  _startingGold: 100
 --- !u!114 &6527504037228101234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,3 +84,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveController
   _timeBetweenWaves: 5
+
+

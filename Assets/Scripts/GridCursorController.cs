@@ -96,6 +96,12 @@ public class GridCursorController : MonoBehaviour
 	[SerializeField]
 	private TowerSelector _towerSelector;
 
+	[Header("Item Selector")]
+	[SerializeField]
+	private ItemSelector _itemSelector;
+
+	private bool IsSelectorOpen => _towerSelector.IsOpen || _itemSelector.IsOpen;
+
 	private Vector2Int _gridCoordinates;
 	private Vector2Int _currentDirection;
 	private bool _isHolding;
@@ -118,6 +124,7 @@ public class GridCursorController : MonoBehaviour
 		_towerSelector.OnTowerChanged += HandleTowerSelectorChanged;
 		_towerSelector.OnTowerConfirmed += HandleTowerConfirmed;
 		_towerSelector.OnClosed += HandleTowerSelectorClosed;
+		_itemSelector.OnClosed += HandleItemSelectorClosed;
 
 		StartAnimation();
 	}
@@ -139,6 +146,7 @@ public class GridCursorController : MonoBehaviour
 		_towerSelector.OnTowerChanged -= HandleTowerSelectorChanged;
 		_towerSelector.OnTowerConfirmed -= HandleTowerConfirmed;
 		_towerSelector.OnClosed -= HandleTowerSelectorClosed;
+		_itemSelector.OnClosed -= HandleItemSelectorClosed;
 
 		_cursorTween.Stop();
 		_animTween.Stop();
@@ -178,7 +186,7 @@ public class GridCursorController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!_isHolding || _towerSelector.IsOpen)
+		if (!_isHolding || IsSelectorOpen)
 		{
 			return;
 		}
@@ -193,6 +201,11 @@ public class GridCursorController : MonoBehaviour
 
 	private void HandleMovementInput(Vector2 input)
 	{
+		if (IsSelectorOpen)
+		{
+			return;
+		}
+
 		if (input == Vector2.zero)
 		{
 			_isHolding = false;
@@ -212,34 +225,26 @@ public class GridCursorController : MonoBehaviour
 		_isHolding = true;
 		_holdTimer = 0f;
 
-		if (_towerSelector.IsOpen)
-		{
-			return;
-		}
-
 		Move(dir);
 	}
 
 	private void HandleConfirmPressed()
 	{
-		if (_towerSelector.IsOpen)
+		if (IsSelectorOpen)
 		{
 			return;
 		}
 
 		if (_isPlacingTower)
 		{
-			if (GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
+			TowerSO selected = TowerPool[_selectedTower];
+			if (
+				GameManager.Instance.CanAfford(selected.Cost)
+				&& GridManager.Instance.PlaceTower(_gridCoordinates, selected, _cursorSize.x, _cursorSize.y)
+			)
 			{
-				TowerSO selected = TowerPool[_selectedTower];
-				if (
-					GameManager.Instance.CanAfford(selected.Cost)
-					&& GridManager.Instance.PlaceTower(_gridCoordinates, selected, _cursorSize.x, _cursorSize.y)
-				)
-				{
-					GameManager.Instance.SpendGold(selected.Cost);
-					SetPlacingTowerMode(false);
-				}
+				GameManager.Instance.SpendGold(selected.Cost);
+				SetPlacingTowerMode(false);
 			}
 			return;
 		}
@@ -248,12 +253,18 @@ public class GridCursorController : MonoBehaviour
 		{
 			SetTowerSelectionMode(true);
 			_towerSelector.Open(_gridCoordinates, _cursorSize, _selectedTower);
+			return;
+		}
+
+		if (_currentHoveredTower)
+		{
+			_towerSelector.OpenInspect(_currentHoveredTower);
 		}
 	}
 
 	private void HandleCancelPressed()
 	{
-		if (_towerSelector.IsOpen)
+		if (IsSelectorOpen)
 		{
 			return;
 		}
@@ -299,6 +310,13 @@ public class GridCursorController : MonoBehaviour
 		{
 			SetTowerSelectionMode(false);
 		}
+	}
+
+	private void HandleItemSelectorClosed()
+	{
+		_isHolding = false;
+		_currentDirection = Vector2Int.zero;
+		_holdTimer = 0f;
 	}
 
 	private void SetTowerSelectionMode(bool enable)

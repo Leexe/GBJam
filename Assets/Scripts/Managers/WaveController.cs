@@ -67,6 +67,7 @@ public class WaveController : MonoBehaviour
 
 		if (_levelSO.DoesWaveGiveItems(_currentWaveIndex))
 		{
+			PauseSpawning();
 			List<TowerModifierSO> choices = _levelSO.GetItemChoicesForWave(_currentWaveIndex);
 			OnWaveItemsOffered?.Invoke(_currentWaveIndex, choices);
 			OnWaveModifiersOffered?.Invoke(_currentWaveIndex, choices);

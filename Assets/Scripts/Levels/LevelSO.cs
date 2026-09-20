@@ -69,8 +69,18 @@ public class WaveData
 [CreateAssetMenu(fileName = "LevelSO", menuName = "Game/LevelSO", order = 0)]
 public class LevelSO : ScriptableObject
 {
-	[TabGroup("Tabs", "Waves")]
+	[TabGroup("Tabs", "General")]
 	public string LevelName;
+
+	[TabGroup("Tabs", "General")]
+	[MinValue(1)]
+	public int MaxHealth = 100;
+
+	[TabGroup("Tabs", "General")]
+	[MinValue(0)]
+	public int StartingGold = 100;
+
+	public int Gold => StartingGold;
 
 	[TabGroup("Tabs", "Waves")]
 	[ListDrawerSettings(ShowIndexLabels = true)]

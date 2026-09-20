@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Modifiers;
 using PrimeTween;
 using UnityEngine;
 
@@ -11,12 +13,7 @@ public class GameManager : MonoSingleton<GameManager>
 	[SerializeField]
 	private WaveController _waveController;
 
-	[Header("Settings")]
-	[SerializeField]
-	private int _maxHealth = 100;
-
-	[SerializeField]
-	private int _startingGold = 100;
+	private readonly ModifierManager _modifierManager = new();
 
 	private int _health;
 	private float _time;
@@ -24,10 +21,12 @@ public class GameManager : MonoSingleton<GameManager>
 	private bool _hasLost;
 
 	public int Health => _health;
+	public int MaxHealth => _levelSO.MaxHealth;
 	public float Time => _time;
 	public int Gold => _gold;
 	public bool HasLost => _hasLost;
 	public WaveController WaveController => _waveController;
+	public ModifierManager ModifierManager => _modifierManager;
 	public LevelSO Level => _levelSO;
 
 	// Events
@@ -46,14 +45,29 @@ public class GameManager : MonoSingleton<GameManager>
 	[HideInInspector]
 	public Action OnGoldSpend;
 
+	[HideInInspector]
+	public Action<int, List<TowerModifierSO>> OnWaveItemsOffered;
+
 	private void Start()
 	{
-		_health = _maxHealth;
-		_gold = _startingGold;
+		_health = _levelSO.MaxHealth;
+		_gold = _levelSO.StartingGold;
+		_modifierManager.Initialize();
+		_waveController.OnWaveItemsOffered += HandleWaveItemsOffered;
 		_waveController.Initialize(_levelSO);
 		_waveController.StartNextWave();
 
 		DisablePrimeTween();
+	}
+
+	private void OnDestroy()
+	{
+		_modifierManager.Cleanup();
+	}
+
+	private void HandleWaveItemsOffered(int waveIndex, List<TowerModifierSO> choices)
+	{
+		OnWaveItemsOffered?.Invoke(waveIndex, choices);
 	}
 
 	private void Update()

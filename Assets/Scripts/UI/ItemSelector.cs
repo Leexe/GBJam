@@ -51,6 +51,7 @@ public class ItemSelector : MonoBehaviour
 	private Vector2Int _currentDirection;
 	private float _holdTimer;
 	private Sequence _arrowAnim;
+	private bool _canCancel = true;
 
 	public bool IsOpen { get; private set; }
 	public int SelectedIndex => _selectedIndex;
@@ -65,11 +66,21 @@ public class ItemSelector : MonoBehaviour
 	private void Awake()
 	{
 		Instance = this;
+	}
+
+	private void Start()
+	{
+		GameManager.Instance.WaveController.OnWaveItemsOffered += HandleWaveItemsOffered;
 		_menuRoot.SetActive(false);
 	}
 
 	private void OnDestroy()
 	{
+		if (GameManager.Instance != null)
+		{
+			GameManager.Instance.WaveController.OnWaveItemsOffered -= HandleWaveItemsOffered;
+		}
+
 		if (IsOpen)
 		{
 			Time.timeScale = 1f;
@@ -77,7 +88,12 @@ public class ItemSelector : MonoBehaviour
 		}
 	}
 
-	public void Open(List<TowerModifierSO> items, int initialIndex = 0)
+	private void HandleWaveItemsOffered(int waveIndex, List<TowerModifierSO> choices)
+	{
+		Open(choices, canCancel: false);
+	}
+
+	public void Open(List<TowerModifierSO> items, int initialIndex = 0, bool canCancel = true)
 	{
 		if (IsOpen)
 		{
@@ -85,6 +101,7 @@ public class ItemSelector : MonoBehaviour
 		}
 
 		_items = items;
+		_canCancel = canCancel;
 		IsOpen = true;
 		_isHolding = false;
 		_currentDirection = Vector2Int.zero;
@@ -93,7 +110,7 @@ public class ItemSelector : MonoBehaviour
 		Time.timeScale = 0f;
 		_menuRoot.SetActive(true);
 
-		SetSelected(Mathf.Clamp(initialIndex, 0, _items.Count - 1));
+		SetSelected(initialIndex);
 		SubscribeInput();
 
 		OnOpened?.Invoke();
@@ -304,12 +321,14 @@ public class ItemSelector : MonoBehaviour
 
 		TowerModifierSO selected = SelectedItem;
 		OnItemConfirmed?.Invoke(selected);
+		GameManager.Instance.ModifierManager.SelectModifier(selected);
+		GameManager.Instance.WaveController.ResumeSpawning();
 		Close();
 	}
 
 	private void HandleCancel()
 	{
-		if (!IsOpen)
+		if (!_canCancel)
 		{
 			return;
 		}

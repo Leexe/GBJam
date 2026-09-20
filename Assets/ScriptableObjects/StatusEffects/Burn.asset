@@ -17,6 +17,6 @@ MonoBehaviour:
   <Description>k__BackingField: Deals damage over time to the afflicted target
   <Icon>k__BackingField: {fileID: 0}
   <StatusColor>k__BackingField: {r: 0.9, g: 0.4, b: 0.1, a: 1}
-  <DefaultDuration>k__BackingField: 3
+  <Duration>k__BackingField: 1
   <TickInterval>k__BackingField: 0.5
-  <DefaultDamagePerTick>k__BackingField: 2
+  <DamagePerTick>k__BackingField: 0

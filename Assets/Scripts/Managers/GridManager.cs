@@ -17,12 +17,14 @@ public class GridNode
 	public Vector2Int Position;
 	public GridType Type;
 	public GameObject PlacedTower;
+	public Tower Tower;
 
-	public GridNode(Vector2Int position, GridType type, GameObject placedTower)
+	public GridNode(Vector2Int position, GridType type, GameObject placedTower, Tower tower = null)
 	{
 		Position = position;
 		Type = type;
 		PlacedTower = placedTower;
+		Tower = tower;
 	}
 
 	public bool CanPlaceTower => PlacedTower == null && Type == GridType.Empty;
@@ -73,6 +75,12 @@ public class GridManager : MonoSingleton<GridManager>
 
 	[HideInInspector]
 	public Action<Vector2Int> OnTowerRemoved;
+
+	public Action<Tower> OnTowerSpawned;
+	public Action<Tower> OnTowerDespawned;
+
+	private readonly List<Tower> _activeTowers = new();
+	public IReadOnlyList<Tower> ActiveTowers => _activeTowers;
 
 	protected override void OnInitialized()
 	{
@@ -176,11 +184,13 @@ public class GridManager : MonoSingleton<GridManager>
 			for (int y = position.y; y < position.y + height; y++)
 			{
 				SetGridType(x, y, GridType.Tower);
-				SetGridTower(x, y, tower.gameObject);
+				SetGridTower(x, y, tower);
 			}
 		}
 
+		_activeTowers.Add(tower);
 		OnTowerPlaced?.Invoke(position, tower.gameObject);
+		OnTowerSpawned?.Invoke(tower);
 		return true;
 	}
 
@@ -214,7 +224,7 @@ public class GridManager : MonoSingleton<GridManager>
 	public Tower GetTower(Vector2Int position, int width = 2, int height = 2)
 	{
 		return CanRemoveTower(position, width, height)
-			? GetGridNode(position.x, position.y).PlacedTower.GetComponent<Tower>()
+			? GetGridNode(position.x, position.y).Tower
 			: null;
 	}
 
@@ -225,7 +235,7 @@ public class GridManager : MonoSingleton<GridManager>
 			return false;
 		}
 
-		Tower tower = GetGridNode(position.x, position.y).PlacedTower.GetComponent<Tower>();
+		Tower tower = GetGridNode(position.x, position.y).Tower;
 
 		for (int x = position.x; x < position.x + width; x++)
 		{
@@ -236,8 +246,10 @@ public class GridManager : MonoSingleton<GridManager>
 			}
 		}
 
+		_activeTowers.Remove(tower);
 		TowerPool.Instance.Release(tower);
 		OnTowerRemoved?.Invoke(position);
+		OnTowerDespawned?.Invoke(tower);
 		return true;
 	}
 
@@ -294,14 +306,18 @@ public class GridManager : MonoSingleton<GridManager>
 
 	// Helper Methods
 
-	private void SetGridTower(Vector2Int position, GameObject tower)
+	private void SetGridTower(Vector2Int position, Tower tower)
 	{
-		_grid[ToIndex(position)].PlacedTower = tower;
+		GridNode node = _grid[ToIndex(position)];
+		node.PlacedTower = tower ? tower.gameObject : null;
+		node.Tower = tower;
 	}
 
-	private void SetGridTower(int x, int y, GameObject tower)
+	private void SetGridTower(int x, int y, Tower tower)
 	{
-		_grid[ToIndex(x, y)].PlacedTower = tower;
+		GridNode node = _grid[ToIndex(x, y)];
+		node.PlacedTower = tower ? tower.gameObject : null;
+		node.Tower = tower;
 	}
 
 	private void SetGridType(Vector2Int position, GridType type)

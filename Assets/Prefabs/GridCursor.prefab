@@ -143,6 +143,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4a98a5bf427b5441b9a196ae98fa878a, type: 2}
   - {fileID: 11400000, guid: 1523e0b2abd0d4dca817a3cc2f4550fd, type: 2}
   _towerSelector: {fileID: 0}
+  _itemSelector: {fileID: 0}
 --- !u!1 &1931896592423518972
 GameObject:
   m_ObjectHideFlags: 0

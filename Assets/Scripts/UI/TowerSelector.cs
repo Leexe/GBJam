@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PrimeTween;
+using Stats;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -68,12 +69,14 @@ public class TowerSelector : MonoBehaviour
 	private Vector2Int _targetGridPosition;
 	private Vector2Int _cursorSize = new Vector2Int(2, 2);
 	private int _selectedIndex;
+	private bool _isInspectMode;
 	private bool _isHolding;
 	private Vector2Int _currentDirection;
 	private float _holdTimer;
 	private Sequence _arrowAnim;
 
 	public bool IsOpen { get; private set; }
+	public bool IsInspectMode => _isInspectMode;
 	public int SelectedIndex => _selectedIndex;
 	public List<TowerSO> AvailableTowers => TowerPool;
 	public TowerSO SelectedTower => TowerPool[_selectedIndex];
@@ -108,6 +111,7 @@ public class TowerSelector : MonoBehaviour
 
 		_targetGridPosition = gridPosition;
 		_cursorSize = cursorSize;
+		_isInspectMode = false;
 
 		IsOpen = true;
 		_isHolding = false;
@@ -127,6 +131,48 @@ public class TowerSelector : MonoBehaviour
 		OnOpened?.Invoke(_targetGridPosition);
 	}
 
+	public void OpenInspect(Tower tower)
+	{
+		if (IsOpen)
+		{
+			return;
+		}
+
+		_isInspectMode = true;
+		IsOpen = true;
+		_isHolding = false;
+		_currentDirection = Vector2Int.zero;
+		_holdTimer = 0f;
+
+		if (_pauseTimeWhileOpen)
+		{
+			Time.timeScale = 0f;
+		}
+
+		_menuRoot.SetActive(true);
+
+		TowerSO data = tower.Data;
+		int index = TowerPool.IndexOf(data);
+		if (index >= 0)
+		{
+			_selectedIndex = index;
+		}
+
+		_iconImage.sprite = data.Icon;
+		_nameText.text = data.Name;
+		_attackText.text = $"{tower.Stats.GetFinalStat(StatType.Damage):0.#}";
+		_rangeText.text = $"{tower.Stats.GetFinalStat(StatType.Range):0.#}";
+		_priceText.text = $"{data.Cost}";
+		_priceText.color = _affordablePriceColor;
+		_descriptionText.text = data.Description;
+
+		_leftArrow.gameObject.SetActive(false);
+		_rightArrow.gameObject.SetActive(false);
+
+		SubscribeInput();
+		OnOpened?.Invoke(GridManager.Instance.WorldToGrid(tower.transform.position));
+	}
+
 	public void Close(bool resumeTime = true)
 	{
 		if (!IsOpen)
@@ -135,6 +181,7 @@ public class TowerSelector : MonoBehaviour
 		}
 
 		IsOpen = false;
+		_isInspectMode = false;
 		_isHolding = false;
 		_currentDirection = Vector2Int.zero;
 		_arrowAnim.Stop();
@@ -177,7 +224,7 @@ public class TowerSelector : MonoBehaviour
 
 	private void Update()
 	{
-		if (!IsOpen || !_isHolding)
+		if (!IsOpen || _isInspectMode || !_isHolding)
 		{
 			return;
 		}
@@ -196,7 +243,7 @@ public class TowerSelector : MonoBehaviour
 
 	private void HandleMovement(Vector2 input)
 	{
-		if (!IsOpen)
+		if (!IsOpen || _isInspectMode)
 		{
 			return;
 		}
@@ -271,16 +318,26 @@ public class TowerSelector : MonoBehaviour
 		OnTowerChanged?.Invoke(selected);
 	}
 
+	private float GetTowerDamage(TowerSO tower)
+	{
+		return tower.TowerType == TowerType.Melee ? tower.Damage : tower.ProjectileData.Damage;
+	}
+
 	private string GetTowerDamageString(TowerSO tower)
 	{
-		float damage = tower.TowerType == TowerType.Melee ? tower.Damage : tower.ProjectileData.Damage;
-		return $"{damage:0.#}";
+		return $"{GetTowerDamage(tower):0.#}";
 	}
 
 	private void HandleConfirm()
 	{
 		if (!IsOpen)
 		{
+			return;
+		}
+
+		if (_isInspectMode)
+		{
+			Close(resumeTime: true);
 			return;
 		}
 

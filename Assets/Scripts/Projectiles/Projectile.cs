@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PrimeTween;
+using StatusEffects;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -32,6 +33,7 @@ public class Projectile : MonoBehaviour
 	private int _remainingPierce;
 	private float _aoeRadius;
 	private float _knockback;
+	private List<StatusEffectSO> _statusEffects;
 	private float _lifetimeTimer;
 	private Tween _explosionTween;
 	private readonly HashSet<Enemy> _hitEnemies = new();
@@ -58,6 +60,7 @@ public class Projectile : MonoBehaviour
 		_remainingPierce = projectileData.PierceCount;
 		_aoeRadius = projectileData.IsAoe ? projectileData.AoeRadius : 0f;
 		_knockback = projectileData.Knockback;
+		_statusEffects = projectileData.StatusEffects;
 		_lifetimeTimer = projectileData.Lifetime;
 		_useDistanceScaling = false;
 		_hitEnemies.Clear();
@@ -84,6 +87,8 @@ public class Projectile : MonoBehaviour
 	public void SetAoeRadius(float aoeRadius) => _aoeRadius = aoeRadius;
 
 	public void SetKnockback(float knockback) => _knockback = knockback;
+
+	public void SetStatusEffects(List<StatusEffectSO> statusEffects) => _statusEffects = statusEffects;
 
 	public void SetDistanceDamageScaler(Vector3 origin, float minDistance, float maxDistance)
 	{
@@ -157,7 +162,8 @@ public class Projectile : MonoBehaviour
 				_direction,
 				_onEnemyHit,
 				_onExplosionHit,
-				_knockback
+				_knockback,
+				_statusEffects
 			);
 
 			Explode();
@@ -170,6 +176,13 @@ public class Projectile : MonoBehaviour
 			if (_knockback > 0f)
 			{
 				enemy.ApplyKnockback(_direction, _knockback);
+			}
+			if (_statusEffects != null)
+			{
+				for (int i = 0; i < _statusEffects.Count; i++)
+				{
+					enemy.StatusController.ApplyStatusEffect(_statusEffects[i]);
+				}
 			}
 			_onEnemyHit?.Invoke(enemy, finalDamage);
 		}
@@ -214,6 +227,7 @@ public class Projectile : MonoBehaviour
 		_onExplosionHit = null;
 		_onEnemyHit = null;
 		_useDistanceScaling = false;
+		_statusEffects = null;
 		ProjectilePool.Instance.Release(this);
 	}
 }

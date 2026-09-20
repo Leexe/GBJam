@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using StatusEffects;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ProjectileSO", menuName = "Game/ProjectileSO", order = 0)]
@@ -42,6 +44,10 @@ public class ProjectileSO : ScriptableObject
 	[field: TabGroup("Tab", "Data")]
 	[field: ShowIf(nameof(IsAoe))]
 	public float AoeRadius { get; private set; } = 1.5f;
+
+	[field: SerializeField]
+	[field: TabGroup("Tab", "Data")]
+	public List<StatusEffectSO> StatusEffects { get; private set; }
 
 	[Header("Visuals")]
 	[field: SerializeField]

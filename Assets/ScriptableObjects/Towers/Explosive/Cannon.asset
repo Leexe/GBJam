@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerSO
   <Name>k__BackingField: Cannon
   <Id>k__BackingField: cannon
-  <Description>k__BackingField: Heavy artillery launching explosive shells over distances
+  <Description>k__BackingField: Heavy artillery launching firey explosive shells
+    over distances
   <TowerType>k__BackingField: 2
   <Icon>k__BackingField: {fileID: -1747877315, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
   <TopSprites>k__BackingField:
@@ -28,6 +29,7 @@ MonoBehaviour:
   <Range>k__BackingField: 4
   <Damage>k__BackingField: 40
   <Knockback>k__BackingField: 0
+  <StatusEffects>k__BackingField: []
   <AttackRate>k__BackingField: 0.33
   <ProjectileData>k__BackingField: {fileID: 11400000, guid: 398f1811c13094caeb3a112156e1b1cd, type: 2}
-  <Cost>k__BackingField: 100
+  <Cost>k__BackingField: 150

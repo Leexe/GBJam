@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using StatusEffects;
 using UnityEngine;
 
 public enum TowerType
@@ -59,6 +61,11 @@ public class TowerSO : ScriptableObject
 	[field: TabGroup("Tab", "Combat")]
 	[field: ShowIf(nameof(TowerType), TowerType.Melee)]
 	public float Knockback { get; private set; } = 0f;
+
+	[field: SerializeField]
+	[field: TabGroup("Tab", "Combat")]
+	[field: ShowIf(nameof(TowerType), TowerType.Melee)]
+	public List<StatusEffectSO> StatusEffects { get; private set; }
 
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Combat")]

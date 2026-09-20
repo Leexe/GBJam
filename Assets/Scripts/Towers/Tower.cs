@@ -106,8 +106,7 @@ public class Tower : MonoBehaviour
 		float baseDamage = _data.TowerType == TowerType.Melee ? _data.Damage : _data.ProjectileData.Damage;
 		float baseAoe =
 			_data.ProjectileData != null && _data.ProjectileData.IsAoe ? _data.ProjectileData.AoeRadius : 0f;
-		float baseKnockback =
-			_data.TowerType == TowerType.Melee ? _data.Knockback : _data.ProjectileData.Knockback;
+		float baseKnockback = _data.TowerType == TowerType.Melee ? _data.Knockback : _data.ProjectileData.Knockback;
 
 		var baseMap = new Dictionary<StatType, float>
 		{
@@ -392,6 +391,13 @@ public class Tower : MonoBehaviour
 			{
 				Vector3 knockDir = attackDir == Vector3.zero ? Vector3.up : attackDir;
 				target.ApplyKnockback(knockDir, finalKnockback);
+			}
+			if (_data.StatusEffects != null)
+			{
+				for (int i = 0; i < _data.StatusEffects.Count; i++)
+				{
+					target.StatusController.ApplyStatusEffect(_data.StatusEffects[i]);
+				}
 			}
 			for (int i = 0; i < _modifierInstances.Count; i++)
 			{

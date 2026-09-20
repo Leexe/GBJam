@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using StatusEffects;
 using UnityEngine;
 
 public class ExplosionHitbox : MonoBehaviour
@@ -16,7 +17,8 @@ public class ExplosionHitbox : MonoBehaviour
 		Vector3 direction,
 		Action<Enemy, float> onEnemyHit,
 		Action<Collider2D[], Vector3> onExplosionHit,
-		float knockback = 0f
+		float knockback = 0f,
+		List<StatusEffectSO> statusEffects = null
 	)
 	{
 		_hitEnemies.Clear();
@@ -36,6 +38,13 @@ public class ExplosionHitbox : MonoBehaviour
 				if (knockback > 0f)
 				{
 					hitEnemy.DisplaceAwayFrom(transform.position, knockback);
+				}
+				if (statusEffects != null)
+				{
+					for (int j = 0; j < statusEffects.Count; j++)
+					{
+						hitEnemy.StatusController.ApplyStatusEffect(statusEffects[j]);
+					}
 				}
 				onEnemyHit?.Invoke(hitEnemy, damage);
 			}

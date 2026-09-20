@@ -381,6 +381,8 @@ public class Tower : MonoBehaviour
 
 		if (_data.TowerType == TowerType.Melee)
 		{
+			Vector3 attackDir = (target.transform.position - _position).normalized;
+			target.PlayBloodParticles(attackDir);
 			target.TakeDamage(damage);
 			for (int i = 0; i < _modifierInstances.Count; i++)
 			{

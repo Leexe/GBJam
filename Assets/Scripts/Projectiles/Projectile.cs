@@ -127,6 +127,11 @@ public class Projectile : MonoBehaviour
 			{
 				if (hits[i].TryGetComponent<Enemy>(out Enemy hitEnemy))
 				{
+					Vector3 explosionDir = hitEnemy.transform.position - transform.position;
+					explosionDir.z = 0f;
+					Vector3 bloodDir = explosionDir.sqrMagnitude > 0.0001f ? explosionDir.normalized : _direction;
+
+					hitEnemy.PlayBloodParticles(bloodDir);
 					hitEnemy.TakeDamage(finalDamage);
 					_onEnemyHit?.Invoke(hitEnemy, finalDamage);
 				}
@@ -136,6 +141,7 @@ public class Projectile : MonoBehaviour
 		}
 		else
 		{
+			enemy.PlayBloodParticles(_direction);
 			enemy.TakeDamage(finalDamage);
 			_onEnemyHit?.Invoke(enemy, finalDamage);
 		}

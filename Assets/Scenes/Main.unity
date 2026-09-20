@@ -1919,6 +1919,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Topbar Canavs
       objectReference: {fileID: 0}
+    - target: {fileID: 7763182051102151289, guid: bd9ef11c9092e4bfd8c64d2df27c36c1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3740,7 +3744,7 @@ Tilemap:
       - {fileID: 770337640, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: -1446112507, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: 1011081742, guid: bea6fa778df2144479665321bee8bb53, type: 3}
-      m_AnimationSpeed: 0.49238956
+      m_AnimationSpeed: 0.3036139
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:

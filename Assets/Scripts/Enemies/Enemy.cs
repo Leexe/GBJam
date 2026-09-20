@@ -23,9 +23,12 @@ public class Enemy : MonoBehaviour
 	[SerializeField]
 	private float _hitStopCooldown = 0.2f;
 
-	[Header("Death")]
+	[Header("Death & Blood")]
 	[SerializeField]
 	private ParticleSystem _deathParticles;
+
+	[SerializeField]
+	private ParticleSystem _bloodParticles;
 
 	[SerializeField]
 	private float _particleLingerDuration = 0.5f;
@@ -76,6 +79,7 @@ public class Enemy : MonoBehaviour
 		_spriteRenderer.sprite = _data.SpriteList[0];
 		_spriteRenderer.flipX = false;
 		_deathParticles.gameObject.SetActive(false);
+		_bloodParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
 		_statusController.Initialize();
 	}
@@ -215,11 +219,20 @@ public class Enemy : MonoBehaviour
 		_speedBuffTimer = 0f;
 		_statusController.ClearStatusEffects();
 		_deathParticles.gameObject.SetActive(false);
+		_bloodParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 		_spriteRenderer.gameObject.SetActive(true);
 		_spriteRenderer.transform.localPosition = Vector3.zero;
 		_spriteRenderer.transform.localScale = Vector3.one;
 		transform.localScale = Vector3.one;
 		OnDeath?.Invoke(this);
 		EnemyPool.Instance.Release(this);
+	}
+
+	public void PlayBloodParticles(Vector3 direction)
+	{
+		float angle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) - 45f;
+		_bloodParticles.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+		_bloodParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+		_bloodParticles.Play();
 	}
 }

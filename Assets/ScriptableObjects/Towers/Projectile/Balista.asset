@@ -27,6 +27,7 @@ MonoBehaviour:
   - {fileID: -334288173, guid: ef687f4af8f7b408d9c5e9ed82eedbd7, type: 3}
   <Range>k__BackingField: 3.5
   <Damage>k__BackingField: 25
+  <Knockback>k__BackingField: 0
   <AttackRate>k__BackingField: 0.75
   <ProjectileData>k__BackingField: {fileID: 11400000, guid: 62463829f4009428f8db5d24badc71ef, type: 2}
   <Cost>k__BackingField: 75

@@ -24,6 +24,10 @@ public class ProjectileSO : ScriptableObject
 
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Data")]
+	public float Knockback { get; private set; } = 0f;
+
+	[field: SerializeField]
+	[field: TabGroup("Tab", "Data")]
 	public float Lifetime { get; private set; } = 4f;
 
 	[field: SerializeField]

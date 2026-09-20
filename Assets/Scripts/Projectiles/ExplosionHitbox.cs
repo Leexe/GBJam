@@ -15,7 +15,8 @@ public class ExplosionHitbox : MonoBehaviour
 		LayerMask enemyLayerMask,
 		Vector3 direction,
 		Action<Enemy, float> onEnemyHit,
-		Action<Collider2D[], Vector3> onExplosionHit
+		Action<Collider2D[], Vector3> onExplosionHit,
+		float knockback = 0f
 	)
 	{
 		_hitEnemies.Clear();
@@ -32,6 +33,10 @@ public class ExplosionHitbox : MonoBehaviour
 
 				hitEnemy.PlayBloodParticles(bloodDir);
 				hitEnemy.TakeDamage(damage);
+				if (knockback > 0f)
+				{
+					hitEnemy.DisplaceAwayFrom(transform.position, knockback);
+				}
 				onEnemyHit?.Invoke(hitEnemy, damage);
 			}
 		}

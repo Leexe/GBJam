@@ -106,6 +106,8 @@ public class Tower : MonoBehaviour
 		float baseDamage = _data.TowerType == TowerType.Melee ? _data.Damage : _data.ProjectileData.Damage;
 		float baseAoe =
 			_data.ProjectileData != null && _data.ProjectileData.IsAoe ? _data.ProjectileData.AoeRadius : 0f;
+		float baseKnockback =
+			_data.TowerType == TowerType.Melee ? _data.Knockback : _data.ProjectileData.Knockback;
 
 		var baseMap = new Dictionary<StatType, float>
 		{
@@ -113,6 +115,7 @@ public class Tower : MonoBehaviour
 			{ StatType.Damage, baseDamage },
 			{ StatType.AttackRate, _data.AttackRate },
 			{ StatType.ExplosionRadius, baseAoe },
+			{ StatType.Knockback, baseKnockback },
 		};
 
 		Stats = new StatsState(baseMap);
@@ -384,6 +387,12 @@ public class Tower : MonoBehaviour
 			Vector3 attackDir = (target.transform.position - _position).normalized;
 			target.PlayBloodParticles(attackDir);
 			target.TakeDamage(damage);
+			float finalKnockback = Stats.GetFinalStat(StatType.Knockback);
+			if (finalKnockback > 0f)
+			{
+				Vector3 knockDir = attackDir == Vector3.zero ? Vector3.up : attackDir;
+				target.ApplyKnockback(knockDir, finalKnockback);
+			}
 			for (int i = 0; i < _modifierInstances.Count; i++)
 			{
 				_modifierInstances[i].OnAfterDealDamage(target, damage);
@@ -398,6 +407,12 @@ public class Tower : MonoBehaviour
 			if (finalAoe > 0f)
 			{
 				proj.SetAoeRadius(finalAoe);
+			}
+
+			float finalKnockback = Stats.GetFinalStat(StatType.Knockback);
+			if (finalKnockback > 0f)
+			{
+				proj.SetKnockback(finalKnockback);
 			}
 
 			proj.AddExplosionHitListener(

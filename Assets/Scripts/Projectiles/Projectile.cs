@@ -31,6 +31,7 @@ public class Projectile : MonoBehaviour
 	private float _speed;
 	private int _remainingPierce;
 	private float _aoeRadius;
+	private float _knockback;
 	private float _lifetimeTimer;
 	private Tween _explosionTween;
 	private readonly HashSet<Enemy> _hitEnemies = new();
@@ -56,6 +57,7 @@ public class Projectile : MonoBehaviour
 		_speed = projectileData.Speed;
 		_remainingPierce = projectileData.PierceCount;
 		_aoeRadius = projectileData.IsAoe ? projectileData.AoeRadius : 0f;
+		_knockback = projectileData.Knockback;
 		_lifetimeTimer = projectileData.Lifetime;
 		_useDistanceScaling = false;
 		_hitEnemies.Clear();
@@ -80,6 +82,8 @@ public class Projectile : MonoBehaviour
 	public void SetDamage(float damage) => _damage = damage;
 
 	public void SetAoeRadius(float aoeRadius) => _aoeRadius = aoeRadius;
+
+	public void SetKnockback(float knockback) => _knockback = knockback;
 
 	public void SetDistanceDamageScaler(Vector3 origin, float minDistance, float maxDistance)
 	{
@@ -152,7 +156,8 @@ public class Projectile : MonoBehaviour
 				_enemyLayerMask,
 				_direction,
 				_onEnemyHit,
-				_onExplosionHit
+				_onExplosionHit,
+				_knockback
 			);
 
 			Explode();
@@ -162,6 +167,10 @@ public class Projectile : MonoBehaviour
 		{
 			enemy.PlayBloodParticles(_direction);
 			enemy.TakeDamage(finalDamage);
+			if (_knockback > 0f)
+			{
+				enemy.ApplyKnockback(_direction, _knockback);
+			}
 			_onEnemyHit?.Invoke(enemy, finalDamage);
 		}
 

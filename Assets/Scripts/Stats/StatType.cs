@@ -9,6 +9,7 @@ namespace Stats
 		Damage = 1,
 		AttackRate = 2,
 		ExplosionRadius = 3,
+		Knockback = 4,
 		MaxHealth = 10,
 		Speed = 11,
 		IncomingDamage = 12,

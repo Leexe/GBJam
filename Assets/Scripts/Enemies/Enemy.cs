@@ -178,6 +178,12 @@ public class Enemy : MonoBehaviour
 		transform.position += direction * distance;
 	}
 
+	public void ApplyKnockback(Vector3 direction, float distance)
+	{
+		Vector3 dir = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector3.up;
+		transform.position += dir * distance;
+	}
+
 	public void TakeDamage(float amount)
 	{
 		_currentHealth -= amount;

@@ -57,6 +57,11 @@ public class TowerSO : ScriptableObject
 
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Combat")]
+	[field: ShowIf(nameof(TowerType), TowerType.Melee)]
+	public float Knockback { get; private set; } = 0f;
+
+	[field: SerializeField]
+	[field: TabGroup("Tab", "Combat")]
 	[field: MinValue(0.01f)]
 	public float AttackRate { get; private set; } = 1f;
 

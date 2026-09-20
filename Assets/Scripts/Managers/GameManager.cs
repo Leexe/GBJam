@@ -20,10 +20,12 @@ public class GameManager : MonoSingleton<GameManager>
 	private int _health;
 	private float _time;
 	private int _gold;
+	private bool _hasLost;
 
 	public int Health => _health;
 	public float Time => _time;
 	public int Gold => _gold;
+	public bool HasLost => _hasLost;
 	public WaveController WaveController => _waveController;
 	public LevelSO Level => _levelSO;
 
@@ -53,6 +55,11 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void Update()
 	{
+		if (_hasLost)
+		{
+			return;
+		}
+
 		_time += UnityEngine.Time.deltaTime;
 	}
 
@@ -93,6 +100,7 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void LoseGame()
 	{
+		_hasLost = true;
 		_waveController.StopWaves();
 		OnLose?.Invoke();
 	}

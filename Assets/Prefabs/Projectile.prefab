@@ -198,7 +198,7 @@ MonoBehaviour:
   _circleVisual: {fileID: 892146358661307}
   _explosionParticles: {fileID: 7778648598540037828}
   _explosionHitbox: {fileID: 8769867132100006045}
-  _explosionDuration: 0.02
+  _explosionDuration: 0.15
 --- !u!212 &534103407353436857
 SpriteRenderer:
   serializedVersion: 2
@@ -473,8 +473,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 4
-      minScalar: 1
+      scalar: 10
+      minScalar: 8
       maxCurve:
         serializedVersion: 2
         m_Curve:

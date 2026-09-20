@@ -42,18 +42,6 @@ public class Projectile : MonoBehaviour
 	private Action<Collider2D[], Vector3> _onExplosionHit;
 	private Action<Enemy, float> _onEnemyHit;
 
-	private void Awake()
-	{
-		if (_projectileCollider == null)
-		{
-			_projectileCollider = GetComponent<Collider2D>();
-		}
-		if (_explosionHitbox == null)
-		{
-			_explosionHitbox = GetComponentInChildren<ExplosionHitbox>(true);
-		}
-	}
-
 	public void Initialize(Transform target, ProjectileSO projectileData)
 	{
 		Vector3 diff = target.position - transform.position;

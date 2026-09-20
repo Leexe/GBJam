@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileSO
   <Name>k__BackingField: Gunner Bullets
   <Id>k__BackingField: gunnerbullets
-  <Speed>k__BackingField: 10
-  <Damage>k__BackingField: 25
+  <Speed>k__BackingField: 4
+  <Damage>k__BackingField: 20
   <Lifetime>k__BackingField: 3
   <PierceCount>k__BackingField: 1
   <IsAoe>k__BackingField: 1
-  <AoeRadius>k__BackingField: 2
+  <AoeRadius>k__BackingField: 1
   <Sprite>k__BackingField: {fileID: 21300000, guid: 98e8e1cf8dc7dbf469617c2e40c8a944, type: 3}
   <Size>k__BackingField: {x: 0.4, y: 0.4}

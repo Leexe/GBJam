@@ -31,6 +31,9 @@ public class Enemy : MonoBehaviour
 	private ParticleSystem _bloodParticles;
 
 	[SerializeField]
+	private ParticleSystem _burnParticles;
+
+	[SerializeField]
 	private float _particleLingerDuration = 0.5f;
 
 	private EnemySO _data;
@@ -80,7 +83,10 @@ public class Enemy : MonoBehaviour
 		_spriteRenderer.flipX = false;
 		_deathParticles.gameObject.SetActive(false);
 		_bloodParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+		_burnParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
+		_statusController.OnStatusApplied += HandleStatusApplied;
+		_statusController.OnStatusEnded += HandleStatusEnded;
 		_statusController.Initialize();
 	}
 
@@ -223,9 +229,12 @@ public class Enemy : MonoBehaviour
 		_hitStopCooldownTimer = 0f;
 		_speedMultiplier = 1f;
 		_speedBuffTimer = 0f;
+		_statusController.OnStatusApplied -= HandleStatusApplied;
+		_statusController.OnStatusEnded -= HandleStatusEnded;
 		_statusController.ClearStatusEffects();
 		_deathParticles.gameObject.SetActive(false);
 		_bloodParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+		_burnParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 		_spriteRenderer.gameObject.SetActive(true);
 		_spriteRenderer.transform.localPosition = Vector3.zero;
 		_spriteRenderer.transform.localScale = Vector3.one;
@@ -240,5 +249,21 @@ public class Enemy : MonoBehaviour
 		_bloodParticles.transform.rotation = Quaternion.Euler(0f, 0f, angle);
 		_bloodParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 		_bloodParticles.Play();
+	}
+
+	private void HandleStatusApplied(StatusEffect effect)
+	{
+		if (effect.Data.Id == "burn")
+		{
+			_burnParticles.Play();
+		}
+	}
+
+	private void HandleStatusEnded(StatusEffect effect)
+	{
+		if (effect.Data.Id == "burn")
+		{
+			_burnParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+		}
 	}
 }

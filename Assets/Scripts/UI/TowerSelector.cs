@@ -230,13 +230,12 @@ public class TowerSelector : MonoBehaviour
 
 	public void CycleTower(int offset)
 	{
-		if (TowerPool.Count <= 1)
+		int nextIndex = _selectedIndex + offset;
+		if (nextIndex < 0 || nextIndex >= TowerPool.Count)
 		{
 			return;
 		}
 
-		int count = TowerPool.Count;
-		int nextIndex = (_selectedIndex + offset + count) % count;
 		SetSelected(nextIndex);
 		AnimateArrow(offset);
 	}
@@ -265,6 +264,9 @@ public class TowerSelector : MonoBehaviour
 		_priceText.text = $"{selected.Cost}";
 		_priceText.color = canAfford ? _affordablePriceColor : _unaffordablePriceColor;
 		_descriptionText.text = selected.Description;
+
+		_leftArrow.gameObject.SetActive(_selectedIndex > 0);
+		_rightArrow.gameObject.SetActive(_selectedIndex < TowerPool.Count - 1);
 
 		OnTowerChanged?.Invoke(selected);
 	}

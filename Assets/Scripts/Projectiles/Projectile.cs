@@ -1,14 +1,30 @@
 using System;
 using System.Collections.Generic;
+using PrimeTween;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
 	[SerializeField]
+	private Collider2D _projectileCollider;
+
+	[SerializeField]
 	private LayerMask _enemyLayerMask;
 
 	[SerializeField]
 	private SpriteRenderer _spriteRenderer;
+
+	[SerializeField]
+	private SpriteRenderer _circleVisual;
+
+	[SerializeField]
+	private ParticleSystem _explosionParticles;
+
+	[SerializeField]
+	private ExplosionHitbox _explosionHitbox;
+
+	[SerializeField]
+	private float _explosionDuration = 0.15f;
 
 	private Vector3 _direction;
 	private float _damage;
@@ -16,7 +32,7 @@ public class Projectile : MonoBehaviour
 	private int _remainingPierce;
 	private float _aoeRadius;
 	private float _lifetimeTimer;
-	private bool _isDeactivated;
+	private Tween _explosionTween;
 	private readonly HashSet<Enemy> _hitEnemies = new();
 
 	private bool _useDistanceScaling;
@@ -25,6 +41,18 @@ public class Projectile : MonoBehaviour
 	private float _maxDistance;
 	private Action<Collider2D[], Vector3> _onExplosionHit;
 	private Action<Enemy, float> _onEnemyHit;
+
+	private void Awake()
+	{
+		if (_projectileCollider == null)
+		{
+			_projectileCollider = GetComponent<Collider2D>();
+		}
+		if (_explosionHitbox == null)
+		{
+			_explosionHitbox = GetComponentInChildren<ExplosionHitbox>(true);
+		}
+	}
 
 	public void Initialize(Transform target, ProjectileSO projectileData)
 	{
@@ -42,13 +70,20 @@ public class Projectile : MonoBehaviour
 		_aoeRadius = projectileData.IsAoe ? projectileData.AoeRadius : 0f;
 		_lifetimeTimer = projectileData.Lifetime;
 		_useDistanceScaling = false;
-		_isDeactivated = false;
 		_hitEnemies.Clear();
 		_onExplosionHit = null;
 		_onEnemyHit = null;
 
 		transform.localScale = new Vector3(projectileData.Size.x, projectileData.Size.y, 1f);
+		_spriteRenderer.enabled = true;
 		_spriteRenderer.sprite = projectileData.Sprite;
+
+		_projectileCollider.enabled = true;
+
+		_explosionTween.Stop();
+		_circleVisual.gameObject.SetActive(false);
+		_explosionParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+		_explosionHitbox.Deactivate();
 
 		float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg - 90f;
 		transform.rotation = Quaternion.Euler(0f, 0f, angle);
@@ -90,7 +125,7 @@ public class Projectile : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		if (_isDeactivated || _remainingPierce <= 0)
+		if (_remainingPierce <= 0)
 		{
 			return;
 		}
@@ -122,22 +157,18 @@ public class Projectile : MonoBehaviour
 
 		if (_aoeRadius > 0f)
 		{
-			Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, _aoeRadius, _enemyLayerMask);
-			for (int i = 0; i < hits.Length; i++)
-			{
-				if (hits[i].TryGetComponent<Enemy>(out Enemy hitEnemy))
-				{
-					Vector3 explosionDir = hitEnemy.transform.position - transform.position;
-					explosionDir.z = 0f;
-					Vector3 bloodDir = explosionDir.sqrMagnitude > 0.0001f ? explosionDir.normalized : _direction;
+			_projectileCollider.enabled = false;
+			_explosionHitbox.Trigger(
+				_aoeRadius,
+				finalDamage,
+				_enemyLayerMask,
+				_direction,
+				_onEnemyHit,
+				_onExplosionHit
+			);
 
-					hitEnemy.PlayBloodParticles(bloodDir);
-					hitEnemy.TakeDamage(finalDamage);
-					_onEnemyHit?.Invoke(hitEnemy, finalDamage);
-				}
-			}
-
-			_onExplosionHit?.Invoke(hits, transform.position);
+			Explode();
+			return;
 		}
 		else
 		{
@@ -153,14 +184,35 @@ public class Projectile : MonoBehaviour
 		}
 	}
 
+	private void Explode()
+	{
+		_remainingPierce = 0;
+		_speed = 0f;
+		_spriteRenderer.enabled = false;
+		_projectileCollider.enabled = false;
+		transform.localScale = Vector3.one;
+		transform.rotation = Quaternion.identity;
+		_explosionParticles.Play();
+
+		float diameter = _aoeRadius * 2f;
+		_circleVisual.transform.localPosition = Vector3.zero;
+		_circleVisual.transform.localRotation = Quaternion.identity;
+		_circleVisual.transform.localScale = Vector3.zero;
+		_circleVisual.gameObject.SetActive(true);
+
+		_explosionTween.Stop();
+		_explosionTween = Tween
+			.Scale(_circleVisual.transform, new Vector3(diameter, diameter, 1f), _explosionDuration, Ease.OutQuad)
+			.OnComplete(this, target => target.Deactivate());
+	}
+
 	private void Deactivate()
 	{
-		if (_isDeactivated)
-		{
-			return;
-		}
-
-		_isDeactivated = true;
+		_explosionTween.Stop();
+		_circleVisual.gameObject.SetActive(false);
+		_explosionParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+		_explosionHitbox.Deactivate();
+		_projectileCollider.enabled = false;
 		_hitEnemies.Clear();
 		_onExplosionHit = null;
 		_onEnemyHit = null;

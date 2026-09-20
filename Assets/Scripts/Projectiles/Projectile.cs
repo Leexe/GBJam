@@ -7,7 +7,10 @@ public class Projectile : MonoBehaviour
 	[SerializeField]
 	private LayerMask _enemyLayerMask;
 
-	private Transform _target;
+	[SerializeField]
+	private SpriteRenderer _spriteRenderer;
+
+	private Vector3 _direction;
 	private float _damage;
 	private float _speed;
 	private int _remainingPierce;
@@ -25,7 +28,14 @@ public class Projectile : MonoBehaviour
 
 	public void Initialize(Transform target, ProjectileSO projectileData)
 	{
-		_target = target;
+		Vector3 diff = target.position - transform.position;
+		diff.z = 0f;
+		Initialize(diff.normalized, projectileData);
+	}
+
+	public void Initialize(Vector3 direction, ProjectileSO projectileData)
+	{
+		_direction = direction;
 		_damage = projectileData.Damage;
 		_speed = projectileData.Speed;
 		_remainingPierce = projectileData.PierceCount;
@@ -36,6 +46,12 @@ public class Projectile : MonoBehaviour
 		_hitEnemies.Clear();
 		_onExplosionHit = null;
 		_onEnemyHit = null;
+
+		transform.localScale = new Vector3(projectileData.Size.x, projectileData.Size.y, 1f);
+		_spriteRenderer.sprite = projectileData.Sprite;
+
+		float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg - 90f;
+		transform.rotation = Quaternion.Euler(0f, 0f, angle);
 	}
 
 	public void SetDamage(float damage) => _damage = damage;
@@ -69,13 +85,7 @@ public class Projectile : MonoBehaviour
 			return;
 		}
 
-		transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
-		Vector3 dir = _target.position - transform.position;
-		if (dir != Vector3.zero)
-		{
-			float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
-			transform.rotation = Quaternion.Euler(0f, 0f, angle);
-		}
+		transform.position += _direction * (_speed * Time.deltaTime);
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)

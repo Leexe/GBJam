@@ -43,4 +43,8 @@ public class ProjectileSO : ScriptableObject
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Visuals")]
 	public Sprite Sprite { get; private set; }
+
+	[field: SerializeField]
+	[field: TabGroup("Tab", "Visuals")]
+	public Vector2 Size { get; private set; } = new Vector2(0.2f, 0.6f);
 }

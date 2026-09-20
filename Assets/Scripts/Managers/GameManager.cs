@@ -55,6 +55,11 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void Update()
 	{
+		HandleTimer();
+	}
+
+	private void HandleTimer()
+	{
 		if (_hasLost)
 		{
 			return;

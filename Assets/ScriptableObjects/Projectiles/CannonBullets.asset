@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileSO
   <Name>k__BackingField: Gunner Bullets
   <Id>k__BackingField: gunnerbullets
-  <Speed>k__BackingField: 4
+  <Speed>k__BackingField: 6
   <Damage>k__BackingField: 20
   <Lifetime>k__BackingField: 3
   <PierceCount>k__BackingField: 1

@@ -104,7 +104,7 @@ public class TowerSelector : MonoBehaviour
 
 	public void Open(Vector2Int gridPosition, Vector2Int cursorSize, int initialIndex = 0)
 	{
-		if (IsOpen)
+		if (IsOpen || (ItemSelector.Instance && ItemSelector.Instance.IsOpen))
 		{
 			return;
 		}
@@ -125,7 +125,7 @@ public class TowerSelector : MonoBehaviour
 
 		_menuRoot.SetActive(true);
 
-		SetSelected(Mathf.Clamp(initialIndex, 0, TowerPool.Count - 1));
+		SetSelected(initialIndex);
 		SubscribeInput();
 
 		OnOpened?.Invoke(_targetGridPosition);
@@ -133,7 +133,7 @@ public class TowerSelector : MonoBehaviour
 
 	public void OpenInspect(Tower tower)
 	{
-		if (IsOpen)
+		if (IsOpen || (ItemSelector.Instance && ItemSelector.Instance.IsOpen))
 		{
 			return;
 		}
@@ -152,11 +152,7 @@ public class TowerSelector : MonoBehaviour
 		_menuRoot.SetActive(true);
 
 		TowerSO data = tower.Data;
-		int index = TowerPool.IndexOf(data);
-		if (index >= 0)
-		{
-			_selectedIndex = index;
-		}
+		_selectedIndex = TowerPool.IndexOf(data);
 
 		_iconImage.sprite = data.Icon;
 		_nameText.text = data.Name;
@@ -214,12 +210,9 @@ public class TowerSelector : MonoBehaviour
 
 	private void UnsubscribeInput()
 	{
-		if (InputManager.Instance != null)
-		{
-			InputManager.Instance.OnMovement -= HandleMovement;
-			InputManager.Instance.OnConfirm -= HandleConfirm;
-			InputManager.Instance.OnCancel -= HandleCancel;
-		}
+		InputManager.Instance.OnMovement -= HandleMovement;
+		InputManager.Instance.OnConfirm -= HandleConfirm;
+		InputManager.Instance.OnCancel -= HandleCancel;
 	}
 
 	private void Update()
@@ -243,7 +236,7 @@ public class TowerSelector : MonoBehaviour
 
 	private void HandleMovement(Vector2 input)
 	{
-		if (!IsOpen || _isInspectMode)
+		if (_isInspectMode)
 		{
 			return;
 		}
@@ -330,11 +323,6 @@ public class TowerSelector : MonoBehaviour
 
 	private void HandleConfirm()
 	{
-		if (!IsOpen)
-		{
-			return;
-		}
-
 		if (_isInspectMode)
 		{
 			Close(resumeTime: true);
@@ -353,11 +341,6 @@ public class TowerSelector : MonoBehaviour
 
 	private void HandleCancel()
 	{
-		if (!IsOpen)
-		{
-			return;
-		}
-
 		Close(resumeTime: true);
 	}
 }

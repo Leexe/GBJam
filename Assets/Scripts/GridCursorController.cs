@@ -17,11 +17,13 @@ public class GridCursorController : MonoBehaviour
 {
 	public bool IsPlacingTower => _isPlacingTower;
 	public bool IsSelectingTower => _isSelectingTower;
+	public bool IsConfirmingRemove => _isConfirmingRemove;
 	public Vector2Int GridCoordinates => _gridCoordinates;
 	public Vector3 TargetWorldPosition =>
 		GridManager.Instance.GridToWorld(_gridCoordinates.x, _gridCoordinates.y, _cursorSize.x, _cursorSize.y);
 
 	public event Action<bool> OnPlacementModeChanged;
+	public event Action<bool> OnRemoveConfirmationChanged;
 	public event Action<Vector2Int> OnCursorMoved;
 
 	[Header("Ghost Preview")]
@@ -110,6 +112,7 @@ public class GridCursorController : MonoBehaviour
 	private int _selectedTower;
 	private bool _isSelectingTower;
 	private bool _isPlacingTower;
+	private bool _isConfirmingRemove;
 	private CursorType _defaultCursorType;
 	private Tween _cursorTween;
 	private Sequence _animTween;
@@ -124,6 +127,7 @@ public class GridCursorController : MonoBehaviour
 		_towerSelector.OnTowerChanged += HandleTowerSelectorChanged;
 		_towerSelector.OnTowerConfirmed += HandleTowerConfirmed;
 		_towerSelector.OnClosed += HandleTowerSelectorClosed;
+		_itemSelector.OnOpened += HandleItemSelectorOpened;
 		_itemSelector.OnClosed += HandleItemSelectorClosed;
 
 		StartAnimation();
@@ -136,6 +140,11 @@ public class GridCursorController : MonoBehaviour
 			SetPlacingTowerMode(false);
 		}
 
+		if (_isConfirmingRemove)
+		{
+			SetRemoveConfirmationMode(false);
+		}
+
 		if (InputManager.Instance != null)
 		{
 			InputManager.Instance.OnMovement -= HandleMovementInput;
@@ -146,12 +155,13 @@ public class GridCursorController : MonoBehaviour
 		_towerSelector.OnTowerChanged -= HandleTowerSelectorChanged;
 		_towerSelector.OnTowerConfirmed -= HandleTowerConfirmed;
 		_towerSelector.OnClosed -= HandleTowerSelectorClosed;
+		_itemSelector.OnOpened -= HandleItemSelectorOpened;
 		_itemSelector.OnClosed -= HandleItemSelectorClosed;
 
 		_cursorTween.Stop();
 		_animTween.Stop();
 
-		if (_currentHoveredTower != null)
+		if (_currentHoveredTower)
 		{
 			_currentHoveredTower.OnCursorExit();
 			_currentHoveredTower = null;
@@ -235,6 +245,16 @@ public class GridCursorController : MonoBehaviour
 			return;
 		}
 
+		if (_isConfirmingRemove)
+		{
+			if (GridManager.Instance.RemoveTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
+			{
+				UpdateVisual();
+			}
+			SetRemoveConfirmationMode(false);
+			return;
+		}
+
 		if (_isPlacingTower)
 		{
 			TowerSO selected = TowerPool[_selectedTower];
@@ -269,6 +289,12 @@ public class GridCursorController : MonoBehaviour
 			return;
 		}
 
+		if (_isConfirmingRemove)
+		{
+			SetRemoveConfirmationMode(false);
+			return;
+		}
+
 		if (_isPlacingTower)
 		{
 			SetPlacingTowerMode(false);
@@ -277,30 +303,21 @@ public class GridCursorController : MonoBehaviour
 			return;
 		}
 
-		if (GridManager.Instance.RemoveTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
+		if (GridManager.Instance.CanRemoveTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
 		{
-			UpdateVisual();
+			SetRemoveConfirmationMode(true);
 		}
 	}
 
 	private void HandleTowerSelectorChanged(TowerSO tower)
 	{
-		int index = TowerPool.IndexOf(tower);
-		if (index >= 0)
-		{
-			_selectedTower = index;
-		}
-
+		_selectedTower = TowerPool.IndexOf(tower);
 		UpdateGhostVisual();
 	}
 
 	private void HandleTowerConfirmed(TowerSO tower)
 	{
-		int index = TowerPool.IndexOf(tower);
-		if (index >= 0)
-		{
-			_selectedTower = index;
-		}
+		_selectedTower = TowerPool.IndexOf(tower);
 		SetPlacingTowerMode(true);
 	}
 
@@ -309,6 +326,19 @@ public class GridCursorController : MonoBehaviour
 		if (!_isPlacingTower)
 		{
 			SetTowerSelectionMode(false);
+		}
+	}
+
+	private void HandleItemSelectorOpened()
+	{
+		if (_isSelectingTower || _isPlacingTower)
+		{
+			SetPlacingTowerMode(false);
+			SetTowerSelectionMode(false);
+		}
+		if (_isConfirmingRemove)
+		{
+			SetRemoveConfirmationMode(false);
 		}
 	}
 
@@ -326,6 +356,10 @@ public class GridCursorController : MonoBehaviour
 		{
 			_isPlacingTower = false;
 		}
+		if (enable)
+		{
+			SetRemoveConfirmationMode(false);
+		}
 		Time.timeScale = enable ? 0f : 1f;
 		_isHolding = false;
 		_currentDirection = Vector2Int.zero;
@@ -339,6 +373,10 @@ public class GridCursorController : MonoBehaviour
 	{
 		_isPlacingTower = enable;
 		_isSelectingTower = false;
+		if (enable)
+		{
+			SetRemoveConfirmationMode(false);
+		}
 		Time.timeScale = enable ? 0f : 1f;
 		_isHolding = false;
 		_currentDirection = Vector2Int.zero;
@@ -346,6 +384,12 @@ public class GridCursorController : MonoBehaviour
 		SetCursorType(enable ? _selectionCursorType : _defaultCursorType);
 		UpdateVisual();
 		OnPlacementModeChanged?.Invoke(_isPlacingTower);
+	}
+
+	private void SetRemoveConfirmationMode(bool enable)
+	{
+		_isConfirmingRemove = enable;
+		OnRemoveConfirmationChanged?.Invoke(_isConfirmingRemove);
 	}
 
 	private void UpdateGhostVisual()
@@ -380,6 +424,11 @@ public class GridCursorController : MonoBehaviour
 		if (!GridManager.Instance.IsValidGridArea(x, y, _cursorSize.x, _cursorSize.y))
 		{
 			return;
+		}
+
+		if (_isConfirmingRemove)
+		{
+			SetRemoveConfirmationMode(false);
 		}
 
 		_gridCoordinates = new Vector2Int(x, y);

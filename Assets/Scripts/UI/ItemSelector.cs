@@ -100,6 +100,11 @@ public class ItemSelector : MonoBehaviour
 			return;
 		}
 
+		if (TowerSelector.Instance && TowerSelector.Instance.IsOpen)
+		{
+			TowerSelector.Instance.Close(resumeTime: false);
+		}
+
 		_items = items;
 		_canCancel = canCancel;
 		IsOpen = true;
@@ -204,11 +209,6 @@ public class ItemSelector : MonoBehaviour
 
 	private void HandleMovement(Vector2 input)
 	{
-		if (!IsOpen)
-		{
-			return;
-		}
-
 		if (input == Vector2.zero)
 		{
 			_isHolding = false;
@@ -314,11 +314,6 @@ public class ItemSelector : MonoBehaviour
 
 	private void HandleConfirm()
 	{
-		if (!IsOpen)
-		{
-			return;
-		}
-
 		TowerModifierSO selected = SelectedItem;
 		OnItemConfirmed?.Invoke(selected);
 		GameManager.Instance.ModifierManager.SelectModifier(selected);

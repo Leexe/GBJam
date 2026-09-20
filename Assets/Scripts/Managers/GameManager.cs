@@ -1,4 +1,5 @@
 using System;
+using PrimeTween;
 using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
@@ -51,11 +52,18 @@ public class GameManager : MonoSingleton<GameManager>
 		_gold = _startingGold;
 		_waveController.Initialize(_levelSO);
 		_waveController.StartNextWave();
+
+		DisablePrimeTween();
 	}
 
 	private void Update()
 	{
 		HandleTimer();
+	}
+
+	private void DisablePrimeTween()
+	{
+		PrimeTweenConfig.warnTweenOnDisabledTarget = false;
 	}
 
 	private void HandleTimer()

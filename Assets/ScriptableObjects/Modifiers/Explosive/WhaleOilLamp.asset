@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WhaleOilLamp
   m_EditorClassIdentifier: Modifiers::WhaleOilLampModifierSO
   <Id>k__BackingField: whale_oil_lamp
-  <Name>k__BackingField: Whale-Oil Lamp
+  <Name>k__BackingField: Whale Oil Lamp
   <Description>k__BackingField: Decrease attack range but every explosion applies
     burn
   <Icon>k__BackingField: {fileID: 0}

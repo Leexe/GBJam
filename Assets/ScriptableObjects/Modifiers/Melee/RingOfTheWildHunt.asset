@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8775e386e6e554561902a52c302889f6, type: 3}
   m_Name: RingOfTheWildHunt
   m_EditorClassIdentifier: Modifiers::RingOfTheWildHuntModifierSO
-  <Id>k__BackingField: ring_of_the_wild_hunt
-  <Name>k__BackingField: Ring of the Wild Hunt
-  <Description>k__BackingField: Dmg randomly ranges from +5 base to -5, increase attack speed
+  <Id>k__BackingField: ring_of_the_wild
+  <Name>k__BackingField: Ring of the Wild
+  <Description>k__BackingField: Dmg randomly ranges from +5 base to -5, increase
+    attack speed
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 3
   <StatModifiers>k__BackingField:

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerSO
   <Name>k__BackingField: Tower Man
   <Id>k__BackingField: towerman
-  <Description>k__BackingField: Tower man is the first tower to be created
+  <Description>k__BackingField: A dual-wielding pirate who fires shots from range
   <TowerType>k__BackingField: 1
   <Icon>k__BackingField: {fileID: -140820160, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
   <TopSprites>k__BackingField:

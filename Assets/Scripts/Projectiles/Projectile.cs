@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -12,6 +13,8 @@ public class Projectile : MonoBehaviour
 	private int _remainingPierce;
 	private float _aoeRadius;
 	private float _lifetimeTimer;
+	private bool _isDeactivated;
+	private readonly HashSet<Enemy> _hitEnemies = new();
 
 	private bool _useDistanceScaling;
 	private Vector3 _originPosition;
@@ -29,6 +32,8 @@ public class Projectile : MonoBehaviour
 		_aoeRadius = projectileData.IsAoe ? projectileData.AoeRadius : 0f;
 		_lifetimeTimer = projectileData.Lifetime;
 		_useDistanceScaling = false;
+		_isDeactivated = false;
+		_hitEnemies.Clear();
 		_onExplosionHit = null;
 		_onEnemyHit = null;
 	}
@@ -65,15 +70,27 @@ public class Projectile : MonoBehaviour
 		}
 
 		transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
-		if (transform.position - _target.position != Vector3.zero)
+		Vector3 dir = _target.position - transform.position;
+		if (dir != Vector3.zero)
 		{
-			transform.rotation = Quaternion.LookRotation(transform.position - _target.position);
+			float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
+			transform.rotation = Quaternion.Euler(0f, 0f, angle);
 		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
+		if (_isDeactivated || _remainingPierce <= 0)
+		{
+			return;
+		}
+
 		if ((_enemyLayerMask.value & (1 << other.gameObject.layer)) == 0)
+		{
+			return;
+		}
+
+		if (!other.TryGetComponent<Enemy>(out Enemy enemy) || !_hitEnemies.Add(enemy))
 		{
 			return;
 		}
@@ -104,9 +121,10 @@ public class Projectile : MonoBehaviour
 					_onEnemyHit?.Invoke(hitEnemy, finalDamage);
 				}
 			}
+
 			_onExplosionHit?.Invoke(hits, transform.position);
 		}
-		else if (other.TryGetComponent<Enemy>(out Enemy enemy))
+		else
 		{
 			enemy.TakeDamage(finalDamage);
 			_onEnemyHit?.Invoke(enemy, finalDamage);
@@ -121,6 +139,13 @@ public class Projectile : MonoBehaviour
 
 	private void Deactivate()
 	{
+		if (_isDeactivated)
+		{
+			return;
+		}
+
+		_isDeactivated = true;
+		_hitEnemies.Clear();
 		_onExplosionHit = null;
 		_onEnemyHit = null;
 		_useDistanceScaling = false;

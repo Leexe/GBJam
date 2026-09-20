@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 449f067aa70a40e2b6a647c7011048b2, type: 3}
   m_Name: Morter
   m_EditorClassIdentifier: Assembly-CSharp::TowerSO
-  <Name>k__BackingField: Morter
-  <Id>k__BackingField: morter
+  <Name>k__BackingField: Cannon
+  <Id>k__BackingField: cannon
   <Description>k__BackingField: Heavy artillery launching explosive shells over distances
   <TowerType>k__BackingField: 2
   <Icon>k__BackingField: {fileID: -1747877315, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
@@ -28,5 +28,5 @@ MonoBehaviour:
   <Range>k__BackingField: 4
   <Damage>k__BackingField: 40
   <AttackRate>k__BackingField: 0.5
-  <ProjectileData>k__BackingField: {fileID: 11400000, guid: f75493b7748ee4c55b813a3fb38fb037, type: 2}
+  <ProjectileData>k__BackingField: {fileID: 11400000, guid: 398f1811c13094caeb3a112156e1b1cd, type: 2}
   <Cost>k__BackingField: 100

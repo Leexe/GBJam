@@ -31,15 +31,18 @@ public class TowerSO : ScriptableObject
 
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Context")]
+	[field: PreviewField(50, ObjectFieldAlignment.Left)]
 	public Sprite Icon { get; private set; }
 
 	[Header("Visuals")]
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Visuals")]
+	[field: PreviewField(50, ObjectFieldAlignment.Left)]
 	public Sprite[] TopSprites { get; private set; }
 
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Visuals")]
+	[field: PreviewField(50, ObjectFieldAlignment.Left)]
 	public Sprite[] BottomSprites { get; private set; }
 
 	[Header("Combat")]

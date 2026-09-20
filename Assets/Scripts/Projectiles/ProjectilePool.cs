@@ -28,6 +28,7 @@ public class ProjectilePool : MonoSingleton<ProjectilePool>
 		Projectile projectile =
 			_pool.Count > 0 ? _pool.Dequeue() : Instantiate(_projectilePrefab, transform).GetComponent<Projectile>();
 		projectile.transform.position = position;
+		projectile.transform.rotation = Quaternion.identity;
 		projectile.gameObject.SetActive(true);
 		return projectile;
 	}

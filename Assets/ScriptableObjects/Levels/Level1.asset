@@ -57,3 +57,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 61bd033870d8a4573b38389765e1f8f9, type: 2}
   - {fileID: 11400000, guid: 0b57c89fd8c494c7b9b393a0a1466655, type: 2}
   - {fileID: 11400000, guid: ae67caea6a1f842c797767bd57818b88, type: 2}
+  TowerPool:
+  - {fileID: 11400000, guid: 4a98a5bf427b5441b9a196ae98fa878a, type: 2}
+  - {fileID: 11400000, guid: 1523e0b2abd0d4dca817a3cc2f4550fd, type: 2}
+  - {fileID: 11400000, guid: f8dcf1b3780943f8a791d00bdba741ce, type: 2}
+  - {fileID: 11400000, guid: ebde702fda254d0fb00c3850f4f5313f, type: 2}

@@ -90,9 +90,7 @@ public class GridCursorController : MonoBehaviour
 	[SerializeField]
 	private Sprite[] _dotFrames;
 
-	[Header("Available Towers")]
-	[SerializeField]
-	private List<TowerSO> _availableTowers = new();
+	private List<TowerSO> TowerPool => GameManager.Instance.Level.TowerPool;
 
 	[Header("Tower Selector")]
 	[SerializeField]
@@ -233,7 +231,7 @@ public class GridCursorController : MonoBehaviour
 		{
 			if (GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
 			{
-				TowerSO selected = _availableTowers[_selectedTower];
+				TowerSO selected = TowerPool[_selectedTower];
 				if (
 					GameManager.Instance.CanAfford(selected.Cost)
 					&& GridManager.Instance.PlaceTower(_gridCoordinates, selected, _cursorSize.x, _cursorSize.y)
@@ -249,7 +247,7 @@ public class GridCursorController : MonoBehaviour
 		if (GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
 		{
 			SetTowerSelectionMode(true);
-			_towerSelector.Open(_gridCoordinates, _cursorSize, _availableTowers, _selectedTower);
+			_towerSelector.Open(_gridCoordinates, _cursorSize, _selectedTower);
 		}
 	}
 
@@ -264,7 +262,7 @@ public class GridCursorController : MonoBehaviour
 		{
 			SetPlacingTowerMode(false);
 			SetTowerSelectionMode(true);
-			_towerSelector.Open(_gridCoordinates, _cursorSize, _availableTowers, _selectedTower);
+			_towerSelector.Open(_gridCoordinates, _cursorSize, _selectedTower);
 			return;
 		}
 
@@ -276,7 +274,7 @@ public class GridCursorController : MonoBehaviour
 
 	private void HandleTowerSelectorChanged(TowerSO tower)
 	{
-		int index = _availableTowers.IndexOf(tower);
+		int index = TowerPool.IndexOf(tower);
 		if (index >= 0)
 		{
 			_selectedTower = index;
@@ -287,7 +285,7 @@ public class GridCursorController : MonoBehaviour
 
 	private void HandleTowerConfirmed(TowerSO tower)
 	{
-		int index = _availableTowers.IndexOf(tower);
+		int index = TowerPool.IndexOf(tower);
 		if (index >= 0)
 		{
 			_selectedTower = index;
@@ -343,7 +341,7 @@ public class GridCursorController : MonoBehaviour
 			return;
 		}
 
-		TowerSO selected = _availableTowers[_selectedTower];
+		TowerSO selected = TowerPool[_selectedTower];
 		_ghostTowerRenderer.sprite = selected.Icon;
 		bool canPlace = GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
 		bool canAfford = GameManager.Instance.CanAfford(selected.Cost);

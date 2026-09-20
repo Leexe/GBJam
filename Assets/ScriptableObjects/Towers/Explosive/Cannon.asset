@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 449f067aa70a40e2b6a647c7011048b2, type: 3}
-  m_Name: Morter
+  m_Name: Cannon
   m_EditorClassIdentifier: Assembly-CSharp::TowerSO
   <Name>k__BackingField: Cannon
   <Id>k__BackingField: cannon

@@ -84,6 +84,13 @@ public class LevelSO : ScriptableObject
 	[ListDrawerSettings(ShowIndexLabels = true)]
 	public List<TowerModifierSO> ItemPool = new();
 
+	[TabGroup("Tabs", "Towers")]
+	[ListDrawerSettings(ShowIndexLabels = true)]
+	public List<TowerSO> TowerPool = new();
+
+	public List<TowerSO> Towers => TowerPool;
+	public List<TowerSO> CharacterPool => TowerPool;
+
 	public bool DoesWaveGiveItems(int waveIndex)
 	{
 		if (waveIndex < 0 || waveIndex >= WaveDataList.Count)

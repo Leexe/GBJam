@@ -52,9 +52,7 @@ public class TowerSelector : MonoBehaviour
 	[SerializeField]
 	private float _arrowPunchDuration = 0.05f;
 
-	[Header("Towers")]
-	[SerializeField]
-	private List<TowerSO> _availableTowers = new();
+	private List<TowerSO> TowerPool => GameManager.Instance.Level.TowerPool;
 
 	[Header("Navigation Settings")]
 	[SerializeField]
@@ -77,8 +75,8 @@ public class TowerSelector : MonoBehaviour
 
 	public bool IsOpen { get; private set; }
 	public int SelectedIndex => _selectedIndex;
-	public List<TowerSO> AvailableTowers => _availableTowers;
-	public TowerSO SelectedTower => _availableTowers[_selectedIndex];
+	public List<TowerSO> AvailableTowers => TowerPool;
+	public TowerSO SelectedTower => TowerPool[_selectedIndex];
 
 	// Events
 	public event Action<TowerSO> OnTowerChanged;
@@ -101,7 +99,7 @@ public class TowerSelector : MonoBehaviour
 		}
 	}
 
-	public void Open(Vector2Int gridPosition, Vector2Int cursorSize, List<TowerSO> towers = null, int initialIndex = 0)
+	public void Open(Vector2Int gridPosition, Vector2Int cursorSize, int initialIndex = 0)
 	{
 		if (IsOpen)
 		{
@@ -110,11 +108,6 @@ public class TowerSelector : MonoBehaviour
 
 		_targetGridPosition = gridPosition;
 		_cursorSize = cursorSize;
-
-		if (towers != null)
-		{
-			_availableTowers = towers;
-		}
 
 		IsOpen = true;
 		_isHolding = false;
@@ -128,7 +121,7 @@ public class TowerSelector : MonoBehaviour
 
 		_menuRoot.SetActive(true);
 
-		SetSelected(Mathf.Clamp(initialIndex, 0, _availableTowers.Count - 1));
+		SetSelected(Mathf.Clamp(initialIndex, 0, TowerPool.Count - 1));
 		SubscribeInput();
 
 		OnOpened?.Invoke(_targetGridPosition);
@@ -237,12 +230,12 @@ public class TowerSelector : MonoBehaviour
 
 	public void CycleTower(int offset)
 	{
-		if (_availableTowers.Count <= 1)
+		if (TowerPool.Count <= 1)
 		{
 			return;
 		}
 
-		int count = _availableTowers.Count;
+		int count = TowerPool.Count;
 		int nextIndex = (_selectedIndex + offset + count) % count;
 		SetSelected(nextIndex);
 		AnimateArrow(offset);
@@ -261,8 +254,8 @@ public class TowerSelector : MonoBehaviour
 
 	public void SetSelected(int index)
 	{
-		_selectedIndex = Mathf.Clamp(index, 0, _availableTowers.Count - 1);
-		TowerSO selected = _availableTowers[_selectedIndex];
+		_selectedIndex = Mathf.Clamp(index, 0, TowerPool.Count - 1);
+		TowerSO selected = TowerPool[_selectedIndex];
 		bool canAfford = GameManager.Instance.CanAfford(selected.Cost);
 
 		_iconImage.sprite = selected.Icon;

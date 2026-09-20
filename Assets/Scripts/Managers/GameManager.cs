@@ -25,6 +25,7 @@ public class GameManager : MonoSingleton<GameManager>
 	public float Time => _time;
 	public int Gold => _gold;
 	public WaveController WaveController => _waveController;
+	public LevelSO Level => _levelSO;
 
 	// Events
 	[HideInInspector]

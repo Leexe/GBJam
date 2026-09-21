@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PrimeTween;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum CursorType
 {
@@ -112,8 +113,18 @@ public class GridCursorController : MonoBehaviour
 	[SerializeField]
 	private string _fireTowerPrompt = "Fire The Mercanary?";
 
+	[SerializeField]
+	private string _hireKeyboardPrompt = "Press J To Hire";
+
+	[SerializeField]
+	private string _hireGamepadPrompt = "Press A to Hire";
+
 	private bool IsSelectorOpen =>
-		_towerSelector.IsOpen || _itemSelector.IsOpen || GameManager.Instance.HasWon || GameManager.Instance.HasLost || PauseMenuController.Instance.IsOpen;
+		_towerSelector.IsOpen
+		|| _itemSelector.IsOpen
+		|| GameManager.Instance.HasWon
+		|| GameManager.Instance.HasLost
+		|| PauseMenuController.Instance.IsOpen;
 
 	private Vector2Int _gridCoordinates;
 	private Vector2Int _currentDirection;
@@ -200,6 +211,7 @@ public class GridCursorController : MonoBehaviour
 		_gridCoordinates = new Vector2Int(startX, startY);
 		transform.position = GridManager.Instance.GridToWorld(startX, startY, _cursorSize.x, _cursorSize.y);
 		UpdateVisual();
+		UpdateAnnouncement();
 		OnCursorMoved?.Invoke(_gridCoordinates);
 	}
 
@@ -352,6 +364,7 @@ public class GridCursorController : MonoBehaviour
 		{
 			SetTowerSelectionMode(false);
 		}
+		UpdateAnnouncement();
 	}
 
 	private void HandleItemSelectorOpened()
@@ -372,6 +385,7 @@ public class GridCursorController : MonoBehaviour
 		_isHolding = false;
 		_currentDirection = Vector2Int.zero;
 		_holdTimer = 0f;
+		UpdateAnnouncement();
 	}
 
 	private void SetTowerSelectionMode(bool enable)
@@ -392,6 +406,7 @@ public class GridCursorController : MonoBehaviour
 		SetCursorType(enable ? _selectionCursorType : _defaultCursorType);
 		UpdateGhostVisual();
 		OnPlacementModeChanged?.Invoke(_isPlacingTower);
+		UpdateAnnouncement();
 	}
 
 	private void SetPlacingTowerMode(bool enable)
@@ -409,30 +424,14 @@ public class GridCursorController : MonoBehaviour
 		SetCursorType(enable ? _selectionCursorType : _defaultCursorType);
 		UpdateVisual();
 		OnPlacementModeChanged?.Invoke(_isPlacingTower);
-
-		if (enable)
-		{
-			_textDisplayUI.Show(_placeTowerPrompt, TargetWorldPosition);
-		}
-		else if (!_isConfirmingRemove)
-		{
-			_textDisplayUI.Hide();
-		}
+		UpdateAnnouncement();
 	}
 
 	private void SetRemoveConfirmationMode(bool enable)
 	{
 		_isConfirmingRemove = enable;
 		OnRemoveConfirmationChanged?.Invoke(_isConfirmingRemove);
-
-		if (enable)
-		{
-			_textDisplayUI.Show(_fireTowerPrompt, TargetWorldPosition);
-		}
-		else if (!_isPlacingTower)
-		{
-			_textDisplayUI.Hide();
-		}
+		UpdateAnnouncement();
 	}
 
 	private void UpdateGhostVisual()
@@ -479,10 +478,7 @@ public class GridCursorController : MonoBehaviour
 		_cursorTween.Stop();
 		_cursorTween = Tween.Position(transform, targetPos, _movementDuration, Ease.OutQuad, useUnscaledTime: true);
 		UpdateVisual();
-		if (_textDisplayUI.IsVisible)
-		{
-			_textDisplayUI.UpdatePosition(targetPos);
-		}
+		UpdateAnnouncement();
 		OnCursorMoved?.Invoke(_gridCoordinates);
 	}
 
@@ -540,5 +536,35 @@ public class GridCursorController : MonoBehaviour
 		_isPlacingTower = false;
 		_isSelectingTower = false;
 		_isConfirmingRemove = false;
+		UpdateAnnouncement();
+	}
+
+	private bool IsFirstLevel => GameManager.Instance.Level.PrerequisiteLevel == null;
+
+	private string GetHirePrompt() => Gamepad.current != null ? _hireGamepadPrompt : _hireKeyboardPrompt;
+
+	private void UpdateAnnouncement()
+	{
+		if (_textDisplayUI == null)
+		{
+			return;
+		}
+
+		if (_isPlacingTower)
+		{
+			_textDisplayUI.Show(_placeTowerPrompt, TargetWorldPosition);
+		}
+		else if (_isConfirmingRemove)
+		{
+			_textDisplayUI.Show(_fireTowerPrompt, TargetWorldPosition);
+		}
+		else if (!IsSelectorOpen && IsFirstLevel && _currentHoveredTower == null)
+		{
+			_textDisplayUI.Show(GetHirePrompt(), TargetWorldPosition);
+		}
+		else
+		{
+			_textDisplayUI.Hide();
+		}
 	}
 }

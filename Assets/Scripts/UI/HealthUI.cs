@@ -62,9 +62,9 @@ public class HealthUI : MonoBehaviour
 		if (_shakeTween.isAlive)
 		{
 			_shakeTween.Stop();
-			transform.localPosition = _initialLocalPosition;
 		}
 
+		transform.localPosition = _initialLocalPosition;
 		_shakeTween = Tween.ShakeLocalPosition(
 			transform,
 			_shakeStrength,

@@ -12,7 +12,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _DITHERFILL_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -32,7 +33,7 @@ Material:
     m_Floats:
     - _DashCount: 20
     - _Dashed: 0
-    - _DitherFill: 0
+    - _DitherFill: 1
     - _Thickness: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0.8}

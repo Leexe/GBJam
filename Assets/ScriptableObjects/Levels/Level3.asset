@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   LevelName: Level 3
   PrerequisiteLevel: {fileID: 11400000, guid: e27d892926632430a8ff98f1bebf4f93, type: 2}
+  NextLevel: {fileID: 0}
   Music:
     Guid:
       Data1: 538317750
@@ -23,6 +24,7 @@ MonoBehaviour:
     Path: event:/BGM/Gameplay/Gameplay3
   MaxHealth: 100
   StartingGold: 100
+  BackgroundClip: {fileID: 1070631943580236562, guid: 35ee598b143a74b5f8c6326d95326061, type: 3}
   Paths:
   - Name: Path 1
     Waypoints:

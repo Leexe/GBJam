@@ -112,7 +112,8 @@ public class GridCursorController : MonoBehaviour
 	[SerializeField]
 	private string _fireTowerPrompt = "Fire The Mercanary?";
 
-	private bool IsSelectorOpen => _towerSelector.IsOpen || _itemSelector.IsOpen;
+	private bool IsSelectorOpen =>
+		_towerSelector.IsOpen || _itemSelector.IsOpen || GameManager.Instance.HasWon || GameManager.Instance.HasLost || PauseMenuController.Instance.IsOpen;
 
 	private Vector2Int _gridCoordinates;
 	private Vector2Int _currentDirection;
@@ -134,6 +135,9 @@ public class GridCursorController : MonoBehaviour
 		InputManager.Instance.OnConfirm += HandleConfirmPressed;
 		InputManager.Instance.OnCancel += HandleCancelPressed;
 
+		GameManager.Instance.OnWin += HandleGameEnded;
+		GameManager.Instance.OnLose += HandleGameEnded;
+
 		_towerSelector.OnTowerChanged += HandleTowerSelectorChanged;
 		_towerSelector.OnTowerConfirmed += HandleTowerConfirmed;
 		_towerSelector.OnClosed += HandleTowerSelectorClosed;
@@ -145,14 +149,14 @@ public class GridCursorController : MonoBehaviour
 
 	private void OnDisable()
 	{
-		if (_isSelectingTower || _isPlacingTower)
-		{
-			SetPlacingTowerMode(false);
-		}
+		_isPlacingTower = false;
+		_isSelectingTower = false;
+		_isConfirmingRemove = false;
 
-		if (_isConfirmingRemove)
+		if (GameManager.Instance != null)
 		{
-			SetRemoveConfirmationMode(false);
+			GameManager.Instance.OnWin -= HandleGameEnded;
+			GameManager.Instance.OnLose -= HandleGameEnded;
 		}
 
 		if (InputManager.Instance != null)
@@ -490,6 +494,11 @@ public class GridCursorController : MonoBehaviour
 
 	private void UpdateVisual()
 	{
+		if (GridManager.Instance == null)
+		{
+			return;
+		}
+
 		bool canPlace = GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
 		Sprite[] frames = ChangeCursorVisual(canPlace);
 		_spriteRenderer.sprite = frames[_currentFrame % frames.Length];
@@ -508,7 +517,10 @@ public class GridCursorController : MonoBehaviour
 		}
 	}
 
-	private Tower GetTowerAtCursor() => GridManager.Instance.GetTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
+	private Tower GetTowerAtCursor() =>
+		GridManager.Instance != null
+			? GridManager.Instance.GetTower(_gridCoordinates, _cursorSize.x, _cursorSize.y)
+			: null;
 
 	private Sprite[] ChangeCursorVisual(bool canPlace)
 	{
@@ -521,5 +533,12 @@ public class GridCursorController : MonoBehaviour
 			CursorType.Dot => _dotFrames,
 			_ => _cornersDefault,
 		};
+	}
+
+	private void HandleGameEnded()
+	{
+		_isPlacingTower = false;
+		_isSelectingTower = false;
+		_isConfirmingRemove = false;
 	}
 }

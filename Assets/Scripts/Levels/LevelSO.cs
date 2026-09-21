@@ -156,6 +156,9 @@ public class LevelSO : ScriptableObject
 	public LevelSO PrerequisiteLevel;
 
 	[TabGroup("Tabs", "General")]
+	public LevelSO NextLevel;
+
+	[TabGroup("Tabs", "General")]
 	public EventReference Music;
 
 	[TabGroup("Tabs", "General")]
@@ -165,6 +168,9 @@ public class LevelSO : ScriptableObject
 	[TabGroup("Tabs", "General")]
 	[MinValue(0)]
 	public int StartingGold = 100;
+
+	[TabGroup("Tabs", "General")]
+	public AnimationClip BackgroundClip;
 
 	public int Gold => StartingGold;
 

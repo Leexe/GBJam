@@ -74,6 +74,21 @@ public class TowerSO : ScriptableObject
 			return total;
 		}
 	}
+
+	public float TotalDamage
+	{
+		get
+		{
+			float total = 0f;
+			for (int i = 0; i < Attacks.Count; i++)
+			{
+				total += TowerType == TowerType.Melee ? Attacks[i].Damage : Attacks[i].ProjectileData.Damage;
+			}
+			return total;
+		}
+	}
+
+	public int DPS => Mathf.RoundToInt(TotalDamage / TotalAttackDelay);
 }
 
 [System.Serializable]

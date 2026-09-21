@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
   Name: Crab
   Description: Crab
-  Health: 100
-  Speed: 1.1
-  Damage: 25
-  GoldReward: 50
+  Health: 1000
+  Speed: 1.25
+  Damage: 100
+  GoldReward: 500
   DeathSfx:
     Guid:
       Data1: 872744818

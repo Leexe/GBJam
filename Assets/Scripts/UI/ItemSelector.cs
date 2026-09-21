@@ -20,23 +20,12 @@ public class ItemSelector : MonoBehaviour
 	[SerializeField]
 	private TextMeshProUGUI _descriptionText;
 
-	[Header("Arrows")]
 	[SerializeField]
-	private RectTransform _leftArrow;
-
-	[SerializeField]
-	private RectTransform _rightArrow;
+	private TextMeshProUGUI _ownText;
 
 	[Header("Tower Icons")]
 	[SerializeField]
 	private List<TowerIcon> _towerIcons = new();
-
-	[Header("Visual Settings")]
-	[SerializeField]
-	private float _arrowPunchScale = 1.25f;
-
-	[SerializeField]
-	private float _arrowPunchDuration = 0.05f;
 
 	[Header("Navigation Settings")]
 	[SerializeField]
@@ -45,6 +34,7 @@ public class ItemSelector : MonoBehaviour
 	[SerializeField]
 	private float _repeatRate = 0.1f;
 
+	private readonly List<TowerModifierSO> _offeredItems = new();
 	private List<TowerModifierSO> _items = new();
 	private int _selectedIndex;
 	private bool _isHolding;
@@ -71,14 +61,32 @@ public class ItemSelector : MonoBehaviour
 	private void Start()
 	{
 		GameManager.Instance.WaveController.OnWaveItemsOffered += HandleWaveItemsOffered;
+		GameManager.Instance.OnWin += HandleGameEnded;
+		GameManager.Instance.OnLose += HandleGameEnded;
+		InputManager.Instance.OnSelect += HandleSelect;
 		_menuRoot.SetActive(false);
 	}
 
 	private void OnDestroy()
 	{
+		if (Instance == this)
+		{
+			Instance = null;
+		}
+
+		if (InputManager.Instance != null)
+		{
+			InputManager.Instance.OnSelect -= HandleSelect;
+		}
+
 		if (GameManager.Instance != null)
 		{
-			GameManager.Instance.WaveController.OnWaveItemsOffered -= HandleWaveItemsOffered;
+			if (GameManager.Instance.WaveController != null)
+			{
+				GameManager.Instance.WaveController.OnWaveItemsOffered -= HandleWaveItemsOffered;
+			}
+			GameManager.Instance.OnWin -= HandleGameEnded;
+			GameManager.Instance.OnLose -= HandleGameEnded;
 		}
 
 		if (IsOpen)
@@ -88,24 +96,68 @@ public class ItemSelector : MonoBehaviour
 		}
 	}
 
-	private void HandleWaveItemsOffered(int waveIndex, List<TowerModifierSO> choices)
-	{
-		Open(choices, canCancel: false);
-	}
-
-	public void Open(List<TowerModifierSO> items, int initialIndex = 0, bool canCancel = true)
+	private void HandleGameEnded()
 	{
 		if (IsOpen)
+		{
+			Close(resumeTime: false);
+		}
+	}
+
+	private void HandleSelect()
+	{
+		if (GameManager.Instance.HasWon || GameManager.Instance.HasLost || PauseMenuController.Instance.IsOpen)
 		{
 			return;
 		}
 
-		if (TowerSelector.Instance && TowerSelector.Instance.IsOpen)
+		if (IsOpen)
+		{
+			if (_canCancel)
+			{
+				AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CantClick_Sfx);
+				Close();
+			}
+			return;
+		}
+
+		OpenWithCurrentItems(canCancel: _offeredItems.Count == 0);
+	}
+
+	private void HandleWaveItemsOffered(int waveIndex, List<TowerModifierSO> choices)
+	{
+		if (GameManager.Instance.HasWon || GameManager.Instance.HasLost)
+		{
+			return;
+		}
+
+		_offeredItems.Clear();
+		_offeredItems.AddRange(choices);
+		OpenWithCurrentItems(canCancel: false);
+	}
+
+	public void OpenWithCurrentItems(bool canCancel)
+	{
+		if (IsOpen || GameManager.Instance.HasWon || GameManager.Instance.HasLost)
+		{
+			return;
+		}
+
+		if (TowerSelector.Instance.IsOpen)
 		{
 			TowerSelector.Instance.Close(resumeTime: false);
 		}
 
-		_items = items;
+		_items.Clear();
+		_items.AddRange(_offeredItems);
+		_items.AddRange(GameManager.Instance.ModifierManager.AcquiredModifiers);
+
+		if (_items.Count == 0)
+		{
+			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CantClick_Sfx);
+			return;
+		}
+
 		_canCancel = canCancel;
 		IsOpen = true;
 		_isHolding = false;
@@ -115,10 +167,21 @@ public class ItemSelector : MonoBehaviour
 		Time.timeScale = 0f;
 		_menuRoot.SetActive(true);
 
-		SetSelected(initialIndex);
+		SetSelected(0);
 		SubscribeInput();
 
 		OnOpened?.Invoke();
+	}
+
+	public void Open(List<TowerModifierSO> items, int initialIndex = 0, bool canCancel = true)
+	{
+		_offeredItems.Clear();
+		_offeredItems.AddRange(items);
+		OpenWithCurrentItems(canCancel);
+		if (initialIndex > 0 && initialIndex < _items.Count)
+		{
+			SetSelected(initialIndex);
+		}
 	}
 
 	public void Open(int choicesCount = 3)
@@ -131,7 +194,7 @@ public class ItemSelector : MonoBehaviour
 		Open(GameManager.Instance.Level.DefaultItemChoicesCount);
 	}
 
-	public void Close()
+	public void Close(bool resumeTime = true)
 	{
 		if (!IsOpen)
 		{
@@ -142,9 +205,11 @@ public class ItemSelector : MonoBehaviour
 		_isHolding = false;
 		_currentDirection = Vector2Int.zero;
 		_arrowAnim.Stop();
-		ResetArrowScales();
 
-		Time.timeScale = 1f;
+		if (resumeTime)
+		{
+			Time.timeScale = 1f;
+		}
 		_menuRoot.SetActive(false);
 
 		UnsubscribeInput();
@@ -168,12 +233,6 @@ public class ItemSelector : MonoBehaviour
 		return selected;
 	}
 
-	private void ResetArrowScales()
-	{
-		_leftArrow.localScale = Vector3.one;
-		_rightArrow.localScale = Vector3.one;
-	}
-
 	private void SubscribeInput()
 	{
 		InputManager.Instance.OnMovement += HandleMovement;
@@ -183,9 +242,12 @@ public class ItemSelector : MonoBehaviour
 
 	private void UnsubscribeInput()
 	{
-		InputManager.Instance.OnMovement -= HandleMovement;
-		InputManager.Instance.OnConfirm -= HandleConfirm;
-		InputManager.Instance.OnCancel -= HandleCancel;
+		if (InputManager.Instance != null)
+		{
+			InputManager.Instance.OnMovement -= HandleMovement;
+			InputManager.Instance.OnConfirm -= HandleConfirm;
+			InputManager.Instance.OnCancel -= HandleCancel;
+		}
 	}
 
 	private void Update()
@@ -245,19 +307,7 @@ public class ItemSelector : MonoBehaviour
 		}
 
 		SetSelected(nextIndex);
-		AnimateArrow(offset);
 		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SelectorClick_Sfx);
-	}
-
-	private void AnimateArrow(int direction)
-	{
-		RectTransform arrow = direction < 0 ? _leftArrow : _rightArrow;
-		_arrowAnim.Stop();
-		ResetArrowScales();
-		_arrowAnim = Sequence
-			.Create(useUnscaledTime: true)
-			.Chain(Tween.Scale(arrow, _arrowPunchScale, _arrowPunchDuration, Ease.OutQuad))
-			.Chain(Tween.Scale(arrow, 1f, _arrowPunchDuration, Ease.InQuad));
 	}
 
 	public void SetSelected(int index)
@@ -267,9 +317,7 @@ public class ItemSelector : MonoBehaviour
 
 		_nameText.text = selected.Name;
 		_descriptionText.text = selected.Description;
-
-		_leftArrow.gameObject.SetActive(_selectedIndex > 0);
-		_rightArrow.gameObject.SetActive(_selectedIndex < _items.Count - 1);
+		_ownText.text = _selectedIndex >= _offeredItems.Count ? "Owned" : "New";
 
 		UpdateTowerIcons(selected);
 
@@ -308,10 +356,17 @@ public class ItemSelector : MonoBehaviour
 
 	private void HandleConfirm()
 	{
+		if (_selectedIndex >= _offeredItems.Count)
+		{
+			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CantClick_Sfx);
+			return;
+		}
+
 		TowerModifierSO selected = SelectedItem;
 		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CompleteClick_Sfx);
 		OnItemConfirmed?.Invoke(selected);
 		GameManager.Instance.ModifierManager.SelectModifier(selected);
+		_offeredItems.Clear();
 		GameManager.Instance.WaveController.ResumeSpawning();
 		Close();
 	}

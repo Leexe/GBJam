@@ -26,6 +26,13 @@ public class CursorAnimator : MonoBehaviour
 		{
 			_target = GetComponent<RectTransform>();
 		}
+
+		_originX = _target.anchoredPosition.x;
+	}
+
+	private void OnEnable()
+	{
+		Play();
 	}
 
 	private void OnDisable()
@@ -38,6 +45,7 @@ public class CursorAnimator : MonoBehaviour
 		Stop();
 		float leftEdge = targetItem.anchoredPosition.x - (targetItem.rect.width * targetItem.pivot.x);
 		_target.anchoredPosition = new Vector2(leftEdge + xOffset, targetItem.anchoredPosition.y);
+		_originX = _target.anchoredPosition.x;
 		Play();
 	}
 
@@ -45,13 +53,18 @@ public class CursorAnimator : MonoBehaviour
 	{
 		Stop();
 		_target.anchoredPosition = position;
+		_originX = position.x;
 		Play();
 	}
 
 	public void Play()
 	{
+		if (_cursorTween.isAlive)
+		{
+			return;
+		}
+
 		Stop();
-		_originX = _target.anchoredPosition.x;
 		_cursorTween = Sequence
 			.Create(-1, Sequence.SequenceCycleMode.Yoyo, useUnscaledTime: true)
 			.Chain(Tween.UIAnchoredPositionX(_target, _originX - _distance, _duration, _ease))
@@ -61,5 +74,6 @@ public class CursorAnimator : MonoBehaviour
 	public void Stop()
 	{
 		_cursorTween.Stop();
+		_target.anchoredPosition = new Vector2(_originX, _target.anchoredPosition.y);
 	}
 }

@@ -62,6 +62,20 @@ public class Tower : MonoBehaviour
 	public bool IsStunned => _stunTimer > 0f;
 	public IReadOnlyList<TowerModifierInstance> ActiveModifiers => _modifierInstances;
 
+	public int CalculateDPS()
+	{
+		float totalDamage = 0f;
+		for (int i = 0; i < _data.Attacks.Count; i++)
+		{
+			TowerAttack attack = _data.Attacks[i];
+			float baseDmg = _data.TowerType == TowerType.Melee ? attack.Damage : attack.ProjectileData.Damage;
+			Stats.SetBaseStat(StatType.Damage, baseDmg);
+			totalDamage += Stats.GetFinalStat(StatType.Damage);
+		}
+
+		return Mathf.RoundToInt(totalDamage / _data.TotalAttackDelay);
+	}
+
 	private float _attackTimer;
 	private int _currentAttackIndex;
 	private float _rangeSqr;

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   LevelName: Level 1
   PrerequisiteLevel: {fileID: 0}
+  NextLevel: {fileID: 11400000, guid: e27d892926632430a8ff98f1bebf4f93, type: 2}
   Music:
     Guid:
       Data1: 1498187387
@@ -22,7 +23,8 @@ MonoBehaviour:
       Data4: 1200066419
     Path: event:/BGM/Gameplay/Gameplay1
   MaxHealth: 100
-  StartingGold: 60
+  StartingGold: 15
+  BackgroundClip: {fileID: 3227319538420029802, guid: 35ee598b143a74b5f8c6326d95326061, type: 3}
   Paths:
   - Name: Path 1
     Waypoints:
@@ -122,6 +124,7 @@ MonoBehaviour:
     - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
       Count: 6
       Interval: 1
+      PathIndex: 0
       StartDelay: 0
       SpeedMultiplier: 1
       HealthMultiplier: 1
@@ -136,6 +139,7 @@ MonoBehaviour:
     - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
       Count: 10
       Interval: 0.6
+      PathIndex: 0
       StartDelay: 0
       SpeedMultiplier: 1
       HealthMultiplier: 1
@@ -145,6 +149,7 @@ MonoBehaviour:
     - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
       Count: 4
       Interval: 0.5
+      PathIndex: 0
       StartDelay: 3
       SpeedMultiplier: 1.25
       HealthMultiplier: 1
@@ -159,6 +164,7 @@ MonoBehaviour:
     - Enemy: {fileID: 11400000, guid: f8df484185f8548e09d43e1f3add3b98, type: 2}
       Count: 3
       Interval: 1.2
+      PathIndex: 0
       StartDelay: 0
       SpeedMultiplier: 1
       HealthMultiplier: 1
@@ -168,6 +174,7 @@ MonoBehaviour:
     - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
       Count: 8
       Interval: 0.5
+      PathIndex: 0
       StartDelay: 2
       SpeedMultiplier: 1
       HealthMultiplier: 1
@@ -182,6 +189,7 @@ MonoBehaviour:
     - Enemy: {fileID: 11400000, guid: f8df484185f8548e09d43e1f3add3b98, type: 2}
       Count: 5
       Interval: 1
+      PathIndex: 0
       StartDelay: 0
       SpeedMultiplier: 1
       HealthMultiplier: 1
@@ -191,6 +199,7 @@ MonoBehaviour:
     - Enemy: {fileID: 11400000, guid: cdf99995bf66f4904909e0c51e1cb3fa, type: 2}
       Count: 3
       Interval: 1.5
+      PathIndex: 0
       StartDelay: 3.5
       SpeedMultiplier: 1.1
       HealthMultiplier: 1
@@ -205,6 +214,7 @@ MonoBehaviour:
     - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
       Count: 12
       Interval: 0.4
+      PathIndex: 0
       StartDelay: 0
       SpeedMultiplier: 1.2
       HealthMultiplier: 1
@@ -214,6 +224,7 @@ MonoBehaviour:
     - Enemy: {fileID: 11400000, guid: a3cec9b5c6a6c4668ad9bbc2b043cf74, type: 2}
       Count: 3
       Interval: 2
+      PathIndex: 0
       StartDelay: 3
       SpeedMultiplier: 1
       HealthMultiplier: 1
@@ -223,6 +234,7 @@ MonoBehaviour:
     - Enemy: {fileID: 11400000, guid: a3cec9b5c6a6c4668ad9bbc2b043cf74, type: 2}
       Count: 1
       Interval: 1
+      PathIndex: 0
       StartDelay: 7
       SpeedMultiplier: 0.9
       HealthMultiplier: 1.6
@@ -250,6 +262,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4a98a5bf427b5441b9a196ae98fa878a, type: 2}
   - {fileID: 11400000, guid: 865e0ba6aca764ce8914981b4f28f465, type: 2}
   - {fileID: 11400000, guid: 1523e0b2abd0d4dca817a3cc2f4550fd, type: 2}
-  - {fileID: 11400000, guid: f8dcf1b3780943f8a791d00bdba741ce, type: 2}
-  - {fileID: 11400000, guid: ebde702fda254d0fb00c3850f4f5313f, type: 2}
-  - {fileID: 11400000, guid: 9620bfb7aed344391beb817b6f1df054, type: 2}

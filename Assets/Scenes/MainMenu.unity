@@ -2113,7 +2113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ::CreditsMenuController
   _cursor: {fileID: 2119019960}
-  _backButton: {fileID: 1273749948}
+  _backButton: {fileID: 2000000046}
   _cursorXOffset: 0
 --- !u!224 &2000000046
 RectTransform:

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Modifiers;
 using PrimeTween;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -52,6 +53,9 @@ public class GameManager : MonoSingleton<GameManager>
 
 	// Events
 	[HideInInspector]
+	public Action OpenPauseMenu;
+
+	[HideInInspector]
 	public Action OnLose;
 
 	[HideInInspector]
@@ -82,6 +86,8 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void Start()
 	{
+		InputManager.Instance.OnStart -= HandleStart;
+		InputManager.Instance.OnStart += HandleStart;
 		if (SelectedLevel != null)
 		{
 			_levelSO = SelectedLevel;
@@ -125,6 +131,11 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void OnDisable()
 	{
+		if (InputManager.Instance != null)
+		{
+			InputManager.Instance.OnStart -= HandleStart;
+		}
+
 		if (_waveController != null)
 		{
 			_waveController.OnWaveItemsOffered -= HandleWaveItemsOffered;
@@ -137,6 +148,47 @@ public class GameManager : MonoSingleton<GameManager>
 			AudioManager.Instance.SetMusicMultiplier(1f);
 			AudioManager.Instance.StopMusic();
 		}
+	}
+
+	private void HandleStart()
+	{
+		if (_hasWon || _hasLost)
+		{
+			return;
+		}
+
+		OpenPauseMenu?.Invoke();
+	}
+
+	public void ResumeGame()
+	{
+		UnityEngine.Time.timeScale = 1f;
+	}
+
+	public void RestartLevel()
+	{
+		UnityEngine.Time.timeScale = 1f;
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
+
+	public void LoadNextLevel()
+	{
+		UnityEngine.Time.timeScale = 1f;
+		if (_levelSO.NextLevel != null)
+		{
+			SelectedLevel = _levelSO.NextLevel;
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		}
+		else
+		{
+			SceneManager.LoadScene("MainMenu");
+		}
+	}
+
+	public void ReturnToMainMenu()
+	{
+		UnityEngine.Time.timeScale = 1f;
+		SceneManager.LoadScene("MainMenu");
 	}
 
 	private void OnDestroy()

@@ -44,16 +44,6 @@ public class LevelMenuController : MonoBehaviour
 
 	private void Awake()
 	{
-		CacheEntryTexts();
-	}
-
-	private void CacheEntryTexts()
-	{
-		if (_entryTexts != null)
-		{
-			return;
-		}
-
 		_entryTexts = new TextMeshProUGUI[_levelEntries.Length];
 		for (int i = 0; i < _levelEntries.Length; i++)
 		{
@@ -92,7 +82,6 @@ public class LevelMenuController : MonoBehaviour
 
 	public void UpdateLevelVisuals()
 	{
-		CacheEntryTexts();
 		for (int i = 0; i < _levelEntries.Length; i++)
 		{
 			_entryTexts[i].color = IsLevelUnlocked(i) ? _unlockedColor : _lockedColor;

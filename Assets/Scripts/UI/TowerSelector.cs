@@ -78,10 +78,18 @@ public class TowerSelector : MonoBehaviour
 	{
 		Instance = this;
 		_menuRoot.SetActive(false);
+		GameManager.Instance.OnWin += HandleGameEnded;
+		GameManager.Instance.OnLose += HandleGameEnded;
 	}
 
 	private void OnDestroy()
 	{
+		if (GameManager.Instance != null)
+		{
+			GameManager.Instance.OnWin -= HandleGameEnded;
+			GameManager.Instance.OnLose -= HandleGameEnded;
+		}
+
 		if (IsOpen)
 		{
 			Time.timeScale = 1f;
@@ -89,9 +97,17 @@ public class TowerSelector : MonoBehaviour
 		}
 	}
 
+	private void HandleGameEnded()
+	{
+		if (IsOpen)
+		{
+			Close(resumeTime: false);
+		}
+	}
+
 	public void Open(Vector2Int gridPosition, Vector2Int cursorSize, int initialIndex = 0)
 	{
-		if (IsOpen || (ItemSelector.Instance && ItemSelector.Instance.IsOpen))
+		if (IsOpen || ItemSelector.Instance.IsOpen || GameManager.Instance.HasWon || GameManager.Instance.HasLost)
 		{
 			return;
 		}
@@ -122,7 +138,7 @@ public class TowerSelector : MonoBehaviour
 
 	public void OpenInspect(Tower tower)
 	{
-		if (IsOpen || (ItemSelector.Instance && ItemSelector.Instance.IsOpen))
+		if (IsOpen || ItemSelector.Instance.IsOpen || GameManager.Instance.HasWon || GameManager.Instance.HasLost)
 		{
 			return;
 		}
@@ -145,7 +161,7 @@ public class TowerSelector : MonoBehaviour
 
 		_iconImage.sprite = data.Icon;
 		_nameText.text = data.Name;
-		_attackText.text = GetTowerAttackDelayString(data);
+		_attackText.text = $"{tower.CalculateDPS()}";
 		_rangeText.text = $"{tower.Stats.GetFinalStat(StatType.Range):0.#}";
 		_priceText.text = $"{data.Cost}";
 		_priceText.color = _affordablePriceColor;
@@ -269,18 +285,13 @@ public class TowerSelector : MonoBehaviour
 
 		_iconImage.sprite = selected.Icon;
 		_nameText.text = selected.Name;
-		_attackText.text = GetTowerAttackDelayString(selected);
+		_attackText.text = $"{selected.DPS}";
 		_rangeText.text = $"{selected.Range:0.#}";
 		_priceText.text = $"{selected.Cost}";
 		_priceText.color = canAfford ? _affordablePriceColor : _unaffordablePriceColor;
 		_descriptionText.text = selected.Description;
 
 		OnTowerChanged?.Invoke(selected);
-	}
-
-	private string GetTowerAttackDelayString(TowerSO tower)
-	{
-		return $"{tower.TotalAttackDelay:0.##}s";
 	}
 
 	private void HandleConfirm()

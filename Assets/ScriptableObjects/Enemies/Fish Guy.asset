@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
   Name: Fish Guy
   Description: Still fodder enemies but this time tankier but slower
-  Health: 50
+  Health: 60
   Speed: 1
   Damage: 10
   GoldReward: 10

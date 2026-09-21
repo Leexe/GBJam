@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   LevelName: Level 1
+  PrerequisiteLevel: {fileID: 0}
   Music:
     Guid:
       Data1: 1498187387

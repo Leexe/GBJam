@@ -1,5 +1,6 @@
 using System;
 using PrimeTween;
+using TMPro;
 using UnityEngine;
 
 public class LevelMenuController : MonoBehaviour
@@ -26,6 +27,14 @@ public class LevelMenuController : MonoBehaviour
 	[SerializeField]
 	private float _cursorXOffset = -8f;
 
+	[Header("Visual Settings")]
+	[SerializeField]
+	private Color _unlockedColor = Color.white;
+
+	[SerializeField]
+	private Color _lockedColor = new Color(0.45f, 0.45f, 0.45f, 0.5f);
+
+	private TextMeshProUGUI[] _entryTexts;
 	private int _currentIndex;
 	private bool _isActive;
 	private Sequence _cursorTween;
@@ -34,6 +43,25 @@ public class LevelMenuController : MonoBehaviour
 	public event Action OnBackRequested;
 
 	private int TotalItems => _levelEntries.Length + 1;
+
+	private void Awake()
+	{
+		CacheEntryTexts();
+	}
+
+	private void CacheEntryTexts()
+	{
+		if (_entryTexts != null)
+		{
+			return;
+		}
+
+		_entryTexts = new TextMeshProUGUI[_levelEntries.Length];
+		for (int i = 0; i < _levelEntries.Length; i++)
+		{
+			_entryTexts[i] = _levelEntries[i].button.GetComponent<TextMeshProUGUI>();
+		}
+	}
 
 	private void OnDisable()
 	{
@@ -44,6 +72,7 @@ public class LevelMenuController : MonoBehaviour
 	{
 		_isActive = true;
 		_currentIndex = 0;
+		UpdateLevelVisuals();
 		UpdateCursorPosition();
 	}
 
@@ -51,6 +80,31 @@ public class LevelMenuController : MonoBehaviour
 	{
 		_isActive = false;
 		_cursorTween.Stop();
+	}
+
+	public bool IsLevelUnlocked(int index)
+	{
+		if (index == 0)
+		{
+			return true;
+		}
+
+		LevelSO prerequisite = _levelEntries[index].levelSO.PrerequisiteLevel;
+		if (prerequisite != null)
+		{
+			return LevelProgression.IsLevelCompleted(prerequisite);
+		}
+
+		return LevelProgression.IsLevelCompleted(_levelEntries[index - 1].levelSO);
+	}
+
+	public void UpdateLevelVisuals()
+	{
+		CacheEntryTexts();
+		for (int i = 0; i < _levelEntries.Length; i++)
+		{
+			_entryTexts[i].color = IsLevelUnlocked(i) ? _unlockedColor : _lockedColor;
+		}
 	}
 
 	public void HandleNavigation(Vector2 direction)
@@ -78,6 +132,12 @@ public class LevelMenuController : MonoBehaviour
 
 		if (_currentIndex < _levelEntries.Length)
 		{
+			if (!IsLevelUnlocked(_currentIndex))
+			{
+				AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CantClick_Sfx);
+				return;
+			}
+
 			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CompleteClick_Sfx);
 			GameManager.SelectedLevel = _levelEntries[_currentIndex].levelSO;
 			OnLevelSelected?.Invoke(_levelEntries[_currentIndex].levelSO);
@@ -115,5 +175,25 @@ public class LevelMenuController : MonoBehaviour
 	private RectTransform GetTargetRect(int index)
 	{
 		return index < _levelEntries.Length ? _levelEntries[index].button : _backButton;
+	}
+
+	[ContextMenu("Clear Progression")]
+	private void ContextClearProgression()
+	{
+		for (int i = 0; i < _levelEntries.Length; i++)
+		{
+			LevelProgression.ClearLevel(_levelEntries[i].levelSO);
+		}
+		UpdateLevelVisuals();
+	}
+
+	[ContextMenu("Complete All Levels")]
+	private void ContextCompleteAll()
+	{
+		for (int i = 0; i < _levelEntries.Length; i++)
+		{
+			LevelProgression.CompleteLevel(_levelEntries[i].levelSO);
+		}
+		UpdateLevelVisuals();
 	}
 }

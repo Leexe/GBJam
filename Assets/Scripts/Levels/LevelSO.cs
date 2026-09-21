@@ -153,6 +153,9 @@ public class LevelSO : ScriptableObject
 	public string LevelName;
 
 	[TabGroup("Tabs", "General")]
+	public LevelSO PrerequisiteLevel;
+
+	[TabGroup("Tabs", "General")]
 	public EventReference Music;
 
 	[TabGroup("Tabs", "General")]

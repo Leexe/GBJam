@@ -209,6 +209,7 @@ public class GameManager : MonoSingleton<GameManager>
 		_hasWon = true;
 		AudioManager.Instance.PauseMusic();
 		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WinningJingle_Sfx);
+		LevelProgression.CompleteLevel(_levelSO);
 		OnWin?.Invoke();
 	}
 

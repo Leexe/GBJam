@@ -103,7 +103,7 @@ public class WaveController : MonoBehaviour
 				yield return null;
 			}
 
-			SpawnEnemy(group.Enemy, group.Modifier);
+			SpawnEnemy(group.Enemy, group.Modifier, group.PathIndex);
 			if (i < group.Count - 1)
 			{
 				yield return new WaitForSeconds(group.Interval);
@@ -113,9 +113,9 @@ public class WaveController : MonoBehaviour
 		_activeSpawners--;
 	}
 
-	private void SpawnEnemy(EnemySO enemySO, EnemyModifier modifier)
+	private void SpawnEnemy(EnemySO enemySO, EnemyModifier modifier, int pathIndex = 0)
 	{
-		Enemy enemy = EnemyPool.Instance.Get(enemySO, modifier);
+		Enemy enemy = EnemyPool.Instance.Get(enemySO, modifier, pathIndex);
 		enemy.OnDeath = HandleEnemyDeactivated;
 	}
 

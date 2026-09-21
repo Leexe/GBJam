@@ -62,13 +62,15 @@ MonoBehaviour:
     - Name: OnTowerRemoved
       Entry: 6
       Data: 
-  _enemyWaypoints:
-  - {x: 0, y: 11}
-  - {x: 5, y: 11}
-  - {x: 5, y: 4}
-  - {x: 14, y: 4}
-  - {x: 14, y: 12}
-  - {x: 17, y: 12}
+  _paths:
+  - Name: Path 1
+    Waypoints:
+    - {x: 0, y: 11}
+    - {x: 5, y: 11}
+    - {x: 5, y: 4}
+    - {x: 14, y: 4}
+    - {x: 14, y: 12}
+    - {x: 17, y: 12}
   _obstacles: []
   _originPosition: {x: 0, y: 0}
   _cellSize: 0.5

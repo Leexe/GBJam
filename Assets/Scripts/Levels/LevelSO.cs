@@ -22,8 +22,14 @@ public class SpawnGroup
 	public int Count = 5;
 
 	[HorizontalGroup("Row/Details/H1")]
-	[LabelWidth(60)]
+	[LabelWidth(45)]
 	public float Interval = 0.5f;
+
+	[HorizontalGroup("Row/Details/H1")]
+	[LabelWidth(35)]
+	[LabelText("Path")]
+	[MinValue(0)]
+	public int PathIndex = 0;
 
 	[VerticalGroup("Row/Details")]
 	[HorizontalGroup("Row/Details/H2")]
@@ -82,6 +88,10 @@ public class SpawnGroup
 			}
 
 			string label = $"{Enemy.Name} (x{Count})";
+			if (PathIndex > 0)
+			{
+				label += $" [Path {PathIndex + 1}]";
+			}
 			if (SpeedMultiplier > 0f && !Mathf.Approximately(SpeedMultiplier, 1f))
 			{
 				label += $" [{SpeedMultiplier:0.#}x Spd]";
@@ -157,13 +167,21 @@ public class LevelSO : ScriptableObject
 
 	[TabGroup("Tabs", "Map")]
 	[ListDrawerSettings(ShowIndexLabels = true)]
-	public List<Vector2Int> EnemyWaypoints = new();
+	public List<PathData> Paths = new();
 
 	[TabGroup("Tabs", "Map")]
 	[ListDrawerSettings(ShowIndexLabels = true)]
 	public List<Vector2Int> Obstacles = new();
 
-	public List<Vector2Int> Waypoints => EnemyWaypoints;
+	public List<Vector2Int> GetPath(int index = 0)
+	{
+		if (Paths.Count == 0)
+		{
+			return null;
+		}
+		index = Mathf.Clamp(index, 0, Paths.Count - 1);
+		return Paths[index].Waypoints;
+	}
 
 	[TabGroup("Tabs", "Waves")]
 	[ListDrawerSettings(ShowIndexLabels = true)]

@@ -22,13 +22,15 @@ MonoBehaviour:
     Path: event:/BGM/Gameplay/Gameplay1
   MaxHealth: 100
   StartingGold: 60
-  EnemyWaypoints:
-  - {x: 0, y: 13}
-  - {x: 3, y: 13}
-  - {x: 3, y: 4}
-  - {x: 13, y: 4}
-  - {x: 13, y: 11}
-  - {x: 19, y: 11}
+  Paths:
+  - Name: Path 1
+    Waypoints:
+    - {x: 0, y: 13}
+    - {x: 3, y: 13}
+    - {x: 3, y: 4}
+    - {x: 13, y: 4}
+    - {x: 13, y: 11}
+    - {x: 19, y: 11}
   Obstacles:
   - {x: 8, y: 9}
   - {x: 9, y: 9}

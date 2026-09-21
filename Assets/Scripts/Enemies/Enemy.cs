@@ -61,14 +61,14 @@ public class Enemy : MonoBehaviour
 	[HideInInspector]
 	public Action<Enemy> OnDeath;
 
-	public void Initialize(EnemySO data, EnemyModifier modifier = default)
+	public void Initialize(EnemySO data, EnemyModifier modifier = default, int pathIndex = 0)
 	{
 		_data = data;
 		_modifier = modifier;
 		MaxHealth = data.Health * _modifier.EffectiveHealth;
 		_currentHealth = MaxHealth;
-		_waypoints = GridManager.Instance.EnemyWaypoints;
-		_totalDistance = GridManager.Instance.TotalPathDistance;
+		_waypoints = GridManager.Instance.GetPath(pathIndex);
+		_totalDistance = GridManager.Instance.GetPathDistance(pathIndex);
 		DistanceTraveled = 0f;
 		TravelProgress = 0f;
 		_currentWaypointIndex = 1;

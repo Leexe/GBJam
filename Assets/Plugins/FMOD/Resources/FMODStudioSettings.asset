@@ -635,8 +635,9 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
-  - Enemy
-  - Status Effects
+  - AMB
+  - Music
+  - SFX
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0

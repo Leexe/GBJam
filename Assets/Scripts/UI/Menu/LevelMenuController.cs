@@ -1,5 +1,4 @@
 using System;
-using PrimeTween;
 using TMPro;
 using UnityEngine;
 
@@ -37,7 +36,6 @@ public class LevelMenuController : MonoBehaviour
 	private TextMeshProUGUI[] _entryTexts;
 	private int _currentIndex;
 	private bool _isActive;
-	private Sequence _cursorTween;
 
 	public event Action<LevelSO> OnLevelSelected;
 	public event Action OnBackRequested;
@@ -63,11 +61,6 @@ public class LevelMenuController : MonoBehaviour
 		}
 	}
 
-	private void OnDisable()
-	{
-		_cursorTween.Stop();
-	}
-
 	public void Open()
 	{
 		_isActive = true;
@@ -79,7 +72,6 @@ public class LevelMenuController : MonoBehaviour
 	public void Close()
 	{
 		_isActive = false;
-		_cursorTween.Stop();
 	}
 
 	public bool IsLevelUnlocked(int index)
@@ -161,15 +153,8 @@ public class LevelMenuController : MonoBehaviour
 	private void UpdateCursorPosition()
 	{
 		RectTransform target = GetTargetRect(_currentIndex);
-		_cursorTween.Stop();
 		float leftEdge = target.anchoredPosition.x - (target.rect.width * target.pivot.x);
 		_cursor.anchoredPosition = new Vector2(leftEdge + _cursorXOffset, target.anchoredPosition.y);
-
-		float originX = _cursor.anchoredPosition.x;
-		_cursorTween = Sequence
-			.Create(-1, Sequence.SequenceCycleMode.Yoyo, useUnscaledTime: true)
-			.Chain(Tween.UIAnchoredPositionX(_cursor, originX - 2f, 0.35f, Ease.InOutSine))
-			.Chain(Tween.UIAnchoredPositionX(_cursor, originX, 0.35f, Ease.InOutSine));
 	}
 
 	private RectTransform GetTargetRect(int index)

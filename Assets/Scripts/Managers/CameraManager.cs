@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CameraManager : MonoSingleton<CameraManager>
 {
-	[Header("Target")]
+	[Header("Cinemachine")]
 	[SerializeField]
-	private Transform _shakeTarget;
+	private CinemachineCamera _cinemachineCamera;
 
 	[Header("Shake Settings")]
 	[SerializeField]
@@ -21,16 +21,17 @@ public class CameraManager : MonoSingleton<CameraManager>
 	private Tween _shakeTween;
 	private Vector3 _initialLocalPosition;
 
+	public CinemachineCamera CinemachineCamera => _cinemachineCamera;
+
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		if (_shakeTarget == null)
+		if (_cinemachineCamera == null)
 		{
-			CinemachineCamera cmCam = FindFirstObjectByType<CinemachineCamera>();
-			_shakeTarget = cmCam != null ? cmCam.transform : Camera.main.transform;
+			_cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
 		}
 
-		_initialLocalPosition = _shakeTarget.localPosition;
+		_initialLocalPosition = _cinemachineCamera.transform.localPosition;
 	}
 
 	public void ShakeScreen()
@@ -48,11 +49,11 @@ public class CameraManager : MonoSingleton<CameraManager>
 		if (_shakeTween.isAlive)
 		{
 			_shakeTween.Stop();
-			_shakeTarget.localPosition = _initialLocalPosition;
+			_cinemachineCamera.transform.localPosition = _initialLocalPosition;
 		}
 
 		_shakeTween = Tween.ShakeLocalPosition(
-			_shakeTarget,
+			_cinemachineCamera.transform,
 			strength,
 			duration,
 			frequency,
@@ -66,10 +67,7 @@ public class CameraManager : MonoSingleton<CameraManager>
 		if (_shakeTween.isAlive)
 		{
 			_shakeTween.Stop();
-			if (_shakeTarget != null)
-			{
-				_shakeTarget.localPosition = _initialLocalPosition;
-			}
+			_cinemachineCamera.transform.localPosition = _initialLocalPosition;
 		}
 	}
 }

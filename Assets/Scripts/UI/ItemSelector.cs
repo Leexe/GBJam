@@ -278,22 +278,15 @@ public class ItemSelector : MonoBehaviour
 
 	private void UpdateTowerIcons(TowerModifierSO item)
 	{
-		List<TowerSO> levelTowers = GameManager.Instance.Level.TowerPool;
-
 		for (int i = 0; i < _towerIcons.Count; i++)
 		{
 			TowerIcon icon = _towerIcons[i];
-			if (i < levelTowers.Count)
+			if (icon.Tower == null)
 			{
-				TowerSO tower = levelTowers[i];
-				icon.SetTower(tower);
-				bool isAffected = IsTowerAffected(tower.TowerType, item.Category);
-				icon.SetActive(isAffected);
+				icon.SetTower(GameManager.Instance.Level.TowerPool[i]);
 			}
-			else
-			{
-				icon.SetActive(false);
-			}
+
+			icon.SetActive(IsTowerAffected(icon.TowerType, item.Category));
 		}
 	}
 

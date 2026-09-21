@@ -68,7 +68,6 @@ public class MainMenuController : MonoBehaviour
 	private float _splashTimer;
 	private bool _isTransitioning;
 	private bool _isSubscribed;
-	private Sequence _cursorTween;
 	private Vector2Int _lastDirection;
 	private float _holdTimer;
 
@@ -113,7 +112,6 @@ public class MainMenuController : MonoBehaviour
 			_levelController.OnBackRequested -= ReturnToMainMenu;
 			_levelController.OnLevelSelected -= HandleLevelSelected;
 		}
-		_cursorTween.Stop();
 	}
 
 	private void Start()
@@ -386,10 +384,6 @@ public class MainMenuController : MonoBehaviour
 			AudioManager.Instance.PlayMusic(FMODEvents.Instance.Title_Bgm);
 			UpdateCursorPosition();
 		}
-		else
-		{
-			_cursorTween.Stop();
-		}
 	}
 
 	private void UpdateCursorPosition()
@@ -401,15 +395,8 @@ public class MainMenuController : MonoBehaviour
 		if (target == null)
 			return;
 
-		_cursorTween.Stop();
 		float leftEdge = target.anchoredPosition.x - (target.rect.width * target.pivot.x);
 		_mainCursor.anchoredPosition = new Vector2(leftEdge + _cursorXOffset, target.anchoredPosition.y);
-
-		float originX = _mainCursor.anchoredPosition.x;
-		_cursorTween = Sequence
-			.Create(-1, Sequence.SequenceCycleMode.Yoyo, useUnscaledTime: true)
-			.Chain(Tween.UIAnchoredPositionX(_mainCursor, originX - 2f, 0.35f, Ease.InOutSine))
-			.Chain(Tween.UIAnchoredPositionX(_mainCursor, originX, 0.35f, Ease.InOutSine));
 	}
 
 	private void QuitApplication()

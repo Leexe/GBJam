@@ -111,17 +111,12 @@ public class Projectile : MonoBehaviour
 
 	private void Update()
 	{
-		if (_isExploding)
-		{
-			return;
-		}
-
 		_lifetimeTimer -= Time.deltaTime;
 		if (_lifetimeTimer <= 0f)
 		{
 			if (_aoeRadius > 0f)
 			{
-				TriggerExplosion();
+				Explode();
 			}
 			else
 			{
@@ -135,7 +130,7 @@ public class Projectile : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		if (_isExploding || _remainingPierce <= 0)
+		if (_remainingPierce <= 0)
 		{
 			return;
 		}
@@ -152,27 +147,25 @@ public class Projectile : MonoBehaviour
 
 		if (_aoeRadius > 0f)
 		{
-			TriggerExplosion();
+			Explode();
 			return;
 		}
-		else
+
+		float finalDamage = CalculateFinalDamage();
+		enemy.PlayBloodParticles(_direction);
+		enemy.TakeDamage(finalDamage);
+		if (_knockback > 0f)
 		{
-			float finalDamage = CalculateFinalDamage();
-			enemy.PlayBloodParticles(_direction);
-			enemy.TakeDamage(finalDamage);
-			if (_knockback > 0f)
-			{
-				enemy.ApplyKnockback(_direction, _knockback);
-			}
-			if (_statusEffects != null)
-			{
-				for (int i = 0; i < _statusEffects.Count; i++)
-				{
-					enemy.StatusController.ApplyStatusEffect(_statusEffects[i]);
-				}
-			}
-			_onEnemyHit?.Invoke(enemy, finalDamage);
+			enemy.ApplyKnockback(_direction, _knockback);
 		}
+		if (_statusEffects != null)
+		{
+			for (int i = 0; i < _statusEffects.Count; i++)
+			{
+				enemy.StatusController.ApplyStatusEffect(_statusEffects[i]);
+			}
+		}
+		_onEnemyHit?.Invoke(enemy, finalDamage);
 
 		_remainingPierce--;
 		if (_remainingPierce <= 0)
@@ -200,10 +193,16 @@ public class Projectile : MonoBehaviour
 		return finalDamage;
 	}
 
-	private void TriggerExplosion()
+	private void Explode()
 	{
-		_isExploding = true;
+		enabled = false;
+		_remainingPierce = 0;
+		_speed = 0f;
+		_spriteRenderer.enabled = false;
 		_projectileCollider.enabled = false;
+		transform.localScale = Vector3.one;
+		transform.rotation = Quaternion.identity;
+		_explosionParticles.Play();
 
 		float finalDamage = CalculateFinalDamage();
 		_explosionHitbox.Trigger(
@@ -216,20 +215,6 @@ public class Projectile : MonoBehaviour
 			_knockback,
 			_statusEffects
 		);
-
-		Explode();
-	}
-
-	private void Explode()
-	{
-		_isExploding = true;
-		_remainingPierce = 0;
-		_speed = 0f;
-		_spriteRenderer.enabled = false;
-		_projectileCollider.enabled = false;
-		transform.localScale = Vector3.one;
-		transform.rotation = Quaternion.identity;
-		_explosionParticles.Play();
 
 		float diameter = _aoeRadius * 2f;
 		_circleVisual.transform.localPosition = Vector3.zero;
@@ -245,7 +230,6 @@ public class Projectile : MonoBehaviour
 
 	private void Deactivate()
 	{
-		_isExploding = false;
 		_explosionTween.Stop();
 		_circleVisual.gameObject.SetActive(false);
 		_explosionParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);

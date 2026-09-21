@@ -210,9 +210,12 @@ public class TowerSelector : MonoBehaviour
 
 	private void UnsubscribeInput()
 	{
-		InputManager.Instance.OnMovement -= HandleMovement;
-		InputManager.Instance.OnConfirm -= HandleConfirm;
-		InputManager.Instance.OnCancel -= HandleCancel;
+		if (InputManager.Instance != null)
+		{
+			InputManager.Instance.OnMovement -= HandleMovement;
+			InputManager.Instance.OnConfirm -= HandleConfirm;
+			InputManager.Instance.OnCancel -= HandleCancel;
+		}
 	}
 
 	private void Update()

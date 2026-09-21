@@ -854,19 +854,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
-      value: 0.22273514
+      value: 0.23262033
       objectReference: {fileID: 0}
     - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0.056410253
+      value: 0.07244656
       objectReference: {fileID: 0}
     - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_NormalizedViewPortRect.width
-      value: 0.55395263
+      value: 0.53475934
       objectReference: {fileID: 0}
     - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 0.8861538
+      value: 0.85510695
       objectReference: {fileID: 0}
     - target: {fileID: 8549151056627862277, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1489,13 +1489,13 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2000000010}
   - {fileID: 513053607}
   - {fileID: 2119019960}
   - {fileID: 2000000020}
   - {fileID: 79914739}
   - {fileID: 2000000030}
   - {fileID: 2000000040}
+  - {fileID: 2000000010}
   - {fileID: 2000000051}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1597,6 +1597,7 @@ MonoBehaviour:
   _mainCursor: {fileID: 2119019960}
   _cursorXOffset: 2
   _splashDuration: 1.8
+  _fadeDuration: 2
   _gameplaySceneName: Game
 --- !u!1 &2000000009
 GameObject:

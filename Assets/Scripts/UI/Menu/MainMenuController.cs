@@ -126,7 +126,6 @@ public class MainMenuController : MonoBehaviour
 		}
 		SetState(MenuState.Splash);
 
-		_fadeOverlay.alpha = 1f;
 		Tween.Alpha(_fadeOverlay, 0f, _fadeDuration, useUnscaledTime: true);
 	}
 

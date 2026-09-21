@@ -28,7 +28,9 @@ MonoBehaviour:
   <Range>k__BackingField: 2.5
   <Damage>k__BackingField: 25
   <Knockback>k__BackingField: 0
-  <StatusEffects>k__BackingField: []
-  <AttackRate>k__BackingField: 0.75
-  <ProjectileData>k__BackingField: {fileID: 11400000, guid: 62463829f4009428f8db5d24badc71ef, type: 2}
+  <Attacks>k__BackingField:
+  - <Delay>k__BackingField: 2
+    <Damage>k__BackingField: 10
+    <ProjectileData>k__BackingField: {fileID: 11400000, guid: 62463829f4009428f8db5d24badc71ef, type: 2}
+    <StatusEffects>k__BackingField: []
   <Cost>k__BackingField: 75

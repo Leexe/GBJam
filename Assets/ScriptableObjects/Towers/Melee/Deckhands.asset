@@ -17,8 +17,14 @@ MonoBehaviour:
   <Description>k__BackingField: Melee attackers who will get the job done in a pinch
   <TowerType>k__BackingField: 0
   <Icon>k__BackingField: {fileID: 21300000, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
+  <TopSprites>k__BackingField: []
+  <BottomSprites>k__BackingField: []
   <Range>k__BackingField: 1
-  <Damage>k__BackingField: 10
-  <AttackRate>k__BackingField: 0.7
-  <ProjectileData>k__BackingField: {fileID: 0}
+  <Damage>k__BackingField: 15
+  <Knockback>k__BackingField: 0
+  <Attacks>k__BackingField:
+  - <Delay>k__BackingField: 0.5
+    <Damage>k__BackingField: 10
+    <ProjectileData>k__BackingField: {fileID: 0}
+    <StatusEffects>k__BackingField: []
   <Cost>k__BackingField: 15

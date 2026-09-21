@@ -156,7 +156,7 @@ public class TowerSelector : MonoBehaviour
 
 		_iconImage.sprite = data.Icon;
 		_nameText.text = data.Name;
-		_attackText.text = $"{tower.Stats.GetFinalStat(StatType.Damage):0.#}";
+		_attackText.text = GetTowerAttackDelayString(data);
 		_rangeText.text = $"{tower.Stats.GetFinalStat(StatType.Range):0.#}";
 		_priceText.text = $"{data.Cost}";
 		_priceText.color = _affordablePriceColor;
@@ -299,7 +299,7 @@ public class TowerSelector : MonoBehaviour
 
 		_iconImage.sprite = selected.Icon;
 		_nameText.text = selected.Name;
-		_attackText.text = GetTowerDamageString(selected);
+		_attackText.text = GetTowerAttackDelayString(selected);
 		_rangeText.text = $"{selected.Range:0.#}";
 		_priceText.text = $"{selected.Cost}";
 		_priceText.color = canAfford ? _affordablePriceColor : _unaffordablePriceColor;
@@ -311,14 +311,9 @@ public class TowerSelector : MonoBehaviour
 		OnTowerChanged?.Invoke(selected);
 	}
 
-	private float GetTowerDamage(TowerSO tower)
+	private string GetTowerAttackDelayString(TowerSO tower)
 	{
-		return tower.TowerType == TowerType.Melee ? tower.Damage : tower.ProjectileData.Damage;
-	}
-
-	private string GetTowerDamageString(TowerSO tower)
-	{
-		return $"{GetTowerDamage(tower):0.#}";
+		return $"{tower.TotalAttackDelay:0.##}s";
 	}
 
 	private void HandleConfirm()

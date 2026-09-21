@@ -54,6 +54,7 @@ public class Projectile : MonoBehaviour
 
 	public void Initialize(Vector3 direction, ProjectileSO projectileData)
 	{
+		enabled = true;
 		_direction = direction;
 		_damage = projectileData.Damage;
 		_speed = projectileData.Speed;
@@ -110,10 +111,22 @@ public class Projectile : MonoBehaviour
 
 	private void Update()
 	{
+		if (_isExploding)
+		{
+			return;
+		}
+
 		_lifetimeTimer -= Time.deltaTime;
 		if (_lifetimeTimer <= 0f)
 		{
-			Deactivate();
+			if (_aoeRadius > 0f)
+			{
+				TriggerExplosion();
+			}
+			else
+			{
+				Deactivate();
+			}
 			return;
 		}
 
@@ -122,7 +135,7 @@ public class Projectile : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		if (_remainingPierce <= 0)
+		if (_isExploding || _remainingPierce <= 0)
 		{
 			return;
 		}
@@ -137,40 +150,14 @@ public class Projectile : MonoBehaviour
 			return;
 		}
 
-		float finalDamage = _damage;
-		if (_useDistanceScaling)
-		{
-			float dist = Vector3.Distance(_originPosition, transform.position);
-			if (dist < _minDistance)
-			{
-				finalDamage *= 0.15f;
-			}
-			else
-			{
-				float t = Mathf.Clamp01((dist - _minDistance) / Mathf.Max(0.1f, _maxDistance - _minDistance));
-				finalDamage *= Mathf.Lerp(1f, 2.5f, t);
-			}
-		}
-
 		if (_aoeRadius > 0f)
 		{
-			_projectileCollider.enabled = false;
-			_explosionHitbox.Trigger(
-				_aoeRadius,
-				finalDamage,
-				_enemyLayerMask,
-				_direction,
-				_onEnemyHit,
-				_onExplosionHit,
-				_knockback,
-				_statusEffects
-			);
-
-			Explode();
+			TriggerExplosion();
 			return;
 		}
 		else
 		{
+			float finalDamage = CalculateFinalDamage();
 			enemy.PlayBloodParticles(_direction);
 			enemy.TakeDamage(finalDamage);
 			if (_knockback > 0f)
@@ -194,8 +181,48 @@ public class Projectile : MonoBehaviour
 		}
 	}
 
+	private float CalculateFinalDamage()
+	{
+		float finalDamage = _damage;
+		if (_useDistanceScaling)
+		{
+			float dist = Vector3.Distance(_originPosition, transform.position);
+			if (dist < _minDistance)
+			{
+				finalDamage *= 0.15f;
+			}
+			else
+			{
+				float t = Mathf.Clamp01((dist - _minDistance) / Mathf.Max(0.1f, _maxDistance - _minDistance));
+				finalDamage *= Mathf.Lerp(1f, 2.5f, t);
+			}
+		}
+		return finalDamage;
+	}
+
+	private void TriggerExplosion()
+	{
+		_isExploding = true;
+		_projectileCollider.enabled = false;
+
+		float finalDamage = CalculateFinalDamage();
+		_explosionHitbox.Trigger(
+			_aoeRadius,
+			finalDamage,
+			_enemyLayerMask,
+			_direction,
+			_onEnemyHit,
+			_onExplosionHit,
+			_knockback,
+			_statusEffects
+		);
+
+		Explode();
+	}
+
 	private void Explode()
 	{
+		_isExploding = true;
 		_remainingPierce = 0;
 		_speed = 0f;
 		_spriteRenderer.enabled = false;
@@ -218,6 +245,7 @@ public class Projectile : MonoBehaviour
 
 	private void Deactivate()
 	{
+		_isExploding = false;
 		_explosionTween.Stop();
 		_circleVisual.gameObject.SetActive(false);
 		_explosionParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);

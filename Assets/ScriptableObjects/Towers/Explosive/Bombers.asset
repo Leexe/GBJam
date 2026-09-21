@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 449f067aa70a40e2b6a647c7011048b2, type: 3}
-  m_Name: Cannon
+  m_Name: Bombers
   m_EditorClassIdentifier: Assembly-CSharp::TowerSO
-  <Name>k__BackingField: Cannon
-  <Id>k__BackingField: cannon
-  <Description>k__BackingField: Heavy artillery launching explosive shells over distances
+  <Name>k__BackingField: Bomber
+  <Id>k__BackingField: bomber
+  <Description>k__BackingField: Short ranged but hurls devastating fire bombs
   <TowerType>k__BackingField: 2
   <Icon>k__BackingField: {fileID: -1747877315, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
   <TopSprites>k__BackingField:
@@ -25,7 +25,7 @@ MonoBehaviour:
   - {fileID: -1747877315, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
   - {fileID: -327697174, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
   - {fileID: 1122999061, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
-  <Range>k__BackingField: 2.5
+  <Range>k__BackingField: 1.25
   <Damage>k__BackingField: 40
   <Knockback>k__BackingField: 0
   <Attacks>k__BackingField:
@@ -33,4 +33,4 @@ MonoBehaviour:
     <Damage>k__BackingField: 10
     <ProjectileData>k__BackingField: {fileID: 11400000, guid: 398f1811c13094caeb3a112156e1b1cd, type: 2}
     <StatusEffects>k__BackingField: []
-  <Cost>k__BackingField: 150
+  <Cost>k__BackingField: 75

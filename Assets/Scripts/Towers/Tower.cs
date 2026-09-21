@@ -63,7 +63,7 @@ public class Tower : MonoBehaviour
 	public IReadOnlyList<TowerModifierInstance> ActiveModifiers => _modifierInstances;
 
 	private float _attackTimer;
-	private float _attackInterval;
+	private int _currentAttackIndex;
 	private float _rangeSqr;
 	private Vector3 _position;
 	private Sequence _attackSequence;
@@ -85,6 +85,7 @@ public class Tower : MonoBehaviour
 	{
 		_data = data;
 		_attackTimer = 0f;
+		_currentAttackIndex = 0;
 		_stunTimer = 0f;
 		_position = transform.position;
 		_spriteRenderer.transform.localPosition = Vector3.zero;
@@ -103,16 +104,18 @@ public class Tower : MonoBehaviour
 
 	private void SetupStats()
 	{
-		float baseDamage = _data.TowerType == TowerType.Melee ? _data.Damage : _data.ProjectileData.Damage;
+		float baseDamage = _data.TowerType == TowerType.Melee ? _data.Damage : _data.Attacks[0].ProjectileData.Damage;
 		float baseAoe =
-			_data.ProjectileData != null && _data.ProjectileData.IsAoe ? _data.ProjectileData.AoeRadius : 0f;
-		float baseKnockback = _data.TowerType == TowerType.Melee ? _data.Knockback : _data.ProjectileData.Knockback;
+			_data.TowerType != TowerType.Melee && _data.Attacks[0].ProjectileData.IsAoe
+				? _data.Attacks[0].ProjectileData.AoeRadius
+				: 0f;
+		float baseKnockback =
+			_data.TowerType == TowerType.Melee ? _data.Knockback : _data.Attacks[0].ProjectileData.Knockback;
 
 		var baseMap = new Dictionary<StatType, float>
 		{
 			{ StatType.Range, _data.Range },
 			{ StatType.Damage, baseDamage },
-			{ StatType.AttackRate, _data.AttackRate },
 			{ StatType.ExplosionRadius, baseAoe },
 			{ StatType.Knockback, baseKnockback },
 		};
@@ -187,7 +190,6 @@ public class Tower : MonoBehaviour
 	{
 		float range = Stats.GetFinalStat(StatType.Range);
 		_rangeSqr = range * range;
-		_attackInterval = 1f / Stats.GetFinalStat(StatType.AttackRate);
 		UpdateRangeIndicator();
 	}
 
@@ -213,6 +215,7 @@ public class Tower : MonoBehaviour
 		_attackSequence.Stop();
 		_spriteRenderer.transform.localPosition = Vector3.zero;
 		_rangeIndicator.gameObject.SetActive(false);
+		_currentAttackIndex = 0;
 	}
 
 	private void Update()
@@ -237,13 +240,18 @@ public class Tower : MonoBehaviour
 		Enemy target = FindTarget();
 		if (target == null)
 		{
+			_currentAttackIndex = 0;
 			_attackTimer = 0.1f;
 			return;
 		}
 
-		Attack(target);
-		_attackTimer = _attackInterval;
+		TowerAttack attack = _data.Attacks[_currentAttackIndex];
+		Attack(target, attack);
+		_attackTimer = attack.Delay;
+		_currentAttackIndex = (_currentAttackIndex + 1) % AttackCount;
 	}
+
+	private int AttackCount => _data.Attacks.Count;
 
 	private Enemy FindTarget()
 	{
@@ -298,7 +306,7 @@ public class Tower : MonoBehaviour
 		return targetEnemy;
 	}
 
-	private void Attack(Enemy target)
+	private void Attack(Enemy target, TowerAttack attack)
 	{
 		for (int i = 0; i < _modifierInstances.Count; i++)
 		{
@@ -311,20 +319,20 @@ public class Tower : MonoBehaviour
 		if (_data.TopSprites != null && _data.TopSprites.Length > 0)
 		{
 			Sprite[] animSprites = direction.y >= 0f ? _data.TopSprites : _data.BottomSprites;
-			PlayAttackAnimation(target, animSprites);
+			PlayAttackAnimation(target, animSprites, attack);
 		}
 		else
 		{
-			PlayFallbackAttack(target, direction.normalized);
+			PlayFallbackAttack(target, direction.normalized, attack);
 		}
 	}
 
-	private void PlayAttackAnimation(Enemy target, Sprite[] animSprites)
+	private void PlayAttackAnimation(Enemy target, Sprite[] animSprites, TowerAttack attack)
 	{
 		_attackSequence.Stop();
 		_spriteRenderer.transform.localPosition = Vector3.zero;
 
-		float frameDuration = Mathf.Min(_animationFrameDuration, _attackInterval / (animSprites.Length + 1));
+		float frameDuration = Mathf.Min(_animationFrameDuration, attack.Delay / (animSprites.Length + 1));
 		_attackSequence = Sequence.Create();
 
 		_spriteRenderer.sprite = animSprites[0];
@@ -334,7 +342,7 @@ public class Tower : MonoBehaviour
 			.ChainCallback(() =>
 			{
 				_spriteRenderer.sprite = animSprites[1];
-				PerformAttack(target);
+				PerformAttack(target, attack);
 			});
 
 		for (int i = 2; i < animSprites.Length; i++)
@@ -356,10 +364,10 @@ public class Tower : MonoBehaviour
 			});
 	}
 
-	private void PlayFallbackAttack(Enemy target, Vector3 direction)
+	private void PlayFallbackAttack(Enemy target, Vector3 direction, TowerAttack attack)
 	{
-		float launchDuration = _attackInterval * _launchReturnRatio.x;
-		float returnDuration = _attackInterval * _launchReturnRatio.y;
+		float launchDuration = attack.Delay * _launchReturnRatio.x;
+		float returnDuration = attack.Delay * _launchReturnRatio.y;
 		Vector3 targetPos = _position + (direction * _launchDistance);
 
 		_attackSequence.Stop();
@@ -368,12 +376,12 @@ public class Tower : MonoBehaviour
 			.Chain(Tween.Position(_spriteRenderer.transform, targetPos, launchDuration, _launchEase))
 			.ChainCallback(() =>
 			{
-				PerformAttack(target);
+				PerformAttack(target, attack);
 			})
 			.Chain(Tween.Position(_spriteRenderer.transform, _position, returnDuration, _returnEase));
 	}
 
-	private void PerformAttack(Enemy target)
+	private void PerformAttack(Enemy target, TowerAttack attack)
 	{
 		float damage = Stats.GetFinalStat(StatType.Damage);
 		for (int i = 0; i < _modifierInstances.Count; i++)
@@ -392,11 +400,11 @@ public class Tower : MonoBehaviour
 				Vector3 knockDir = attackDir == Vector3.zero ? Vector3.up : attackDir;
 				target.ApplyKnockback(knockDir, finalKnockback);
 			}
-			if (_data.StatusEffects != null)
+			if (attack.StatusEffects != null)
 			{
-				for (int i = 0; i < _data.StatusEffects.Count; i++)
+				for (int i = 0; i < attack.StatusEffects.Count; i++)
 				{
-					target.StatusController.ApplyStatusEffect(_data.StatusEffects[i]);
+					target.StatusController.ApplyStatusEffect(attack.StatusEffects[i]);
 				}
 			}
 			for (int i = 0; i < _modifierInstances.Count; i++)
@@ -406,8 +414,9 @@ public class Tower : MonoBehaviour
 		}
 		else
 		{
-			Projectile proj = ProjectilePool.Instance.Get(transform.position, target.transform, _data.ProjectileData);
+			Projectile proj = ProjectilePool.Instance.Get(transform.position, target.transform, attack.ProjectileData);
 			proj.SetDamage(damage);
+			proj.SetStatusEffects(attack.StatusEffects);
 
 			float finalAoe = Stats.GetFinalStat(StatType.ExplosionRadius);
 			if (finalAoe > 0f)

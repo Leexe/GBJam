@@ -64,19 +64,8 @@ public class TowerSO : ScriptableObject
 
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Combat")]
-	[field: ShowIf(nameof(TowerType), TowerType.Melee)]
-	public List<StatusEffectSO> StatusEffects { get; private set; }
-
-	[field: SerializeField]
-	[field: TabGroup("Tab", "Combat")]
-	[field: MinValue(0.01f)]
-	public float AttackRate { get; private set; } = 1f;
-
-	[field: SerializeField]
-	[field: TabGroup("Tab", "Combat")]
-	[field: Required]
-	[field: HideIf(nameof(TowerType), TowerType.Melee)]
-	public ProjectileSO ProjectileData { get; private set; }
+	[field: ListDrawerSettings(ShowIndexLabels = true)]
+	public List<TowerAttack> Attacks { get; private set; }
 
 	[Header("Economy")]
 	[field: SerializeField]
@@ -84,4 +73,36 @@ public class TowerSO : ScriptableObject
 	public int Cost { get; private set; } = 50;
 
 	public int SellGold => Cost / 2;
+
+	public float TotalAttackDelay
+	{
+		get
+		{
+			float total = 0f;
+			for (int i = 0; i < Attacks.Count; i++)
+			{
+				total += Attacks[i].Delay;
+			}
+			return total;
+		}
+	}
+}
+
+[System.Serializable]
+public class TowerAttack
+{
+	[field: SerializeField]
+	[field: MinValue(0.01f)]
+	public float Delay { get; private set; } = 0.5f;
+
+	[field: SerializeField]
+	[field: ShowIf("@$root.TowerType == TowerType.Melee")]
+	public float Damage { get; private set; } = 10f;
+
+	[field: SerializeField]
+	[field: HideIf("@$root.TowerType == TowerType.Melee")]
+	public ProjectileSO ProjectileData { get; private set; }
+
+	[field: SerializeField]
+	public List<StatusEffectSO> StatusEffects { get; private set; }
 }

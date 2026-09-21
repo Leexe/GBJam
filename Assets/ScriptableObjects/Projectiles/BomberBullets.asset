@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48bb0d897f378485ab9506fbfff1b2e5, type: 3}
-  m_Name: CannonBullets
+  m_Name: BomberBullets
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileSO
   <Name>k__BackingField: Gunner Bullets
   <Id>k__BackingField: gunnerbullets
-  <Speed>k__BackingField: 4
-  <Damage>k__BackingField: 35
+  <Speed>k__BackingField: 6
+  <Damage>k__BackingField: 15
   <Knockback>k__BackingField: 0.15
-  <Lifetime>k__BackingField: 1.5
+  <Lifetime>k__BackingField: 3
   <PierceCount>k__BackingField: 1
   <IsAoe>k__BackingField: 1
-  <AoeRadius>k__BackingField: 1.5
-  <StatusEffects>k__BackingField: []
+  <AoeRadius>k__BackingField: 0.75
+  <StatusEffects>k__BackingField:
+  - {fileID: 11400000, guid: f6b4ece5e65d41cc8b667f9a2255436b, type: 2}
   <Sprite>k__BackingField: {fileID: 21300000, guid: 98e8e1cf8dc7dbf469617c2e40c8a944, type: 3}
   <Size>k__BackingField: {x: 0.4, y: 0.4}

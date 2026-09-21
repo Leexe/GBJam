@@ -25,23 +25,15 @@ MonoBehaviour:
       Count: 5
       Interval: 1
       StartDelay: 0
-    - Enemy: {fileID: 11400000, guid: cdf99995bf66f4904909e0c51e1cb3fa, type: 2}
-      Count: 5
-      Interval: 0.5
-      StartDelay: 4
   - GivesItems: 1
     ItemChoicesCount: 3
     OverrideLevelItemPool: 0
     CustomItemPool: []
     SpawnGroups:
-    - Enemy: {fileID: 11400000, guid: a3cec9b5c6a6c4668ad9bbc2b043cf74, type: 2}
-      Count: 8
-      Interval: 0.8
+    - Enemy: {fileID: 0}
+      Count: 5
+      Interval: 0.5
       StartDelay: 0
-    - Enemy: {fileID: 11400000, guid: e9133eb06bb77457e893c47dc060f5fd, type: 2}
-      Count: 1
-      Interval: 2.5
-      StartDelay: 6
   - GivesItems: 0
     ItemChoicesCount: 3
     OverrideLevelItemPool: 0

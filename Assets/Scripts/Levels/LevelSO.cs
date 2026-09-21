@@ -7,8 +7,11 @@ using UnityEngine;
 [Serializable]
 public class SpawnGroup
 {
-	[HorizontalGroup("Row", 60)]
-	[PreviewField(50, ObjectFieldAlignment.Left)]
+	[HorizontalGroup("Row", 50)]
+	[ShowInInspector, HideLabel, PreviewField(50, ObjectFieldAlignment.Left), ReadOnly]
+	public Sprite Preview => Enemy != null ? Enemy.Icon : null;
+
+	[VerticalGroup("Row/Details")]
 	[HideLabel]
 	public EnemySO Enemy;
 
@@ -22,8 +25,74 @@ public class SpawnGroup
 	public float Interval = 0.5f;
 
 	[VerticalGroup("Row/Details")]
-	[LabelWidth(80)]
+	[HorizontalGroup("Row/Details/H2")]
+	[LabelWidth(50)]
+	[LabelText("Delay")]
 	public float StartDelay = 0f;
+
+	[HorizontalGroup("Row/Details/H2")]
+	[LabelWidth(50)]
+	[LabelText("Speed x")]
+	[MinValue(0.1f)]
+	public float SpeedMultiplier = 1f;
+
+	[VerticalGroup("Row/Details")]
+	[FoldoutGroup("Row/Details/Extra Modifiers", false)]
+	[LabelWidth(70)]
+	[LabelText("Health x")]
+	[MinValue(0.1f)]
+	public float HealthMultiplier = 1f;
+
+	[FoldoutGroup("Row/Details/Extra Modifiers")]
+	[LabelWidth(70)]
+	[LabelText("Damage x")]
+	[MinValue(0.1f)]
+	public float DamageMultiplier = 1f;
+
+	[FoldoutGroup("Row/Details/Extra Modifiers")]
+	[LabelWidth(70)]
+	[LabelText("Gold x")]
+	[MinValue(0f)]
+	public float GoldMultiplier = 1f;
+
+	[FoldoutGroup("Row/Details/Extra Modifiers")]
+	[LabelWidth(70)]
+	[LabelText("Scale x")]
+	[MinValue(0.1f)]
+	public float ScaleMultiplier = 1f;
+
+	public EnemyModifier Modifier =>
+		new()
+		{
+			SpeedMultiplier = SpeedMultiplier > 0f ? SpeedMultiplier : 1f,
+			HealthMultiplier = HealthMultiplier > 0f ? HealthMultiplier : 1f,
+			DamageMultiplier = DamageMultiplier > 0f ? DamageMultiplier : 1f,
+			GoldMultiplier = GoldMultiplier > 0f ? GoldMultiplier : 1f,
+			ScaleMultiplier = ScaleMultiplier > 0f ? ScaleMultiplier : 1f,
+		};
+
+	public string ElementLabel
+	{
+		get
+		{
+			if (Enemy == null)
+			{
+				return "Empty";
+			}
+
+			string label = $"{Enemy.Name} (x{Count})";
+			if (SpeedMultiplier > 0f && !Mathf.Approximately(SpeedMultiplier, 1f))
+			{
+				label += $" [{SpeedMultiplier:0.#}x Spd]";
+			}
+			if (HealthMultiplier > 0f && !Mathf.Approximately(HealthMultiplier, 1f))
+			{
+				label += $" [{HealthMultiplier:0.#}x HP]";
+			}
+
+			return label;
+		}
+	}
 }
 
 [Serializable]
@@ -48,7 +117,7 @@ public class WaveData
 
 	private bool CanShowCustomItemPool => GivesItems && OverrideLevelItemPool;
 
-	[ListDrawerSettings(ShowIndexLabels = true)]
+	[ListDrawerSettings(ShowIndexLabels = true, ListElementLabelName = nameof(SpawnGroup.ElementLabel))]
 	public List<SpawnGroup> SpawnGroups = new();
 
 	[ShowInInspector, ReadOnly]

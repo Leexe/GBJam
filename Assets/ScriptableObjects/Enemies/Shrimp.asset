@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2f89841ade44e619d7cb13662c0d08e, type: 3}
-  m_Name: Dino
+  m_Name: Shrimp
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
-  Name: Dino
+  Name: Shrimp
   Description: These obominations speeds up when they take damage
   Health: 100
   Speed: 1.1

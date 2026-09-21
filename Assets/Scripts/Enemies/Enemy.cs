@@ -37,6 +37,7 @@ public class Enemy : MonoBehaviour
 	private float _particleLingerDuration = 0.5f;
 
 	private EnemySO _data;
+	private EnemyModifier _modifier;
 	private float _currentHealth;
 	private List<Vector2Int> _waypoints;
 	private int _currentWaypointIndex;
@@ -50,7 +51,9 @@ public class Enemy : MonoBehaviour
 	private float _speedBuffTimer;
 
 	public EnemySO Data => _data;
+	public EnemyModifier Modifier => _modifier;
 	public float CurrentHealth => _currentHealth;
+	public float MaxHealth { get; private set; }
 	public float DistanceTraveled { get; private set; }
 	public float TravelProgress { get; private set; }
 	public StatusEffectController StatusController => _statusController;
@@ -58,10 +61,12 @@ public class Enemy : MonoBehaviour
 	[HideInInspector]
 	public Action<Enemy> OnDeath;
 
-	public void Initialize(EnemySO data)
+	public void Initialize(EnemySO data, EnemyModifier modifier = default)
 	{
 		_data = data;
-		_currentHealth = data.Health;
+		_modifier = modifier;
+		MaxHealth = data.Health * _modifier.EffectiveHealth;
+		_currentHealth = MaxHealth;
 		_waypoints = GridManager.Instance.EnemyWaypoints;
 		_totalDistance = GridManager.Instance.TotalPathDistance;
 		DistanceTraveled = 0f;
@@ -75,7 +80,7 @@ public class Enemy : MonoBehaviour
 		_speedBuffTimer = 0f;
 
 		transform.position = GridManager.Instance.GridToWorld(_waypoints[0]);
-		transform.localScale = Vector3.one;
+		transform.localScale = Vector3.one * _modifier.EffectiveScale;
 		_spriteRenderer.gameObject.SetActive(true);
 		_spriteRenderer.transform.localPosition = Vector3.zero;
 		_spriteRenderer.transform.localScale = Vector3.one;
@@ -148,7 +153,7 @@ public class Enemy : MonoBehaviour
 		transform.position = Vector3.MoveTowards(
 			transform.position,
 			target,
-			_data.Speed * _speedMultiplier * Time.deltaTime
+			_data.Speed * _modifier.EffectiveSpeed * _speedMultiplier * Time.deltaTime
 		);
 
 		DistanceTraveled += Vector3.Distance(prevPosition, transform.position);
@@ -209,7 +214,7 @@ public class Enemy : MonoBehaviour
 	private void Die()
 	{
 		_deathSequence.Stop();
-		GameManager.Instance.GiveGold(_data.GoldReward);
+		GameManager.Instance.GiveGold(Mathf.RoundToInt(_data.GoldReward * _modifier.EffectiveGold));
 		_spriteRenderer.gameObject.SetActive(false);
 		_deathParticles.gameObject.SetActive(true);
 		_deathParticles.Play();
@@ -218,7 +223,7 @@ public class Enemy : MonoBehaviour
 
 	private void ReachGoal()
 	{
-		GameManager.Instance.DamageHealth(_data.Damage);
+		GameManager.Instance.DamageHealth(Mathf.RoundToInt(_data.Damage * _modifier.EffectiveDamage));
 		Deactivate();
 	}
 

@@ -269,17 +269,14 @@ public class GridCursorController : MonoBehaviour
 			return;
 		}
 
-		if (GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y))
-		{
-			SetTowerSelectionMode(true);
-			_towerSelector.Open(_gridCoordinates, _cursorSize, _selectedTower);
-			return;
-		}
-
 		if (_currentHoveredTower)
 		{
 			_towerSelector.OpenInspect(_currentHoveredTower);
+			return;
 		}
+
+		SetTowerSelectionMode(true);
+		_towerSelector.Open(_gridCoordinates, _cursorSize, _selectedTower);
 	}
 
 	private void HandleCancelPressed()

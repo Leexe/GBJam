@@ -24,11 +24,11 @@ public class EnemyPool : MonoSingleton<EnemyPool>
 		}
 	}
 
-	public Enemy Get(EnemySO data)
+	public Enemy Get(EnemySO data, EnemyModifier modifier = default)
 	{
 		Enemy enemy = _pool.Count > 0 ? _pool.Dequeue() : Instantiate(_enemyPrefab, transform).GetComponent<Enemy>();
 		enemy.gameObject.SetActive(true);
-		enemy.Initialize(data);
+		enemy.Initialize(data, modifier);
 		ActiveEnemies.Add(enemy);
 		return enemy;
 	}

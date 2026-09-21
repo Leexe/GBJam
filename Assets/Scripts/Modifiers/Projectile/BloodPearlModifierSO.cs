@@ -15,12 +15,12 @@ namespace Modifiers
 
 		public override bool CanTarget(Enemy target)
 		{
-			return target.CurrentHealth < target.Data.Health;
+			return target.CurrentHealth < target.MaxHealth;
 		}
 
 		public override void OnBeforeDealDamage(Enemy target, ref float damage)
 		{
-			if (target.CurrentHealth <= target.Data.Health * 0.5f)
+			if (target.CurrentHealth <= target.MaxHealth * 0.5f)
 			{
 				damage *= 2f;
 			}

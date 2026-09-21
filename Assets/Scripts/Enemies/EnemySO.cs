@@ -16,4 +16,6 @@ public class EnemySO : ScriptableObject
 
 	[PreviewField(50, ObjectFieldAlignment.Right)]
 	public List<Sprite> SpriteList;
+
+	public Sprite Icon => SpriteList[0];
 }

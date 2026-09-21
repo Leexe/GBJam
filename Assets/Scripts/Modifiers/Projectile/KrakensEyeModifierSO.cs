@@ -15,7 +15,7 @@ namespace Modifiers
 
 		public override bool CanTarget(Enemy target)
 		{
-			return target.CurrentHealth / target.Data.Health > 0.5f;
+			return target.CurrentHealth / target.MaxHealth > 0.5f;
 		}
 	}
 }

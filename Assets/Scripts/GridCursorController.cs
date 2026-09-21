@@ -404,8 +404,7 @@ public class GridCursorController : MonoBehaviour
 		_ghostTowerRenderer.sprite = selected.Icon;
 		bool canPlace = GridManager.Instance.CanPlaceTower(_gridCoordinates, _cursorSize.x, _cursorSize.y);
 		bool canAfford = GameManager.Instance.CanAfford(selected.Cost);
-		_ghostTowerRenderer.color =
-			(canPlace && canAfford) ? new Color(1f, 1f, 1f, 0.5f) : new Color(0.8f, 0.3f, 0.3f, 0.5f);
+		_ghostTowerRenderer.color = canPlace && canAfford ? new Color(1f, 1f, 1f, 1f) : new Color(0.8f, 0.3f, 0.3f, 1f);
 
 		float diameter = selected.Range * 2f;
 		_ghostRangeIndicator.transform.localScale = new Vector3(diameter, diameter, 1f);

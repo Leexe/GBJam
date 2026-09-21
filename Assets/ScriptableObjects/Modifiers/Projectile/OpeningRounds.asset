@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::OpeningRoundsModifierSO
   <Id>k__BackingField: opening_rounds
   <Name>k__BackingField: Opening Rounds
-  <Description>k__BackingField: Double dmg to full health enemies, cannot target
-    enemies with less 50% health
+  <Description>k__BackingField: Deals 2x damage to full-health enemies, but cannot target below 50% HP.
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 1
   <StatModifiers>k__BackingField: []

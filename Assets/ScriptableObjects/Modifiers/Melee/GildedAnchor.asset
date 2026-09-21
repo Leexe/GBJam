@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f4019abb5a9543c79b1e9d7778e2f09, type: 3}
-  m_Name: RustedAnchor
+  m_Name: GildedAnchor
   m_EditorClassIdentifier: Modifiers::RustedAnchorModifierSO
-  <Id>k__BackingField: rusted_anchor
-  <Name>k__BackingField: Rusted Anchor
-  <Description>k__BackingField: Reduce range by 50% but increase damage by 75%
+  <Id>k__BackingField: gilded_anchor
+  <Name>k__BackingField: Gilded Anchor
+  <Description>k__BackingField: +75% damage, but -50% range.
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 3
   <StatModifiers>k__BackingField:

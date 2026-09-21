@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: ScorchedPowder
   m_EditorClassIdentifier: Modifiers::ScorchedPowderModifierSO
   <Id>k__BackingField: scorched_powder
-  <Name>k__BackingField: Scorched powder
-  <Description>k__BackingField: Increase attack per second but if it fires continuously for 5 seconds, tower gets overheated for 2 seconds.
+  <Name>k__BackingField: Scorched Powder
+  <Description>k__BackingField: +30% attack speed, but overheats for 2s after 5s
+    of continuous fire.
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 1
   <StatModifiers>k__BackingField:

@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::CrackedSextantModifierSO
   <Id>k__BackingField: cracked_sextant
   <Name>k__BackingField: Cracked Sextant
-  <Description>k__BackingField: Deal increasing dmg the longer their projectile travels
-    but enemies close to the tower take almost no damage
+  <Description>k__BackingField: Deals up to 2.5x damage at long range, but minimal up close.
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 2
   <StatModifiers>k__BackingField: []

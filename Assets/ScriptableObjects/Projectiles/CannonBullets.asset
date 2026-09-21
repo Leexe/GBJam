@@ -21,6 +21,7 @@ MonoBehaviour:
   <PierceCount>k__BackingField: 1
   <IsAoe>k__BackingField: 1
   <AoeRadius>k__BackingField: 1.5
-  <StatusEffects>k__BackingField: []
+  <StatusEffects>k__BackingField:
+  - {fileID: 11400000, guid: f6b4ece5e65d41cc8b667f9a2255436b, type: 2}
   <Sprite>k__BackingField: {fileID: 21300000, guid: 98e8e1cf8dc7dbf469617c2e40c8a944, type: 3}
   <Size>k__BackingField: {x: 0.4, y: 0.4}

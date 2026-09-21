@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::RingOfTheWildHuntModifierSO
   <Id>k__BackingField: ring_of_the_wild
   <Name>k__BackingField: Ring of the Wild
-  <Description>k__BackingField: Dmg randomly ranges from +5 base to -5, increase
-    attack speed
+  <Description>k__BackingField: +20% attack speed, but damage varies by -5 to +5.
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 3
   <StatModifiers>k__BackingField:

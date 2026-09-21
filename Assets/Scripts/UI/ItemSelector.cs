@@ -187,6 +187,7 @@ public class ItemSelector : MonoBehaviour
 	public void Open(int choicesCount = 3)
 	{
 		Open(GenerateRandomItems(choicesCount));
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WinningJingle_Sfx);
 	}
 
 	public void Open()
@@ -363,7 +364,7 @@ public class ItemSelector : MonoBehaviour
 		}
 
 		TowerModifierSO selected = SelectedItem;
-		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CompleteClick_Sfx);
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WinningJingle_Sfx);
 		OnItemConfirmed?.Invoke(selected);
 		GameManager.Instance.ModifierManager.SelectModifier(selected);
 		_offeredItems.Clear();

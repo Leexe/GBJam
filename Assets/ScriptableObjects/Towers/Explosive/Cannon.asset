@@ -27,7 +27,7 @@ MonoBehaviour:
       Data4: 1979135301
     Path: event:/SFX/Combat/Cannon
   <Attacks>k__BackingField:
-  - <Delay>k__BackingField: 2
+  - <Delay>k__BackingField: 1.5
     <Damage>k__BackingField: 10
     <ProjectileData>k__BackingField: {fileID: 11400000, guid: 398f1811c13094caeb3a112156e1b1cd, type: 2}
     <StatusEffects>k__BackingField: []

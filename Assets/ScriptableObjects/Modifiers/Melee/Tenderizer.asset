@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::TenderizerModifierSO
   <Id>k__BackingField: tenderizer
   <Name>k__BackingField: Tenderizer
-  <Description>k__BackingField: Hitting the same enemy a second time does extra dmg
+  <Description>k__BackingField: Consecutive hits on the same enemy deal +50% damage.
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 3
   <StatModifiers>k__BackingField: []

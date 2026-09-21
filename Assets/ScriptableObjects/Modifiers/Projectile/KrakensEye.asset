@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: KrakensEye
   m_EditorClassIdentifier: Modifiers::KrakensEyeModifierSO
   <Id>k__BackingField: krakens_eye
-  <Name>k__BackingField: Kraken' eye
-  <Description>k__BackingField: gain range but only target enemies that are above 50% HP.
+  <Name>k__BackingField: Kraken Eye
+  <Description>k__BackingField: +2 range, but only targets enemies above 50% HP.
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 1
   <StatModifiers>k__BackingField:

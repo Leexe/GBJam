@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::KrakensGraspModifierSO
   <Id>k__BackingField: krakens_grasp
   <Name>k__BackingField: Kraken's Grasp
-  <Description>k__BackingField: Explosions pull enemies to the center of explosion,
-    decrease dmg
+  <Description>k__BackingField: Explosions pull enemies in, but deal -4 damage.
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 2
   <StatModifiers>k__BackingField:

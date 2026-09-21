@@ -18,7 +18,7 @@ MonoBehaviour:
     precision
   <TowerType>k__BackingField: 0
   <Icon>k__BackingField: {fileID: -1038217273, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
-  <Range>k__BackingField: 1.2
+  <Range>k__BackingField: 1
   <Knockback>k__BackingField: 0
   FireSfx:
     Guid:

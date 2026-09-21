@@ -8,6 +8,7 @@ public class MainMenuController : MonoBehaviour
 	{
 		Splash,
 		Main,
+		Levels,
 		Settings,
 		Credits,
 	}
@@ -19,10 +20,12 @@ public class MainMenuController : MonoBehaviour
 	[Header("Panels")]
 	[SerializeField] private GameObject _splashPanel;
 	[SerializeField] private GameObject _mainMenuPanel;
+	[SerializeField] private GameObject _levelsPanel;
 	[SerializeField] private GameObject _settingsPanel;
 	[SerializeField] private GameObject _creditsPanel;
 
 	[Header("Sub Controllers")]
+	[SerializeField] private LevelMenuController _levelController;
 	[SerializeField] private SettingsMenuController _settingsController;
 	[SerializeField] private CreditsMenuController _creditsController;
 
@@ -64,6 +67,11 @@ public class MainMenuController : MonoBehaviour
 		}
 		if (_settingsController != null) _settingsController.OnBackRequested += ReturnToMainMenu;
 		if (_creditsController != null) _creditsController.OnBackRequested += ReturnToMainMenu;
+		if (_levelController != null)
+		{
+			_levelController.OnBackRequested += ReturnToMainMenu;
+			_levelController.OnLevelSelected += HandleLevelSelected;
+		}
 	}
 
 	private void OnDisable()
@@ -71,6 +79,11 @@ public class MainMenuController : MonoBehaviour
 		UnsubscribeInput();
 		if (_settingsController != null) _settingsController.OnBackRequested -= ReturnToMainMenu;
 		if (_creditsController != null) _creditsController.OnBackRequested -= ReturnToMainMenu;
+		if (_levelController != null)
+		{
+			_levelController.OnBackRequested -= ReturnToMainMenu;
+			_levelController.OnLevelSelected -= HandleLevelSelected;
+		}
 		_cursorTween.Stop();
 	}
 
@@ -167,6 +180,10 @@ public class MainMenuController : MonoBehaviour
 		{
 			_settingsController.HandleNavigation(dir);
 		}
+		else if (_currentState == MenuState.Levels && _levelController != null)
+		{
+			_levelController.HandleNavigation(dir);
+		}
 		else if (_currentState == MenuState.Main && dir.y != 0 && _menuItems != null && _menuItems.Length > 0)
 		{
 			int step = dir.y > 0 ? -1 : 1;
@@ -190,6 +207,9 @@ public class MainMenuController : MonoBehaviour
 			case MenuState.Main:
 				ExecuteMenuItem(_currentMenuItem);
 				break;
+			case MenuState.Levels:
+				if (_levelController != null) _levelController.HandleConfirm();
+				break;
 			case MenuState.Settings:
 				if (_settingsController != null) _settingsController.HandleConfirm();
 				break;
@@ -211,6 +231,9 @@ public class MainMenuController : MonoBehaviour
 
 		switch (_currentState)
 		{
+			case MenuState.Levels:
+				if (_levelController != null) _levelController.HandleCancel();
+				break;
 			case MenuState.Settings:
 				if (_settingsController != null) _settingsController.HandleCancel();
 				break;
@@ -225,7 +248,7 @@ public class MainMenuController : MonoBehaviour
 		switch (index)
 		{
 			case 0:
-				PlayGame();
+				SetState(MenuState.Levels);
 				break;
 			case 1:
 				SetState(MenuState.Settings);
@@ -239,8 +262,17 @@ public class MainMenuController : MonoBehaviour
 		}
 	}
 
-	private void PlayGame()
+	private void HandleLevelSelected(LevelSO level)
 	{
+		PlayGame(level);
+	}
+
+	private void PlayGame(LevelSO level = null)
+	{
+		if (level != null)
+		{
+			GameManager.SelectedLevel = level;
+		}
 		_isTransitioning = true;
 		if (_fadeOverlay != null)
 		{
@@ -261,6 +293,16 @@ public class MainMenuController : MonoBehaviour
 
 		if (_splashPanel != null) _splashPanel.SetActive(newState == MenuState.Splash);
 		if (_mainMenuPanel != null) _mainMenuPanel.SetActive(newState == MenuState.Main);
+
+		if (_levelsPanel != null)
+		{
+			_levelsPanel.SetActive(newState == MenuState.Levels);
+			if (_levelController != null)
+			{
+				if (newState == MenuState.Levels) _levelController.Open();
+				else _levelController.Close();
+			}
+		}
 
 		if (_settingsPanel != null)
 		{

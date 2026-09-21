@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21f3a12582ef40ee863473e775d1f4be, type: 3}
-  m_Name: Level1
+  m_Name: Level3
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   LevelName: Level 1
   MaxHealth: 100
@@ -42,21 +42,6 @@ MonoBehaviour:
       Count: 1
       Interval: 2.5
       StartDelay: 6
-  - GivesItems: 0
-    ItemChoicesCount: 3
-    OverrideLevelItemPool: 0
-    CustomItemPool: []
-    SpawnGroups: []
-  - GivesItems: 1
-    ItemChoicesCount: 3
-    OverrideLevelItemPool: 0
-    CustomItemPool: []
-    SpawnGroups: []
-  - GivesItems: 0
-    ItemChoicesCount: 3
-    OverrideLevelItemPool: 0
-    CustomItemPool: []
-    SpawnGroups: []
   DefaultItemChoicesCount: 3
   ItemPool:
   - {fileID: 11400000, guid: c238c0b22817843eeb75cd27fc08e4f9, type: 2}

@@ -762,7 +762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &357244207
 RectTransform:
   m_ObjectHideFlags: 0
@@ -973,19 +973,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
-      value: 0
+      value: 0.20575628
       objectReference: {fileID: 0}
     - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0
+      value: 0.029379759
       objectReference: {fileID: 0}
     - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_NormalizedViewPortRect.width
-      value: 1
+      value: 0.58787507
       objectReference: {fileID: 0}
     - target: {fileID: 8259654268886384641, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 1
+      value: 0.9401523
       objectReference: {fileID: 0}
     - target: {fileID: 8549151056627862277, guid: 34eda496504a644e18492debc31a482d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3229,6 +3229,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 429814441}
+    - target: {fileID: 6077765395864272261, guid: bd9ef11c9092e4bfd8c64d2df27c36c1, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 7763182051102151289, guid: bd9ef11c9092e4bfd8c64d2df27c36c1, type: 3}
       propertyPath: m_Name
       value: Topbar Canavs
@@ -5420,7 +5424,7 @@ Tilemap:
       - {fileID: 770337640, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: -1446112507, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: 1011081742, guid: bea6fa778df2144479665321bee8bb53, type: 3}
-      m_AnimationSpeed: 0.4689281
+      m_AnimationSpeed: 0.44458503
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:

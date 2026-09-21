@@ -21,20 +21,29 @@ MonoBehaviour:
   <Knockback>k__BackingField: 0
   <Attacks>k__BackingField:
   - <Delay>k__BackingField: 0.5
-    <Damage>k__BackingField: 15
+    <Damage>k__BackingField: 10
     <ProjectileData>k__BackingField: {fileID: 0}
     <StatusEffects>k__BackingField: []
     <TopSprites>k__BackingField:
     - {fileID: -1128811987, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
     - {fileID: 1508709925, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
     - {fileID: -1462548039, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
-    - {fileID: 143341110, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
-    - {fileID: 639913852, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
     <BottomSprites>k__BackingField:
     - {fileID: -1128811987, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
     - {fileID: 1508709925, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
     - {fileID: -1462548039, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
-    - {fileID: 143341110, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
+    <ImpactFrame>k__BackingField: 1
+  - <Delay>k__BackingField: 0.5
+    <Damage>k__BackingField: 10
+    <ProjectileData>k__BackingField: {fileID: 0}
+    <StatusEffects>k__BackingField: []
+    <TopSprites>k__BackingField:
+    - {fileID: -1128811987, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
+    - {fileID: 1508709925, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
+    - {fileID: 639913852, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
+    <BottomSprites>k__BackingField:
+    - {fileID: -1128811987, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
+    - {fileID: 1508709925, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
     - {fileID: 639913852, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
     <ImpactFrame>k__BackingField: 1
   <Cost>k__BackingField: 15

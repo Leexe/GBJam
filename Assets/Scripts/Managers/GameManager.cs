@@ -48,8 +48,14 @@ public class GameManager : MonoSingleton<GameManager>
 	[HideInInspector]
 	public Action<int, List<TowerModifierSO>> OnWaveItemsOffered;
 
+	public static LevelSO SelectedLevel { get; set; }
+
 	private void Start()
 	{
+		if (SelectedLevel != null)
+		{
+			_levelSO = SelectedLevel;
+		}
 		_health = _levelSO.MaxHealth;
 		_gold = _levelSO.StartingGold;
 		_modifierManager.Initialize();

@@ -1516,7 +1516,7 @@ MonoBehaviour:
   - {fileID: 792995216}
   _cursor: {fileID: 1065404627}
   _cursorAnimator: {fileID: 1065404628}
-  _cursorXOffset: 0
+  _cursorXOffset: -4
 --- !u!1 &482936246
 GameObject:
   m_ObjectHideFlags: 0
@@ -7626,7 +7626,7 @@ Tilemap:
       - {fileID: 770337640, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: -1446112507, guid: bea6fa778df2144479665321bee8bb53, type: 3}
       - {fileID: 1011081742, guid: bea6fa778df2144479665321bee8bb53, type: 3}
-      m_AnimationSpeed: 0.4588674
+      m_AnimationSpeed: 0.4518723
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -9712,13 +9712,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6295420734134252027, guid: 6237431affcfa4376a6673021fd3607d, type: 3}
-      propertyPath: serializationData.Prefab
-      value: 
-      objectReference: {fileID: 6295420734134252027, guid: 6237431affcfa4376a6673021fd3607d, type: 3}
-    - target: {fileID: 6295420734134252027, guid: 6237431affcfa4376a6673021fd3607d, type: 3}
       propertyPath: _fadeOverlay
       value: 
       objectReference: {fileID: 637957982}
+    - target: {fileID: 6295420734134252027, guid: 6237431affcfa4376a6673021fd3607d, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6295420734134252027, guid: 6237431affcfa4376a6673021fd3607d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

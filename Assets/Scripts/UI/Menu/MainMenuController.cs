@@ -74,6 +74,7 @@ public class MainMenuController : MonoBehaviour
 	private bool _isSubscribed;
 	private Vector2Int _lastDirection;
 	private float _holdTimer;
+	private int _menuItemCount;
 
 	private void Awake()
 	{
@@ -124,6 +125,14 @@ public class MainMenuController : MonoBehaviour
 		{
 			SubscribeInput();
 		}
+
+#if UNITY_WEBGL
+		_menuItems[_menuItems.Length - 1].gameObject.SetActive(false);
+		_menuItemCount = _menuItems.Length - 1;
+#else
+		_menuItemCount = _menuItems.Length;
+#endif
+
 		SetState(MenuState.Splash);
 
 		Tween.Alpha(_fadeOverlay, 0f, _fadeDuration, useUnscaledTime: true);
@@ -216,10 +225,10 @@ public class MainMenuController : MonoBehaviour
 		{
 			_levelController.HandleNavigation(dir);
 		}
-		else if (_currentState == MenuState.Main && dir.y != 0 && _menuItems != null && _menuItems.Length > 0)
+		else if (_currentState == MenuState.Main && dir.y != 0 && _menuItemCount > 0)
 		{
 			int step = dir.y > 0 ? -1 : 1;
-			_currentMenuItem = (_currentMenuItem + step + _menuItems.Length) % _menuItems.Length;
+			_currentMenuItem = (_currentMenuItem + step + _menuItemCount) % _menuItemCount;
 			UpdateCursorPosition();
 			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SelectorClick_Sfx);
 		}

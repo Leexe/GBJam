@@ -15,10 +15,10 @@ MonoBehaviour:
   <Id>k__BackingField: infernal_harpoon
   <Name>k__BackingField: Infernal Harpoon
   <Description>k__BackingField: Every 5th attack burns enemies in range, then gets
-    stunned for 2s
+    stunned for 3s
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 3
   <StatModifiers>k__BackingField: []
   <AttacksToProc>k__BackingField: 5
-  <OverheatDuration>k__BackingField: 2
+  <OverheatDuration>k__BackingField: 3
   <BurnEffectSO>k__BackingField: {fileID: 11400000, guid: f6b4ece5e65d41cc8b667f9a2255436b, type: 2}

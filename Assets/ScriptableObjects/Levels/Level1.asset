@@ -150,7 +150,7 @@ MonoBehaviour:
       Count: 4
       Interval: 0.5
       PathIndex: 0
-      StartDelay: 3
+      StartDelay: 5
       SpeedMultiplier: 1.25
       HealthMultiplier: 1
       DamageMultiplier: 1

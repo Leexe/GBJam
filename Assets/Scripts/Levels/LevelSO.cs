@@ -151,6 +151,16 @@ public class LevelSO : ScriptableObject
 
 	public int Gold => StartingGold;
 
+	[TabGroup("Tabs", "Map")]
+	[ListDrawerSettings(ShowIndexLabels = true)]
+	public List<Vector2Int> EnemyWaypoints = new();
+
+	[TabGroup("Tabs", "Map")]
+	[ListDrawerSettings(ShowIndexLabels = true)]
+	public List<Vector2Int> Obstacles = new();
+
+	public List<Vector2Int> Waypoints => EnemyWaypoints;
+
 	[TabGroup("Tabs", "Waves")]
 	[ListDrawerSettings(ShowIndexLabels = true)]
 	public List<WaveData> WaveDataList = new();

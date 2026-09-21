@@ -60,6 +60,7 @@ public class GridManager : MonoSingleton<GridManager>
 
 	private readonly GridNode[] _grid = new GridNode[Columns * Rows];
 	public List<Vector2Int> EnemyWaypoints => _enemyWaypoints;
+	public List<Vector2Int> Obstacles => _obstacles;
 	public float TotalPathDistance { get; private set; }
 
 	private int ToIndex(int x, int y) => x + (y * Columns);
@@ -98,11 +99,27 @@ public class GridManager : MonoSingleton<GridManager>
 			}
 		}
 
-		foreach (Vector2Int t in _obstacles)
+		LevelSO level = GameManager.SelectedLevel != null
+			? GameManager.SelectedLevel
+			: (GameManager.Instance != null ? GameManager.Instance.Level : null);
+
+		if (level != null && level.EnemyWaypoints != null && level.EnemyWaypoints.Count > 0)
 		{
-			if (IsValidGridPos(t))
+			_enemyWaypoints = level.EnemyWaypoints;
+			if (level.Obstacles != null)
 			{
-				SetGridType(t, GridType.Obstacle);
+				_obstacles = level.Obstacles;
+			}
+		}
+
+		if (_obstacles != null)
+		{
+			foreach (Vector2Int t in _obstacles)
+			{
+				if (IsValidGridPos(t))
+				{
+					SetGridType(t, GridType.Obstacle);
+				}
 			}
 		}
 
@@ -111,7 +128,7 @@ public class GridManager : MonoSingleton<GridManager>
 
 	private void InitializePath()
 	{
-		if (_enemyWaypoints.Count <= 1)
+		if (_enemyWaypoints == null || _enemyWaypoints.Count <= 1)
 		{
 			return;
 		}
@@ -359,7 +376,7 @@ public class GridManager : MonoSingleton<GridManager>
 				}
 			}
 		}
-		if (_enemyWaypoints.Count > 1)
+		if (_enemyWaypoints != null && _enemyWaypoints.Count > 1)
 		{
 			Gizmos.color = Color.yellow;
 			for (int i = 0; i < _enemyWaypoints.Count - 1; i++)

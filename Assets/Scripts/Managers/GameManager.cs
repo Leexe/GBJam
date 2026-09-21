@@ -50,6 +50,15 @@ public class GameManager : MonoSingleton<GameManager>
 
 	public static LevelSO SelectedLevel { get; set; }
 
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		if (SelectedLevel != null)
+		{
+			_levelSO = SelectedLevel;
+		}
+	}
+
 	private void Start()
 	{
 		if (SelectedLevel != null)

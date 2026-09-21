@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::TenderizerModifierSO
   <Id>k__BackingField: tenderizer
   <Name>k__BackingField: Tenderizer
-  <Description>k__BackingField: Consecutive hits on the same enemy deal +50% damage.
+  <Description>k__BackingField: Starts at -75% damage, scaling up to 2x on the same
+    enemy.
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 3
   <StatModifiers>k__BackingField: []
-  <ConsecutiveHitMultiplier>k__BackingField: 1.5
+  <InitialMultiplier>k__BackingField: 0.25
+  <BonusPerHit>k__BackingField: 0.25
+  <MaxMultiplier>k__BackingField: 2

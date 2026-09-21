@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::KrakensGraspModifierSO
   <Id>k__BackingField: krakens_grasp
   <Name>k__BackingField: Kraken's Grasp
-  <Description>k__BackingField: Explosions pull enemies in, but deal -4 damage.
+  <Description>k__BackingField: Explosions pull enemies in, but deal -40% damage
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 2
   <StatModifiers>k__BackingField:
   - StatName: 1
-    FlatAdd: -4
-    PercentIncreaseAdd: 0
+    FlatAdd: 0
+    PercentIncreaseAdd: -40
     ModifierMult: 1
     FinalMult: 1
   <PullStrength>k__BackingField: 0.6

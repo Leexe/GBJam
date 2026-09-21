@@ -15,9 +15,9 @@ MonoBehaviour:
   Name: Crab
   Description: Crab
   Health: 1000
-  Speed: 1.25
+  Speed: 0.3
   Damage: 100
-  GoldReward: 500
+  GoldReward: 1000
   DeathSfx:
     Guid:
       Data1: 872744818

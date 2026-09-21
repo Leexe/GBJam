@@ -15,7 +15,7 @@ MonoBehaviour:
   <Id>k__BackingField: gamblers_dice
   <Name>k__BackingField: Gambler's Dice
   <Description>k__BackingField: 1 in 6 chance for 2x damage; 1 in 6 chance to speed
-    up the enemy.
+    up the enemy
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 1
   <StatModifiers>k__BackingField: []

@@ -1,3 +1,4 @@
+using System.Collections;
 using PrimeTween;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -61,6 +62,9 @@ public class MainMenuController : MonoBehaviour
 	private float _splashDuration = 1.8f;
 
 	[SerializeField]
+	private float _fadeDuration = 2f;
+
+	[SerializeField]
 	private string _gameplaySceneName = "Game";
 
 	private MenuState _currentState = MenuState.Splash;
@@ -122,11 +126,8 @@ public class MainMenuController : MonoBehaviour
 		}
 		SetState(MenuState.Splash);
 
-		if (_fadeOverlay != null)
-		{
-			_fadeOverlay.alpha = 1f;
-			Tween.Alpha(_fadeOverlay, 0f, 0.25f, useUnscaledTime: true);
-		}
+		_fadeOverlay.alpha = 1f;
+		Tween.Alpha(_fadeOverlay, 0f, _fadeDuration, useUnscaledTime: true);
 	}
 
 	private void Update()
@@ -311,21 +312,32 @@ public class MainMenuController : MonoBehaviour
 
 	private void PlayGame(LevelSO level = null)
 	{
+		if (_isTransitioning)
+		{
+			return;
+		}
+
 		if (level != null)
 		{
 			GameManager.SelectedLevel = level;
 		}
 		_isTransitioning = true;
-		if (_fadeOverlay != null)
+		StartCoroutine(TransitionToSceneRoutine(_gameplaySceneName));
+	}
+
+	private IEnumerator TransitionToSceneRoutine(string sceneName)
+	{
+		AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+		async.allowSceneActivation = false;
+
+		Tween fadeTween = Tween.Alpha(_fadeOverlay, 1f, 0.25f, useUnscaledTime: true);
+
+		while (fadeTween.isAlive || async.progress < 0.9f)
 		{
-			Tween
-				.Alpha(_fadeOverlay, 1f, 0.25f, useUnscaledTime: true)
-				.OnComplete(() => SceneManager.LoadScene(_gameplaySceneName));
+			yield return null;
 		}
-		else
-		{
-			SceneManager.LoadScene(_gameplaySceneName);
-		}
+
+		async.allowSceneActivation = true;
 	}
 
 	private void ReturnToMainMenu()

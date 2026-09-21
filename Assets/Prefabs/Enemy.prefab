@@ -9876,7 +9876,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 6061778917475968761}
   _statusController: {fileID: 9201928374650192834}
   _frameRate: 0.2
-  _hitStopDuration: 0.2
+  _hitStopDuration: 0.1
   _hitStopCooldown: 0.4
   _deathParticles: {fileID: 3748604589200538133}
   _bloodParticles: {fileID: 624751698247122524}

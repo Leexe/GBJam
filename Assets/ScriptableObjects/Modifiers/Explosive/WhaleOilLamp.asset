@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::WhaleOilLampModifierSO
   <Id>k__BackingField: whale_oil_lamp
   <Name>k__BackingField: Whale Oil Lamp
-  <Description>k__BackingField: Explosions ignite enemies, but -25% range.
+  <Description>k__BackingField: Explosions ignite enemies, but -25% range
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 2
   <StatModifiers>k__BackingField:

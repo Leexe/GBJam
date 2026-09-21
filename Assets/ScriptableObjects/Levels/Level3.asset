@@ -436,6 +436,16 @@ MonoBehaviour:
       DamageMultiplier: 1
       GoldMultiplier: 0.4
       ScaleMultiplier: 1
+    - Enemy: {fileID: 11400000, guid: 3cc70c8536ace447eb9753157d49234f, type: 2}
+      Count: 1
+      Interval: 0.5
+      PathIndex: 1
+      StartDelay: 0
+      SpeedMultiplier: 1
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
   DefaultItemChoicesCount: 3
   ItemPool:
   - {fileID: 11400000, guid: c238c0b22817843eeb75cd27fc08e4f9, type: 2}

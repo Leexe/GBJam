@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::InfernalHarpoonModifierSO
   <Id>k__BackingField: infernal_harpoon
   <Name>k__BackingField: Infernal Harpoon
-  <Description>k__BackingField: Every 5th attack burns enemies in range, then overheats for 2s.
+  <Description>k__BackingField: Every 5th attack burns enemies in range, then overheats
+    for 2s
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 3
   <StatModifiers>k__BackingField: []

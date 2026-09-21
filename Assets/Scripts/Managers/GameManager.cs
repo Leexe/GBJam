@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Modifiers;
 using PrimeTween;
@@ -13,6 +14,13 @@ public class GameManager : MonoSingleton<GameManager>
 
 	[SerializeField]
 	private WaveController _waveController;
+
+	[Header("Canvas & Fade")]
+	[SerializeField]
+	private CanvasGroup _fadeOverlay;
+
+	[SerializeField]
+	private float _fadeDuration = 0.25f;
 
 	[Header("Music Settings")]
 	[SerializeField, Range(0f, 1f)]
@@ -40,6 +48,7 @@ public class GameManager : MonoSingleton<GameManager>
 	private int _gold;
 	private bool _hasLost;
 	private bool _hasWon;
+	private bool _isTransitioning;
 
 	public int Health => _health;
 	public int MaxHealth => _levelSO.MaxHealth;
@@ -108,6 +117,12 @@ public class GameManager : MonoSingleton<GameManager>
 
 		_waveController.StartNextWave();
 
+		if (_fadeOverlay != null)
+		{
+			_fadeOverlay.alpha = 1f;
+			Tween.Alpha(_fadeOverlay, 0f, _fadeDuration, useUnscaledTime: true);
+		}
+
 		DisablePrimeTween();
 	}
 
@@ -167,28 +182,59 @@ public class GameManager : MonoSingleton<GameManager>
 
 	public void RestartLevel()
 	{
-		UnityEngine.Time.timeScale = 1f;
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		if (_isTransitioning)
+		{
+			return;
+		}
+
+		_isTransitioning = true;
+		StartCoroutine(TransitionToSceneRoutine(SceneManager.GetActiveScene().name));
 	}
 
 	public void LoadNextLevel()
 	{
-		UnityEngine.Time.timeScale = 1f;
+		if (_isTransitioning)
+		{
+			return;
+		}
+
+		_isTransitioning = true;
 		if (_levelSO.NextLevel != null)
 		{
 			SelectedLevel = _levelSO.NextLevel;
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			StartCoroutine(TransitionToSceneRoutine(SceneManager.GetActiveScene().name));
 		}
 		else
 		{
-			SceneManager.LoadScene("MainMenu");
+			StartCoroutine(TransitionToSceneRoutine("MainMenu"));
 		}
 	}
 
 	public void ReturnToMainMenu()
 	{
+		if (_isTransitioning)
+		{
+			return;
+		}
+
+		_isTransitioning = true;
+		StartCoroutine(TransitionToSceneRoutine("MainMenu"));
+	}
+
+	private IEnumerator TransitionToSceneRoutine(string sceneName)
+	{
+		AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+		async.allowSceneActivation = false;
+
+		Tween fadeTween = Tween.Alpha(_fadeOverlay, 1f, _fadeDuration, useUnscaledTime: true);
+
+		while (fadeTween.isAlive || async.progress < 0.9f)
+		{
+			yield return null;
+		}
+
 		UnityEngine.Time.timeScale = 1f;
-		SceneManager.LoadScene("MainMenu");
+		async.allowSceneActivation = true;
 	}
 
 	private void OnDestroy()

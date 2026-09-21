@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 449f067aa70a40e2b6a647c7011048b2, type: 3}
   m_Name: Gunners
   m_EditorClassIdentifier: Assembly-CSharp::TowerSO
-  <Name>k__BackingField: Tower Man
-  <Id>k__BackingField: towerman
+  <Name>k__BackingField: gunners
+  <Id>k__BackingField: Gunners
   <Description>k__BackingField: A dual-wielding pirate who fires shots from range
   <TowerType>k__BackingField: 1
   <Icon>k__BackingField: {fileID: -140820160, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}

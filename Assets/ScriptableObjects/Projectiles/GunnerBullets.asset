@@ -15,10 +15,12 @@ MonoBehaviour:
   <Name>k__BackingField: Gunner Bullets
   <Id>k__BackingField: gunnerbullets
   <Speed>k__BackingField: 8
-  <Damage>k__BackingField: 7.5
+  <Damage>k__BackingField: 9
+  <Knockback>k__BackingField: 0
   <Lifetime>k__BackingField: 4
   <PierceCount>k__BackingField: 1
   <IsAoe>k__BackingField: 0
   <AoeRadius>k__BackingField: 0
+  <StatusEffects>k__BackingField: []
   <Sprite>k__BackingField: {fileID: 21300000, guid: 98e8e1cf8dc7dbf469617c2e40c8a944, type: 3}
   <Size>k__BackingField: {x: 0.3, y: 0.3}

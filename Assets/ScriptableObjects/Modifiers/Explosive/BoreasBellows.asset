@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::BoreasBellowsModifierSO
   <Id>k__BackingField: boreas_bellows
   <Name>k__BackingField: "Boreas\u2019 Bellows"
-  <Description>k__BackingField: Explosions knock enemies back.
+  <Description>k__BackingField: Explosions knock enemies back
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 2
   <StatModifiers>k__BackingField: []

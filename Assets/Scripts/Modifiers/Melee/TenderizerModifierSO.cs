@@ -8,7 +8,15 @@ namespace Modifiers
 	{
 		[field: SerializeField]
 		[field: TabGroup("Info", "Settings")]
-		public float ConsecutiveHitMultiplier { get; private set; } = 1.5f;
+		public float InitialMultiplier { get; private set; } = 0.5f;
+
+		[field: SerializeField]
+		[field: TabGroup("Info", "Settings")]
+		public float BonusPerHit { get; private set; } = 0.25f;
+
+		[field: SerializeField]
+		[field: TabGroup("Info", "Settings")]
+		public float MaxMultiplier { get; private set; } = 2f;
 
 		public override TowerModifierInstance CreateInstance(Tower owner) => new TenderizerInstance(this, owner);
 	}
@@ -16,7 +24,8 @@ namespace Modifiers
 	public class TenderizerInstance : TowerModifierInstance
 	{
 		private readonly TenderizerModifierSO _so;
-		private Enemy _lastTargetHit;
+		private Enemy _lastTarget;
+		private int _consecutiveHits;
 
 		public TenderizerInstance(TenderizerModifierSO data, Tower owner)
 			: base(data, owner)
@@ -26,11 +35,18 @@ namespace Modifiers
 
 		public override void OnBeforeDealDamage(Enemy target, ref float damage)
 		{
-			if (_lastTargetHit == target)
+			if (_lastTarget == target)
 			{
-				damage *= _so.ConsecutiveHitMultiplier;
+				_consecutiveHits++;
 			}
-			_lastTargetHit = target;
+			else
+			{
+				_lastTarget = target;
+				_consecutiveHits = 0;
+			}
+
+			float multiplier = Mathf.Min(_so.InitialMultiplier + (_consecutiveHits * _so.BonusPerHit), _so.MaxMultiplier);
+			damage *= multiplier;
 		}
 	}
 }

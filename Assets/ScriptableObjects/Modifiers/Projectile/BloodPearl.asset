@@ -15,7 +15,7 @@ MonoBehaviour:
   <Id>k__BackingField: blood_pearl
   <Name>k__BackingField: Blood Pearl
   <Description>k__BackingField: Deals 2x damage below 50% HP, but cannot target full-health
-    enemies.
+    enemies
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 1
   <StatModifiers>k__BackingField: []

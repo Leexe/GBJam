@@ -12,11 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f3a12582ef40ee863473e775d1f4be, type: 3}
   m_Name: Level2
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
-  LevelName: Level 1
+  LevelName: Level 2
   MaxHealth: 100
-  StartingGold: 30
-  EnemyWaypoints: []
-  Obstacles: []
+  StartingGold: 80
+  EnemyWaypoints:
+  - {x: 0, y: 3}
+  - {x: 8, y: 3}
+  - {x: 8, y: 12}
+  - {x: 15, y: 12}
+  - {x: 15, y: 7}
+  - {x: 19, y: 7}
+  Obstacles:
+  - {x: 9, y: 4}
+  - {x: 9, y: 5}
+  - {x: 14, y: 11}
+  - {x: 14, y: 10}
   WaveDataList:
   - GivesItems: 0
     ItemChoicesCount: 3
@@ -24,26 +34,165 @@ MonoBehaviour:
     CustomItemPool: []
     SpawnGroups:
     - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
-      Count: 5
-      Interval: 1
+      Count: 8
+      Interval: 0.7
       StartDelay: 0
-    - Enemy: {fileID: 11400000, guid: cdf99995bf66f4904909e0c51e1cb3fa, type: 2}
+      SpeedMultiplier: 1.1
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
+    - Enemy: {fileID: 11400000, guid: f8df484185f8548e09d43e1f3add3b98, type: 2}
+      Count: 3
+      Interval: 1.2
+      StartDelay: 2.5
+      SpeedMultiplier: 1
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
+  - GivesItems: 1
+    ItemChoicesCount: 3
+    OverrideLevelItemPool: 0
+    CustomItemPool: []
+    SpawnGroups:
+    - Enemy: {fileID: 11400000, guid: f8df484185f8548e09d43e1f3add3b98, type: 2}
       Count: 5
-      Interval: 0.5
-      StartDelay: 4
+      Interval: 0.9
+      StartDelay: 0
+      SpeedMultiplier: 1
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
+    - Enemy: {fileID: 11400000, guid: a3cec9b5c6a6c4668ad9bbc2b043cf74, type: 2}
+      Count: 2
+      Interval: 2
+      StartDelay: 3.5
+      SpeedMultiplier: 1
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
+  - GivesItems: 0
+    ItemChoicesCount: 3
+    OverrideLevelItemPool: 0
+    CustomItemPool: []
+    SpawnGroups:
+    - Enemy: {fileID: 11400000, guid: cdf99995bf66f4904909e0c51e1cb3fa, type: 2}
+      Count: 4
+      Interval: 1.2
+      StartDelay: 0
+      SpeedMultiplier: 1.1
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 0.4
+      ScaleMultiplier: 1
+    - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
+      Count: 12
+      Interval: 0.4
+      StartDelay: 3
+      SpeedMultiplier: 1.2
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
   - GivesItems: 1
     ItemChoicesCount: 3
     OverrideLevelItemPool: 0
     CustomItemPool: []
     SpawnGroups:
     - Enemy: {fileID: 11400000, guid: a3cec9b5c6a6c4668ad9bbc2b043cf74, type: 2}
-      Count: 8
-      Interval: 0.8
+      Count: 3
+      Interval: 1.5
       StartDelay: 0
+      SpeedMultiplier: 1
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
+    - Enemy: {fileID: 11400000, guid: cdf99995bf66f4904909e0c51e1cb3fa, type: 2}
+      Count: 4
+      Interval: 1
+      StartDelay: 3
+      SpeedMultiplier: 1.2
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 0.4
+      ScaleMultiplier: 1
+    - Enemy: {fileID: 11400000, guid: f8df484185f8548e09d43e1f3add3b98, type: 2}
+      Count: 6
+      Interval: 0.8
+      StartDelay: 5.5
+      SpeedMultiplier: 1
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
+  - GivesItems: 0
+    ItemChoicesCount: 3
+    OverrideLevelItemPool: 0
+    CustomItemPool: []
+    SpawnGroups:
+    - Enemy: {fileID: 11400000, guid: cdf99995bf66f4904909e0c51e1cb3fa, type: 2}
+      Count: 6
+      Interval: 1
+      StartDelay: 0
+      SpeedMultiplier: 1.1
+      HealthMultiplier: 1.2
+      DamageMultiplier: 1
+      GoldMultiplier: 0.4
+      ScaleMultiplier: 1
+    - Enemy: {fileID: 11400000, guid: a3cec9b5c6a6c4668ad9bbc2b043cf74, type: 2}
+      Count: 4
+      Interval: 1.5
+      StartDelay: 3
+      SpeedMultiplier: 1
+      HealthMultiplier: 1.2
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
+    - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
+      Count: 12
+      Interval: 0.35
+      StartDelay: 6
+      SpeedMultiplier: 1.3
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
+  - GivesItems: 1
+    ItemChoicesCount: 3
+    OverrideLevelItemPool: 0
+    CustomItemPool: []
+    SpawnGroups:
+    - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
+      Count: 15
+      Interval: 0.35
+      StartDelay: 0
+      SpeedMultiplier: 1.3
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
+    - Enemy: {fileID: 11400000, guid: a3cec9b5c6a6c4668ad9bbc2b043cf74, type: 2}
+      Count: 3
+      Interval: 2.5
+      StartDelay: 3.5
+      SpeedMultiplier: 1
+      HealthMultiplier: 1.4
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1.25
     - Enemy: {fileID: 11400000, guid: e9133eb06bb77457e893c47dc060f5fd, type: 2}
       Count: 1
-      Interval: 2.5
-      StartDelay: 6
+      Interval: 1
+      StartDelay: 7
+      SpeedMultiplier: 0.9
+      HealthMultiplier: 1.75
+      DamageMultiplier: 1
+      GoldMultiplier: 0.75
+      ScaleMultiplier: 1.1
   DefaultItemChoicesCount: 3
   ItemPool:
   - {fileID: 11400000, guid: c238c0b22817843eeb75cd27fc08e4f9, type: 2}

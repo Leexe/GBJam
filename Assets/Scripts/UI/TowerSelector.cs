@@ -33,13 +33,6 @@ public class TowerSelector : MonoBehaviour
 	[SerializeField]
 	private TextMeshProUGUI _descriptionText;
 
-	[Header("Arrows")]
-	[SerializeField]
-	private RectTransform _leftArrow;
-
-	[SerializeField]
-	private RectTransform _rightArrow;
-
 	[Header("Visual Settings")]
 	[SerializeField]
 	private Color _affordablePriceColor = Color.white;
@@ -162,9 +155,6 @@ public class TowerSelector : MonoBehaviour
 		_priceText.color = _affordablePriceColor;
 		_descriptionText.text = data.Description;
 
-		_leftArrow.gameObject.SetActive(false);
-		_rightArrow.gameObject.SetActive(false);
-
 		SubscribeInput();
 		OnOpened?.Invoke(GridManager.Instance.WorldToGrid(tower.transform.position));
 	}
@@ -182,8 +172,6 @@ public class TowerSelector : MonoBehaviour
 		_currentDirection = Vector2Int.zero;
 		_arrowAnim.Stop();
 
-		ResetArrowScales();
-
 		if (_pauseTimeWhileOpen && resumeTime)
 		{
 			Time.timeScale = 1f;
@@ -193,12 +181,6 @@ public class TowerSelector : MonoBehaviour
 
 		UnsubscribeInput();
 		OnClosed?.Invoke();
-	}
-
-	private void ResetArrowScales()
-	{
-		_leftArrow.localScale = Vector3.one;
-		_rightArrow.localScale = Vector3.one;
 	}
 
 	private void SubscribeInput()
@@ -280,18 +262,6 @@ public class TowerSelector : MonoBehaviour
 		}
 
 		SetSelected(nextIndex);
-		AnimateArrow(offset);
-	}
-
-	private void AnimateArrow(int direction)
-	{
-		RectTransform arrow = direction < 0 ? _leftArrow : _rightArrow;
-		_arrowAnim.Stop();
-		ResetArrowScales();
-		_arrowAnim = Sequence
-			.Create(useUnscaledTime: true)
-			.Chain(Tween.Scale(arrow, _arrowPunchScale, _arrowPunchDuration, Ease.OutQuad))
-			.Chain(Tween.Scale(arrow, 1f, _arrowPunchDuration, Ease.InQuad));
 	}
 
 	public void SetSelected(int index)
@@ -307,9 +277,6 @@ public class TowerSelector : MonoBehaviour
 		_priceText.text = $"{selected.Cost}";
 		_priceText.color = canAfford ? _affordablePriceColor : _unaffordablePriceColor;
 		_descriptionText.text = selected.Description;
-
-		_leftArrow.gameObject.SetActive(_selectedIndex > 0);
-		_rightArrow.gameObject.SetActive(_selectedIndex < TowerPool.Count - 1);
 
 		OnTowerChanged?.Invoke(selected);
 	}

@@ -16,21 +16,23 @@ MonoBehaviour:
   <Id>k__BackingField: bomber
   <Description>k__BackingField: Short ranged but hurls devastating fire bombs
   <TowerType>k__BackingField: 2
-  <Icon>k__BackingField: {fileID: -1747877315, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
-  <TopSprites>k__BackingField:
-  - {fileID: -166640528, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
-  - {fileID: -1599538528, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
-  - {fileID: 935887004, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
-  <BottomSprites>k__BackingField:
-  - {fileID: -1747877315, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
-  - {fileID: -327697174, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
-  - {fileID: 1122999061, guid: dcadf92dadc2f4f5cb35b9341b9c7c24, type: 3}
+  <Icon>k__BackingField: {fileID: -1663201447, guid: fb41ab4c4fa04b6eb830e8145caef095, type: 3}
   <Range>k__BackingField: 1.25
-  <Damage>k__BackingField: 40
   <Knockback>k__BackingField: 0
   <Attacks>k__BackingField:
   - <Delay>k__BackingField: 2
     <Damage>k__BackingField: 10
     <ProjectileData>k__BackingField: {fileID: 11400000, guid: 398f1811c13094caeb3a112156e1b1cd, type: 2}
     <StatusEffects>k__BackingField: []
+    <TopSprites>k__BackingField:
+    - {fileID: -543790364, guid: fb41ab4c4fa04b6eb830e8145caef095, type: 3}
+    - {fileID: -1490446568, guid: fb41ab4c4fa04b6eb830e8145caef095, type: 3}
+    - {fileID: -1663201447, guid: fb41ab4c4fa04b6eb830e8145caef095, type: 3}
+    - {fileID: 260926728, guid: fb41ab4c4fa04b6eb830e8145caef095, type: 3}
+    <BottomSprites>k__BackingField:
+    - {fileID: -543790364, guid: fb41ab4c4fa04b6eb830e8145caef095, type: 3}
+    - {fileID: -1490446568, guid: fb41ab4c4fa04b6eb830e8145caef095, type: 3}
+    - {fileID: -1663201447, guid: fb41ab4c4fa04b6eb830e8145caef095, type: 3}
+    - {fileID: 260926728, guid: fb41ab4c4fa04b6eb830e8145caef095, type: 3}
+    <ImpactFrame>k__BackingField: 1
   <Cost>k__BackingField: 75

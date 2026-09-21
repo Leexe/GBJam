@@ -98,13 +98,14 @@ public class Tower : MonoBehaviour
 	private void SetInitialVisual()
 	{
 		_spriteRenderer.flipX = false;
-		_spriteRenderer.sprite =
-			_data.BottomSprites != null && _data.BottomSprites.Length > 0 ? _data.BottomSprites[0] : _data.Icon;
+		TowerAttack first = _data.Attacks[0];
+		_spriteRenderer.sprite = first.BottomSprites.Length > 0 ? first.BottomSprites[0] : first.TopSprites[0];
 	}
 
 	private void SetupStats()
 	{
-		float baseDamage = _data.TowerType == TowerType.Melee ? _data.Damage : _data.Attacks[0].ProjectileData.Damage;
+		float baseDamage =
+			_data.TowerType == TowerType.Melee ? _data.Attacks[0].Damage : _data.Attacks[0].ProjectileData.Damage;
 		float baseAoe =
 			_data.TowerType != TowerType.Melee && _data.Attacks[0].ProjectileData.IsAoe
 				? _data.Attacks[0].ProjectileData.AoeRadius
@@ -316,15 +317,25 @@ public class Tower : MonoBehaviour
 		Vector3 direction = target.transform.position - _position;
 		_spriteRenderer.flipX = direction.x < 0f;
 
-		if (_data.TopSprites != null && _data.TopSprites.Length > 0)
+		Sprite[] animSprites = GetAttackSprites(attack, direction);
+		if (animSprites != null)
 		{
-			Sprite[] animSprites = direction.y >= 0f ? _data.TopSprites : _data.BottomSprites;
 			PlayAttackAnimation(target, animSprites, attack);
 		}
 		else
 		{
 			PlayFallbackAttack(target, direction.normalized, attack);
 		}
+	}
+
+	private Sprite[] GetAttackSprites(TowerAttack attack, Vector3 direction)
+	{
+		if (direction.y >= 0f)
+		{
+			return attack.TopSprites;
+		}
+
+		return attack.BottomSprites.Length > 0 ? attack.BottomSprites : attack.TopSprites;
 	}
 
 	private void PlayAttackAnimation(Enemy target, Sprite[] animSprites, TowerAttack attack)
@@ -337,15 +348,7 @@ public class Tower : MonoBehaviour
 
 		_spriteRenderer.sprite = animSprites[0];
 
-		_attackSequence
-			.Chain(Tween.Delay(frameDuration))
-			.ChainCallback(() =>
-			{
-				_spriteRenderer.sprite = animSprites[1];
-				PerformAttack(target, attack);
-			});
-
-		for (int i = 2; i < animSprites.Length; i++)
+		for (int i = 1; i < animSprites.Length; i++)
 		{
 			int frameIndex = i;
 			_attackSequence
@@ -353,6 +356,10 @@ public class Tower : MonoBehaviour
 				.ChainCallback(() =>
 				{
 					_spriteRenderer.sprite = animSprites[frameIndex];
+					if (frameIndex == attack.ImpactFrame)
+					{
+						PerformAttack(target, attack);
+					}
 				});
 		}
 
@@ -383,6 +390,8 @@ public class Tower : MonoBehaviour
 
 	private void PerformAttack(Enemy target, TowerAttack attack)
 	{
+		float attackBaseDamage = _data.TowerType == TowerType.Melee ? attack.Damage : attack.ProjectileData.Damage;
+		Stats.SetBaseStat(StatType.Damage, attackBaseDamage);
 		float damage = Stats.GetFinalStat(StatType.Damage);
 		for (int i = 0; i < _modifierInstances.Count; i++)
 		{

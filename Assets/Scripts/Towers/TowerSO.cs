@@ -36,26 +36,10 @@ public class TowerSO : ScriptableObject
 	[field: PreviewField(50, ObjectFieldAlignment.Left)]
 	public Sprite Icon { get; private set; }
 
-	[Header("Visuals")]
-	[field: SerializeField]
-	[field: TabGroup("Tab", "Visuals")]
-	[field: PreviewField(50, ObjectFieldAlignment.Left)]
-	public Sprite[] TopSprites { get; private set; }
-
-	[field: SerializeField]
-	[field: TabGroup("Tab", "Visuals")]
-	[field: PreviewField(50, ObjectFieldAlignment.Left)]
-	public Sprite[] BottomSprites { get; private set; }
-
 	[Header("Combat")]
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Combat")]
 	public float Range { get; private set; } = 2.5f;
-
-	[field: SerializeField]
-	[field: TabGroup("Tab", "Combat")]
-	[field: ShowIf(nameof(TowerType), TowerType.Melee)]
-	public float Damage { get; private set; } = 10f;
 
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Combat")]
@@ -105,4 +89,16 @@ public class TowerAttack
 
 	[field: SerializeField]
 	public List<StatusEffectSO> StatusEffects { get; private set; }
+
+	[field: SerializeField]
+	[field: PreviewField(40, ObjectFieldAlignment.Left)]
+	public Sprite[] TopSprites { get; private set; }
+
+	[field: SerializeField]
+	[field: PreviewField(40, ObjectFieldAlignment.Left)]
+	public Sprite[] BottomSprites { get; private set; }
+
+	[field: SerializeField]
+	[field: MinValue(0)]
+	public int ImpactFrame { get; private set; } = 1;
 }

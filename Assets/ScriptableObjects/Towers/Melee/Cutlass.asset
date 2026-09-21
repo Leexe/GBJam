@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449f067aa70a40e2b6a647c7011048b2, type: 3}
+  m_Name: Cutlass
+  m_EditorClassIdentifier: Assembly-CSharp::TowerSO
+  <Name>k__BackingField: Cutlass
+  <Id>k__BackingField: cutlass
+  <Description>k__BackingField: Experience fighters who will cut down targets with
+    precision
+  <TowerType>k__BackingField: 0
+  <Icon>k__BackingField: {fileID: -1038217273, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+  <Range>k__BackingField: 1.2
+  <Knockback>k__BackingField: 0
+  <Attacks>k__BackingField:
+  - <Delay>k__BackingField: 0.33
+    <Damage>k__BackingField: 10
+    <ProjectileData>k__BackingField: {fileID: 0}
+    <StatusEffects>k__BackingField: []
+    <TopSprites>k__BackingField:
+    - {fileID: -806513605, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    - {fileID: -448489924, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    - {fileID: -1038217273, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    <BottomSprites>k__BackingField:
+    - {fileID: -806513605, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    - {fileID: -448489924, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    - {fileID: -1038217273, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    <ImpactFrame>k__BackingField: 1
+  - <Delay>k__BackingField: 0.33
+    <Damage>k__BackingField: 10
+    <ProjectileData>k__BackingField: {fileID: 0}
+    <StatusEffects>k__BackingField: []
+    <TopSprites>k__BackingField:
+    - {fileID: -806513605, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    - {fileID: 1519592654, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    - {fileID: -1038217273, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    <BottomSprites>k__BackingField:
+    - {fileID: -806513605, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    - {fileID: -448489924, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    - {fileID: -1038217273, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
+    <ImpactFrame>k__BackingField: 1
+  <Cost>k__BackingField: 50

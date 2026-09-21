@@ -17,22 +17,29 @@ MonoBehaviour:
   <Description>k__BackingField: A dual-wielding pirate who fires shots from range
   <TowerType>k__BackingField: 1
   <Icon>k__BackingField: {fileID: -140820160, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
-  <TopSprites>k__BackingField:
-  - {fileID: -692429825, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
-  - {fileID: 847548657, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
-  <BottomSprites>k__BackingField:
-  - {fileID: -1659320916, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
-  - {fileID: -140820160, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
   <Range>k__BackingField: 2
-  <Damage>k__BackingField: 10
   <Knockback>k__BackingField: 0
   <Attacks>k__BackingField:
   - <Delay>k__BackingField: 0.2
     <Damage>k__BackingField: 10
     <ProjectileData>k__BackingField: {fileID: 11400000, guid: f75493b7748ee4c55b813a3fb38fb037, type: 2}
     <StatusEffects>k__BackingField: []
+    <TopSprites>k__BackingField:
+    - {fileID: -692429825, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
+    - {fileID: 847548657, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
+    <BottomSprites>k__BackingField:
+    - {fileID: -1659320916, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
+    - {fileID: -140820160, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
+    <ImpactFrame>k__BackingField: 1
   - <Delay>k__BackingField: 0.6
     <Damage>k__BackingField: 10
     <ProjectileData>k__BackingField: {fileID: 11400000, guid: f75493b7748ee4c55b813a3fb38fb037, type: 2}
     <StatusEffects>k__BackingField: []
+    <TopSprites>k__BackingField:
+    - {fileID: -692429825, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
+    - {fileID: 847548657, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
+    <BottomSprites>k__BackingField:
+    - {fileID: -1659320916, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
+    - {fileID: -140820160, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
+    <ImpactFrame>k__BackingField: 1
   <Cost>k__BackingField: 50

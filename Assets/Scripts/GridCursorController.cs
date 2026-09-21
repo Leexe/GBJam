@@ -406,16 +406,13 @@ public class GridCursorController : MonoBehaviour
 		UpdateVisual();
 		OnPlacementModeChanged?.Invoke(_isPlacingTower);
 
-		if (_textDisplayUI != null)
+		if (enable)
 		{
-			if (enable)
-			{
-				_textDisplayUI.Show(_placeTowerPrompt, TargetWorldPosition);
-			}
-			else if (!_isConfirmingRemove)
-			{
-				_textDisplayUI.Hide();
-			}
+			_textDisplayUI.Show(_placeTowerPrompt, TargetWorldPosition);
+		}
+		else if (!_isConfirmingRemove)
+		{
+			_textDisplayUI.Hide();
 		}
 	}
 
@@ -424,16 +421,13 @@ public class GridCursorController : MonoBehaviour
 		_isConfirmingRemove = enable;
 		OnRemoveConfirmationChanged?.Invoke(_isConfirmingRemove);
 
-		if (_textDisplayUI != null)
+		if (enable)
 		{
-			if (enable)
-			{
-				_textDisplayUI.Show(_fireTowerPrompt, TargetWorldPosition);
-			}
-			else if (!_isPlacingTower)
-			{
-				_textDisplayUI.Hide();
-			}
+			_textDisplayUI.Show(_fireTowerPrompt, TargetWorldPosition);
+		}
+		else if (!_isPlacingTower)
+		{
+			_textDisplayUI.Hide();
 		}
 	}
 
@@ -481,7 +475,7 @@ public class GridCursorController : MonoBehaviour
 		_cursorTween.Stop();
 		_cursorTween = Tween.Position(transform, targetPos, _movementDuration, Ease.OutQuad, useUnscaledTime: true);
 		UpdateVisual();
-		if (_textDisplayUI != null && _textDisplayUI.IsVisible)
+		if (_textDisplayUI.IsVisible)
 		{
 			_textDisplayUI.UpdatePosition(targetPos);
 		}

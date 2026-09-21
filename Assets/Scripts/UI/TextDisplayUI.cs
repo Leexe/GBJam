@@ -28,7 +28,7 @@ public class TextDisplayUI : MonoBehaviour
 	[SerializeField]
 	private float _topHalfThreshold = 0.5f;
 
-	public bool IsVisible => _canvasGroup != null && _canvasGroup.alpha > 0f;
+	public bool IsVisible => _canvasGroup.alpha > 0f;
 
 	private void Awake()
 	{
@@ -73,24 +73,11 @@ public class TextDisplayUI : MonoBehaviour
 
 	public void SetText(string message)
 	{
-		if (_text != null)
-		{
-			_text.text = message;
-		}
+		_text.text = message;
 	}
 
 	public void UpdatePosition(Vector3 worldPosition)
 	{
-		if (_camera == null)
-		{
-			_camera = Camera.main;
-		}
-
-		if (_camera == null)
-		{
-			return;
-		}
-
 		Vector3 viewportPoint = _camera.WorldToViewportPoint(worldPosition);
 		_rectTransform.anchoredPosition = viewportPoint.y >= _topHalfThreshold
 			? _secondaryPosition

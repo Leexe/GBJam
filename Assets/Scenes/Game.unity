@@ -6036,7 +6036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8285369450261359416, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: _debugVisualization
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8285369450261359416, guid: 1c04d028a05934e64a66c1e56a7db787, type: 3}
       propertyPath: serializationData.Prefab

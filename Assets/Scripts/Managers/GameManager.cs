@@ -49,6 +49,7 @@ public class GameManager : MonoSingleton<GameManager>
 	private bool _hasLost;
 	private bool _hasWon;
 	private bool _isTransitioning;
+	private bool _waitingForFirstTower;
 
 	public int Health => _health;
 	public int MaxHealth => _levelSO.MaxHealth;
@@ -115,7 +116,8 @@ public class GameManager : MonoSingleton<GameManager>
 		PlayLevelMusic();
 		AudioManager.Instance.SetMusicMultiplier(_preWaveMusicVolume);
 
-		_waveController.StartNextWave();
+		_waitingForFirstTower = true;
+		GridManager.Instance.OnTowerPlaced += HandleFirstTowerPlaced;
 
 		if (_fadeOverlay != null)
 		{
@@ -124,6 +126,13 @@ public class GameManager : MonoSingleton<GameManager>
 		}
 
 		DisablePrimeTween();
+	}
+
+	private void HandleFirstTowerPlaced(Vector2Int position, GameObject tower)
+	{
+		GridManager.Instance.OnTowerPlaced -= HandleFirstTowerPlaced;
+		_waitingForFirstTower = false;
+		_waveController.StartNextWave();
 	}
 
 	private void HandleWaveStarted(int waveIndex)
@@ -156,6 +165,11 @@ public class GameManager : MonoSingleton<GameManager>
 			_waveController.OnWaveItemsOffered -= HandleWaveItemsOffered;
 			_waveController.OnWaveStarted -= HandleWaveStarted;
 			_waveController.OnWaveCompleted -= HandleWaveCompleted;
+		}
+
+		if (_waitingForFirstTower && GridManager.Instance != null)
+		{
+			GridManager.Instance.OnTowerPlaced -= HandleFirstTowerPlaced;
 		}
 
 		if (AudioManager.Instance != null)
@@ -259,7 +273,7 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void HandleTimer()
 	{
-		if (_hasLost || _hasWon)
+		if (_hasLost || _hasWon || _waitingForFirstTower)
 		{
 			return;
 		}

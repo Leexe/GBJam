@@ -133,6 +133,7 @@ public class ItemSelector : MonoBehaviour
 
 		_offeredItems.Clear();
 		_offeredItems.AddRange(choices);
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WinningJingle_Sfx);
 		OpenWithCurrentItems(canCancel: false);
 	}
 
@@ -187,7 +188,6 @@ public class ItemSelector : MonoBehaviour
 	public void Open(int choicesCount = 3)
 	{
 		Open(GenerateRandomItems(choicesCount));
-		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WinningJingle_Sfx);
 	}
 
 	public void Open()
@@ -219,9 +219,18 @@ public class ItemSelector : MonoBehaviour
 
 	public List<TowerModifierSO> GenerateRandomItems(int count)
 	{
-		List<TowerModifierSO> pool = GameManager.Instance.Level.ItemPool;
-		int choiceCount = Mathf.Min(count, pool.Count);
-		List<TowerModifierSO> copy = new(pool);
+		LevelSO level = GameManager.Instance.Level;
+		List<TowerModifierSO> pool = level.ItemPool;
+		List<TowerModifierSO> copy = new(pool.Count);
+		foreach (TowerModifierSO t in pool)
+		{
+			if (level.IsModifierValidForTowerPool(t))
+			{
+				copy.Add(t);
+			}
+		}
+
+		int choiceCount = Mathf.Min(count, copy.Count);
 		List<TowerModifierSO> selected = new(choiceCount);
 
 		for (int i = 0; i < choiceCount; i++)
@@ -364,7 +373,6 @@ public class ItemSelector : MonoBehaviour
 		}
 
 		TowerModifierSO selected = SelectedItem;
-		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WinningJingle_Sfx);
 		OnItemConfirmed?.Invoke(selected);
 		GameManager.Instance.ModifierManager.SelectModifier(selected);
 		_offeredItems.Clear();

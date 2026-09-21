@@ -243,7 +243,14 @@ public class LevelSO : ScriptableObject
 			count > 0 ? count : (wave.ItemChoicesCount > 0 ? wave.ItemChoicesCount : DefaultItemChoicesCount);
 		choiceCount = Mathf.Min(choiceCount, sourcePool.Count);
 
-		List<TowerModifierSO> copy = new List<TowerModifierSO>(sourcePool);
+		List<TowerModifierSO> copy = new List<TowerModifierSO>(sourcePool.Count);
+		for (int i = 0; i < sourcePool.Count; i++)
+		{
+			if (IsModifierValidForTowerPool(sourcePool[i]))
+				copy.Add(sourcePool[i]);
+		}
+
+		choiceCount = Mathf.Min(choiceCount, copy.Count);
 		List<TowerModifierSO> selected = new List<TowerModifierSO>(choiceCount);
 
 		for (int i = 0; i < choiceCount; i++)
@@ -254,6 +261,27 @@ public class LevelSO : ScriptableObject
 		}
 
 		return selected;
+	}
+
+	public bool IsModifierValidForTowerPool(TowerModifierSO modifier)
+	{
+		if (modifier.Category == Modifiers.ModifierTowerCategory.Any)
+			return true;
+
+		TowerType required = modifier.Category switch
+		{
+			Modifiers.ModifierTowerCategory.Melee => TowerType.Melee,
+			Modifiers.ModifierTowerCategory.Projectile => TowerType.Projectile,
+			Modifiers.ModifierTowerCategory.Explosive => TowerType.Explosive,
+			_ => TowerType.Melee,
+		};
+
+		for (int i = 0; i < TowerPool.Count; i++)
+		{
+			if (TowerPool[i].TowerType == required)
+				return true;
+		}
+		return false;
 	}
 
 	public bool DoesWaveGiveModifiers(int waveIndex) => DoesWaveGiveItems(waveIndex);

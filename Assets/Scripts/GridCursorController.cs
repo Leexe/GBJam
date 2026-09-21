@@ -135,6 +135,7 @@ public class GridCursorController : MonoBehaviour
 	private bool _isSelectingTower;
 	private bool _isPlacingTower;
 	private bool _isConfirmingRemove;
+	private bool _hasPressedHire;
 	private CursorType _defaultCursorType;
 	private Tween _cursorTween;
 	private Sequence _animTween;
@@ -315,6 +316,7 @@ public class GridCursorController : MonoBehaviour
 			return;
 		}
 
+		_hasPressedHire = true;
 		SetTowerSelectionMode(true);
 		_towerSelector.Open(_gridCoordinates, _cursorSize, _selectedTower);
 	}
@@ -558,7 +560,7 @@ public class GridCursorController : MonoBehaviour
 		{
 			_textDisplayUI.Show(_fireTowerPrompt, TargetWorldPosition);
 		}
-		else if (!IsSelectorOpen && IsFirstLevel && _currentHoveredTower == null)
+		else if (!IsSelectorOpen && IsFirstLevel && !_hasPressedHire && _currentHoveredTower == null)
 		{
 			_textDisplayUI.Show(GetHirePrompt(), TargetWorldPosition);
 		}

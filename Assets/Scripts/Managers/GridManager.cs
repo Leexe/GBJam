@@ -208,6 +208,7 @@ public class GridManager : MonoSingleton<GridManager>
 		_activeTowers.Add(tower);
 		OnTowerPlaced?.Invoke(position, tower.gameObject);
 		OnTowerSpawned?.Invoke(tower);
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PickUp_Sfx);
 		return true;
 	}
 

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2f89841ade44e619d7cb13662c0d08e, type: 3}
-  m_Name: Shrimp
+  m_Name: Crab
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
-  Name: Shrimp
-  Description: These obominations speeds up when they take damage
+  Name: Crab
+  Description: Crab
   Health: 100
   Speed: 1.1
   Damage: 25
@@ -26,4 +26,4 @@ MonoBehaviour:
       Data4: -1765205730
     Path: event:/SFX/Kills/Cracky_kill
   SpriteList:
-  - {fileID: -2001428663, guid: 414503ea5d5d243ef9e5cc2cf7c7d376, type: 3}
+  - {fileID: 772405930, guid: 689f866faba3946b798bc3b6a92245c2, type: 3}

@@ -19,6 +19,13 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: -1128811987, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
   <Range>k__BackingField: 1
   <Knockback>k__BackingField: 0
+  FireSfx:
+    Guid:
+      Data1: 358881418
+      Data2: 1334163886
+      Data3: 1876083903
+      Data4: -345044941
+    Path: event:/SFX/Combat/Meele
   <Attacks>k__BackingField:
   - <Delay>k__BackingField: 0.5
     <Damage>k__BackingField: 10

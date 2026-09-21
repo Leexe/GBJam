@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FMODUnity;
 using Modifiers;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -140,6 +141,9 @@ public class LevelSO : ScriptableObject
 {
 	[TabGroup("Tabs", "General")]
 	public string LevelName;
+
+	[TabGroup("Tabs", "General")]
+	public EventReference Music;
 
 	[TabGroup("Tabs", "General")]
 	[MinValue(1)]

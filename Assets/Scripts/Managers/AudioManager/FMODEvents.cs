@@ -1,101 +1,46 @@
-using System.Diagnostics.CodeAnalysis;
 using FMODUnity;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-[SuppressMessage("ReSharper", "Odin.OdinUnknownGroupingPath")]
 public class FMODEvents : MonoSingleton<FMODEvents>
 {
-	#region Music
+	[Header("Music")]
+	public EventReference Gameplay1_Bgm;
+	public EventReference Gameplay2_Bgm;
+	public EventReference Gameplay3_Bgm;
+	public EventReference Storytime_Bgm;
+	public EventReference Title_Bgm;
+	public EventReference BgmTest_Bgm;
 
-	[field: SerializeField]
-	[field: FoldoutGroup("Music", true)]
-	public EventReference Gameplay1_Bgm { get; private set; }
+	[Header("Ambience")]
+	public EventReference TheSeaIsReallyMad_Amb;
+	public EventReference AmbTest_Amb;
 
-	[field: SerializeField]
-	[field: FoldoutGroup("Music")]
-	public EventReference Gameplay2_Bgm { get; private set; }
+	[Header("SFX - Combat")]
+	public EventReference Balista_Sfx;
+	public EventReference Cannon_Sfx;
+	public EventReference Gun_Sfx;
+	public EventReference Melee_Sfx;
 
-	[field: SerializeField]
-	[field: FoldoutGroup("Music")]
-	public EventReference Gameplay3_Bgm { get; private set; }
+	[Header("SFX - Creature Enters")]
+	public EventReference CreatureEnters_Sfx;
 
-	[field: SerializeField]
-	[field: FoldoutGroup("Music")]
-	public EventReference Storytime_Bgm { get; private set; }
+	[Header("SFX - Kills")]
+	public EventReference CrackyKill_Sfx;
+	public EventReference SquishKill_Sfx;
 
-	[field: SerializeField]
-	[field: FoldoutGroup("Music")]
-	public EventReference Title_Bgm { get; private set; }
+	[Header("SFX - Mechanics")]
+	public EventReference PickUp_Sfx;
+	public EventReference Settle_Sfx;
 
-	#endregion
+	[Header("SFX - UI")]
+	public EventReference CantClick_Sfx;
+	public EventReference CompleteClick_Sfx;
+	public EventReference SelectorClick_Sfx;
 
-	#region Ambience
+	[Header("SFX - Test")]
+	public EventReference SfxTest_Sfx;
 
-	[field: SerializeField]
-	[field: FoldoutGroup("Ambience", true)]
-	public EventReference TheSeaIsReallyMad_Amb { get; private set; }
-
-	#endregion
-
-	#region SFX
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/Combat", true)]
-	public EventReference Balista_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/Combat")]
-	public EventReference Cannon_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/Combat")]
-	public EventReference Gun_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/Combat")]
-	public EventReference Melee_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/Creature Enters", true)]
-	public EventReference CreatureEnters_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/Kills", true)]
-	public EventReference CrackyKill_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/Kills")]
-	public EventReference SquishKill_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/Mechanics", true)]
-	public EventReference PickUp_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/Mechanics")]
-	public EventReference Settle_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/UI", true)]
-	public EventReference CantClick_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/UI")]
-	public EventReference CompleteClick_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/UI")]
-	public EventReference SelectorClick_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/YouWin YouLose", true)]
-	public EventReference LosingJingle_Sfx { get; private set; }
-
-	[field: SerializeField]
-	[field: FoldoutGroup("SFX/YouWin YouLose")]
-	public EventReference WinningJingle_Sfx { get; private set; }
-
-	#endregion
+	[Header("SFX - Win / Lose")]
+	public EventReference LosingJingle_Sfx;
+	public EventReference WinningJingle_Sfx;
 }

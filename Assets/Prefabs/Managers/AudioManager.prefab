@@ -108,3 +108,164 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  Gameplay1_Bgm:
+    Guid:
+      Data1: 1498187387
+      Data2: 1279534956
+      Data3: -984933187
+      Data4: 1200066419
+    Path: event:/BGM/Gameplay/Gameplay1
+  Gameplay2_Bgm:
+    Guid:
+      Data1: -1804124977
+      Data2: 1295576112
+      Data3: 220791733
+      Data4: 1331714135
+    Path: event:/BGM/Gameplay/Gameplay2
+  Gameplay3_Bgm:
+    Guid:
+      Data1: 538317750
+      Data2: 1113146601
+      Data3: -1403190869
+      Data4: -172314111
+    Path: event:/BGM/Gameplay/Gameplay3
+  Storytime_Bgm:
+    Guid:
+      Data1: -1698561785
+      Data2: 1281187971
+      Data3: -1661606749
+      Data4: -1749131437
+    Path: event:/BGM/Storytime/Storytime
+  Title_Bgm:
+    Guid:
+      Data1: 415073673
+      Data2: 1220246842
+      Data3: -110364001
+      Data4: -1025484998
+    Path: event:/BGM/Title/title
+  BgmTest_Bgm:
+    Guid:
+      Data1: 139997652
+      Data2: 1304468516
+      Data3: 750408072
+      Data4: 756513556
+    Path: event:/BGM/Bgm Test
+  TheSeaIsReallyMad_Amb:
+    Guid:
+      Data1: -1614656133
+      Data2: 1093760964
+      Data3: -776061799
+      Data4: -847747626
+    Path: event:/AMB/The_sea_is_really_mad
+  AmbTest_Amb:
+    Guid:
+      Data1: 1528589566
+      Data2: 1074427215
+      Data3: -2120208978
+      Data4: 322280710
+    Path: event:/AMB/Amb Test
+  Balista_Sfx:
+    Guid:
+      Data1: 1039284679
+      Data2: 1284213518
+      Data3: -132191583
+      Data4: -608735013
+    Path: event:/SFX/Combat/Balista
+  Cannon_Sfx:
+    Guid:
+      Data1: 1316372694
+      Data2: 1164310786
+      Data3: 330064316
+      Data4: 1979135301
+    Path: event:/SFX/Combat/Cannon
+  Gun_Sfx:
+    Guid:
+      Data1: -1022395492
+      Data2: 1318128578
+      Data3: -631283834
+      Data4: -1227676308
+    Path: event:/SFX/Combat/Gun
+  Melee_Sfx:
+    Guid:
+      Data1: 358881418
+      Data2: 1334163886
+      Data3: 1876083903
+      Data4: -345044941
+    Path: event:/SFX/Combat/Meele
+  CreatureEnters_Sfx:
+    Guid:
+      Data1: -1555302790
+      Data2: 1226009913
+      Data3: 872899257
+      Data4: 1593156850
+    Path: event:/SFX/Creature enters/Creature_enters
+  CrackyKill_Sfx:
+    Guid:
+      Data1: 872744818
+      Data2: 1232676005
+      Data3: -668898660
+      Data4: -1765205730
+    Path: event:/SFX/Kills/Cracky_kill
+  SquishKill_Sfx:
+    Guid:
+      Data1: 1206013895
+      Data2: 1314469126
+      Data3: -231933295
+      Data4: 426236566
+    Path: event:/SFX/Kills/Squish_kill
+  PickUp_Sfx:
+    Guid:
+      Data1: -863206982
+      Data2: 1074052197
+      Data3: 126481588
+      Data4: 1381427374
+    Path: event:/SFX/Mechanics/Pick_up
+  Settle_Sfx:
+    Guid:
+      Data1: 510406904
+      Data2: 1099631114
+      Data3: -1540098400
+      Data4: 375668244
+    Path: event:/SFX/Mechanics/Settle
+  CantClick_Sfx:
+    Guid:
+      Data1: 1946239632
+      Data2: 1099600611
+      Data3: 1066299023
+      Data4: 1288655485
+    Path: event:/SFX/UI/Cant_click
+  CompleteClick_Sfx:
+    Guid:
+      Data1: 249922233
+      Data2: 1303215758
+      Data3: 782144390
+      Data4: -1705737394
+    Path: event:/SFX/UI/Complete_click
+  SelectorClick_Sfx:
+    Guid:
+      Data1: 641791182
+      Data2: 1274823391
+      Data3: -1338302800
+      Data4: -440899315
+    Path: event:/SFX/UI/Selector_click
+  SfxTest_Sfx:
+    Guid:
+      Data1: 382961573
+      Data2: 1341367327
+      Data3: -1661552476
+      Data4: -502955745
+    Path: event:/SFX/Sfx Test
+  LosingJingle_Sfx:
+    Guid:
+      Data1: -1167824456
+      Data2: 1204158143
+      Data3: -742922872
+      Data4: 128273302
+    Path: event:/BGM/Gameplay/Lossing_jingle
+  WinningJingle_Sfx:
+    Guid:
+      Data1: 87489486
+      Data2: 1312548764
+      Data3: -572812103
+      Data4: 528853317
+    Path: event:/SFX/YouWin_YouLose/Winning_jingle

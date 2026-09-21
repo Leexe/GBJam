@@ -246,6 +246,7 @@ public class ItemSelector : MonoBehaviour
 
 		SetSelected(nextIndex);
 		AnimateArrow(offset);
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SelectorClick_Sfx);
 	}
 
 	private void AnimateArrow(int direction)
@@ -315,6 +316,7 @@ public class ItemSelector : MonoBehaviour
 	private void HandleConfirm()
 	{
 		TowerModifierSO selected = SelectedItem;
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CompleteClick_Sfx);
 		OnItemConfirmed?.Invoke(selected);
 		GameManager.Instance.ModifierManager.SelectModifier(selected);
 		GameManager.Instance.WaveController.ResumeSpawning();
@@ -328,6 +330,7 @@ public class ItemSelector : MonoBehaviour
 			return;
 		}
 
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CantClick_Sfx);
 		Close();
 	}
 }

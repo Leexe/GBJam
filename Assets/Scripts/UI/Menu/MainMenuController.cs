@@ -189,6 +189,7 @@ public class MainMenuController : MonoBehaviour
 			int step = dir.y > 0 ? -1 : 1;
 			_currentMenuItem = (_currentMenuItem + step + _menuItems.Length) % _menuItems.Length;
 			UpdateCursorPosition();
+			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SelectorClick_Sfx);
 		}
 	}
 
@@ -245,6 +246,7 @@ public class MainMenuController : MonoBehaviour
 
 	private void ExecuteMenuItem(int index)
 	{
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CompleteClick_Sfx);
 		switch (index)
 		{
 			case 0:
@@ -285,7 +287,11 @@ public class MainMenuController : MonoBehaviour
 		}
 	}
 
-	private void ReturnToMainMenu() => SetState(MenuState.Main);
+	private void ReturnToMainMenu()
+	{
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CantClick_Sfx);
+		SetState(MenuState.Main);
+	}
 
 	private void SetState(MenuState newState)
 	{
@@ -326,6 +332,7 @@ public class MainMenuController : MonoBehaviour
 
 		if (newState == MenuState.Main)
 		{
+			AudioManager.Instance.PlayMusic(FMODEvents.Instance.Title_Bgm);
 			UpdateCursorPosition();
 		}
 		else

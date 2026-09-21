@@ -18,5 +18,12 @@ MonoBehaviour:
   Speed: 0.7
   Damage: 25
   GoldReward: 25
+  DeathSfx:
+    Guid:
+      Data1: 872744818
+      Data2: 1232676005
+      Data3: -668898660
+      Data4: -1765205730
+    Path: event:/SFX/Kills/Cracky_kill
   SpriteList:
   - {fileID: -1612831136, guid: 414503ea5d5d243ef9e5cc2cf7c7d376, type: 3}

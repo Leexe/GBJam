@@ -266,6 +266,10 @@ public class GridCursorController : MonoBehaviour
 				GameManager.Instance.SpendGold(selected.Cost);
 				SetPlacingTowerMode(false);
 			}
+			else
+			{
+				AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CantClick_Sfx);
+			}
 			return;
 		}
 

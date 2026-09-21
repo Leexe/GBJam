@@ -65,6 +65,7 @@ public class LevelMenuController : MonoBehaviour
 			int step = direction.y > 0 ? -1 : 1;
 			_currentIndex = (_currentIndex + step + TotalItems) % TotalItems;
 			UpdateCursorPosition();
+			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SelectorClick_Sfx);
 		}
 	}
 
@@ -77,6 +78,7 @@ public class LevelMenuController : MonoBehaviour
 
 		if (_currentIndex < _levelEntries.Length)
 		{
+			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CompleteClick_Sfx);
 			GameManager.SelectedLevel = _levelEntries[_currentIndex].levelSO;
 			OnLevelSelected?.Invoke(_levelEntries[_currentIndex].levelSO);
 		}

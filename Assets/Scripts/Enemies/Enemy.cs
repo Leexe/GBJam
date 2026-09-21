@@ -214,6 +214,10 @@ public class Enemy : MonoBehaviour
 	private void Die()
 	{
 		_deathSequence.Stop();
+		if (!_data.DeathSfx.IsNull)
+		{
+			AudioManager.Instance.PlayOneShot(_data.DeathSfx);
+		}
 		GameManager.Instance.GiveGold(Mathf.RoundToInt(_data.GoldReward * _modifier.EffectiveGold));
 		_spriteRenderer.gameObject.SetActive(false);
 		_deathParticles.gameObject.SetActive(true);
@@ -223,6 +227,7 @@ public class Enemy : MonoBehaviour
 
 	private void ReachGoal()
 	{
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CreatureEnters_Sfx);
 		GameManager.Instance.DamageHealth(Mathf.RoundToInt(_data.Damage * _modifier.EffectiveDamage));
 		Deactivate();
 	}

@@ -72,7 +72,25 @@ public class GameManager : MonoSingleton<GameManager>
 		_waveController.Initialize(_levelSO);
 		_waveController.StartNextWave();
 
+		PlayLevelMusic();
+
 		DisablePrimeTween();
+	}
+
+	private void PlayLevelMusic()
+	{
+		if (!_levelSO.Music.IsNull)
+		{
+			AudioManager.Instance.PlayMusic(_levelSO.Music);
+		}
+	}
+
+	private void OnDisable()
+	{
+		if (AudioManager.Instance != null)
+		{
+			AudioManager.Instance.StopMusic();
+		}
 	}
 
 	private void OnDestroy()
@@ -137,13 +155,21 @@ public class GameManager : MonoSingleton<GameManager>
 
 	public void WinGame()
 	{
+		AudioManager.Instance.PauseMusic();
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WinningJingle_Sfx);
 		OnWin?.Invoke();
 	}
 
 	private void LoseGame()
 	{
+		if (_hasLost)
+		{
+			return;
+		}
+
 		_hasLost = true;
 		_waveController.StopWaves();
+		AudioManager.Instance.PlayMusic(FMODEvents.Instance.LosingJingle_Sfx);
 		OnLose?.Invoke();
 	}
 }

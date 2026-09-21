@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FMODUnity;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class EnemySO : ScriptableObject
 	public float Speed;
 	public int Damage;
 	public int GoldReward;
+
+	public EventReference DeathSfx;
 
 	[PreviewField(50, ObjectFieldAlignment.Right)]
 	public List<Sprite> SpriteList;

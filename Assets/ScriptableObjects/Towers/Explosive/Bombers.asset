@@ -19,6 +19,13 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: -1663201447, guid: fb41ab4c4fa04b6eb830e8145caef095, type: 3}
   <Range>k__BackingField: 1.25
   <Knockback>k__BackingField: 0
+  FireSfx:
+    Guid:
+      Data1: -1022395492
+      Data2: 1318128578
+      Data3: -631283834
+      Data4: -1227676308
+    Path: event:/SFX/Combat/Gun
   <Attacks>k__BackingField:
   - <Delay>k__BackingField: 2
     <Damage>k__BackingField: 10

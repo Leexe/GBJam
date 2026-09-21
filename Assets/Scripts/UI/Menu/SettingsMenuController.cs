@@ -1,4 +1,6 @@
 using System;
+using FMOD.Studio;
+using FMODUnity;
 using TMPro;
 using UnityEngine;
 
@@ -12,6 +14,9 @@ public class SettingsMenuController : MonoBehaviour
 	private TextMeshProUGUI _sfxText;
 
 	[SerializeField]
+	private TextMeshProUGUI _ambienceText;
+
+	[SerializeField]
 	private TextMeshProUGUI _backText;
 
 	[Header("Cursor Indicator")]
@@ -23,12 +28,14 @@ public class SettingsMenuController : MonoBehaviour
 
 	private const int RowBgm = 0;
 	private const int RowSfx = 1;
-	private const int RowBack = 2;
-	private const int TotalRows = 3;
+	private const int RowAmb = 2;
+	private const int RowBack = 3;
+	private const int TotalRows = 4;
 	private const float VolumeStep = 0.1f;
 
 	private int _currentRow;
 	private bool _isActive;
+	private EventInstance _testSoundInstance;
 
 	public event Action OnBackRequested;
 
@@ -43,6 +50,16 @@ public class SettingsMenuController : MonoBehaviour
 	public void Close()
 	{
 		_isActive = false;
+		StopTestSound();
+		if (AudioManager.Instance != null)
+		{
+			AudioManager.Instance.SaveAudioPref();
+		}
+	}
+
+	private void OnDisable()
+	{
+		StopTestSound();
 		if (AudioManager.Instance != null)
 		{
 			AudioManager.Instance.SaveAudioPref();
@@ -58,15 +75,55 @@ public class SettingsMenuController : MonoBehaviour
 
 		if (direction.y != 0)
 		{
+			StopTestSound();
 			int step = direction.y > 0 ? -1 : 1;
 			_currentRow = (_currentRow + step + TotalRows) % TotalRows;
 			UpdateCursorPosition();
+			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SelectorClick_Sfx);
 			return;
 		}
 
 		if (direction.x != 0)
 		{
-			AdjustVolume(direction.x > 0 ? VolumeStep : -VolumeStep);
+			if (_currentRow != RowBack)
+			{
+				AdjustVolume(direction.x > 0 ? VolumeStep : -VolumeStep);
+				PlaySliderTestSound(_currentRow);
+			}
+		}
+	}
+
+	private void PlaySliderTestSound(int row)
+	{
+		if (row == RowBack || FMODEvents.Instance == null || AudioManager.Instance == null)
+		{
+			return;
+		}
+
+		StopTestSound();
+
+		EventReference sound = row switch
+		{
+			RowBgm => FMODEvents.Instance.BgmTest_Bgm,
+			RowSfx => FMODEvents.Instance.SfxTest_Sfx,
+			RowAmb => FMODEvents.Instance.AmbTest_Amb,
+			_ => default,
+		};
+
+		if (!sound.IsNull)
+		{
+			_testSoundInstance = AudioManager.Instance.CreateInstance(sound);
+			_testSoundInstance.start();
+		}
+	}
+
+	private void StopTestSound()
+	{
+		if (_testSoundInstance.isValid())
+		{
+			_testSoundInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+			_testSoundInstance.release();
+			_testSoundInstance.clearHandle();
 		}
 	}
 
@@ -95,18 +152,20 @@ public class SettingsMenuController : MonoBehaviour
 
 	private void AdjustVolume(float delta)
 	{
-		if (AudioManager.Instance == null)
+		AudioManager.AudioBusType busType;
+		switch (_currentRow)
 		{
-			return;
-		}
-
-		AudioManager.AudioBusType busType = _currentRow == RowBgm
-			? AudioManager.AudioBusType.Music
-			: AudioManager.AudioBusType.Game;
-
-		if (_currentRow != RowBgm && _currentRow != RowSfx)
-		{
-			return;
+			case RowBgm:
+				busType = AudioManager.AudioBusType.Music;
+				break;
+			case RowSfx:
+				busType = AudioManager.AudioBusType.Game;
+				break;
+			case RowAmb:
+				busType = AudioManager.AudioBusType.Ambience;
+				break;
+			default:
+				return;
 		}
 
 		float current = AudioManager.Instance.GetVolume(busType);
@@ -117,8 +176,9 @@ public class SettingsMenuController : MonoBehaviour
 
 	private void UpdateDisplays()
 	{
-		float bgm = AudioManager.Instance != null ? AudioManager.Instance.GetVolume(AudioManager.AudioBusType.Music) : 0.7f;
-		float sfx = AudioManager.Instance != null ? AudioManager.Instance.GetVolume(AudioManager.AudioBusType.Game) : 0.7f;
+		float bgm = AudioManager.Instance.GetVolume(AudioManager.AudioBusType.Music);
+		float sfx = AudioManager.Instance.GetVolume(AudioManager.AudioBusType.Game);
+		float amb = AudioManager.Instance.GetVolume(AudioManager.AudioBusType.Ambience);
 
 		if (_bgmText != null)
 		{
@@ -129,13 +189,18 @@ public class SettingsMenuController : MonoBehaviour
 		{
 			_sfxText.text = $"SFX {FormatVolumeBar(sfx)}";
 		}
+
+		if (_ambienceText != null)
+		{
+			_ambienceText.text = $"AMB {FormatVolumeBar(amb)}";
+		}
 	}
 
 	private string FormatVolumeBar(float volume)
 	{
 		int notches = Mathf.RoundToInt(volume * 10f);
 		int percent = notches * 10;
-		return $"{percent,3}%";
+		return $"{percent, 3}%";
 	}
 
 	private void UpdateCursorPosition()
@@ -149,6 +214,7 @@ public class SettingsMenuController : MonoBehaviour
 		{
 			RowBgm => _bgmText != null ? _bgmText.rectTransform : null,
 			RowSfx => _sfxText != null ? _sfxText.rectTransform : null,
+			RowAmb => _ambienceText != null ? _ambienceText.rectTransform : null,
 			_ => _backText != null ? _backText.rectTransform : null,
 		};
 

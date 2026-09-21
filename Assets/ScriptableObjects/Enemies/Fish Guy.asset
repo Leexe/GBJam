@@ -18,5 +18,12 @@ MonoBehaviour:
   Speed: 1
   Damage: 10
   GoldReward: 10
+  DeathSfx:
+    Guid:
+      Data1: 1206013895
+      Data2: 1314469126
+      Data3: -231933295
+      Data4: 426236566
+    Path: event:/SFX/Kills/Squish_kill
   SpriteList:
   - {fileID: 1176218730, guid: 414503ea5d5d243ef9e5cc2cf7c7d376, type: 3}

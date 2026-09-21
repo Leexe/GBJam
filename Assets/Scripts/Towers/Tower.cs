@@ -390,6 +390,11 @@ public class Tower : MonoBehaviour
 
 	private void PerformAttack(Enemy target, TowerAttack attack)
 	{
+		if (!_data.FireSfx.IsNull)
+		{
+			AudioManager.Instance.PlayOneShot(_data.FireSfx);
+		}
+
 		float attackBaseDamage = _data.TowerType == TowerType.Melee ? attack.Damage : attack.ProjectileData.Damage;
 		Stats.SetBaseStat(StatType.Damage, attackBaseDamage);
 		float damage = Stats.GetFinalStat(StatType.Damage);
@@ -468,7 +473,7 @@ public class Tower : MonoBehaviour
 
 	private void OnDrawGizmosSelected()
 	{
-		float range = Stats != null ? Stats.GetFinalStat(StatType.Range) : (_data ? _data.Range : 2.5f);
+		float range = Stats?.GetFinalStat(StatType.Range) ?? (_data ? _data.Range : 2.5f);
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawWireSphere(transform.position, range);
 	}

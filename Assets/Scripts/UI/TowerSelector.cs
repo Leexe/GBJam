@@ -40,12 +40,6 @@ public class TowerSelector : MonoBehaviour
 	[SerializeField]
 	private Color _unaffordablePriceColor = new Color(0.85f, 0.25f, 0.25f);
 
-	[SerializeField]
-	private float _arrowPunchScale = 1.25f;
-
-	[SerializeField]
-	private float _arrowPunchDuration = 0.05f;
-
 	private List<TowerSO> TowerPool => GameManager.Instance.Level.TowerPool;
 
 	[Header("Navigation Settings")]
@@ -262,6 +256,7 @@ public class TowerSelector : MonoBehaviour
 		}
 
 		SetSelected(nextIndex);
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SelectorClick_Sfx);
 	}
 
 	public void SetSelected(int index)
@@ -297,15 +292,18 @@ public class TowerSelector : MonoBehaviour
 		TowerSO selected = SelectedTower;
 		if (!GameManager.Instance.CanAfford(selected.Cost))
 		{
+			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CantClick_Sfx);
 			return;
 		}
 
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CompleteClick_Sfx);
 		OnTowerConfirmed?.Invoke(selected);
 		Close(resumeTime: false);
 	}
 
 	private void HandleCancel()
 	{
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CantClick_Sfx);
 		Close(resumeTime: true);
 	}
 }

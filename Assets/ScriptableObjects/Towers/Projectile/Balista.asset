@@ -19,6 +19,13 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: -902878273, guid: ef687f4af8f7b408d9c5e9ed82eedbd7, type: 3}
   <Range>k__BackingField: 2.5
   <Knockback>k__BackingField: 0
+  FireSfx:
+    Guid:
+      Data1: 1039284679
+      Data2: 1284213518
+      Data3: -132191583
+      Data4: -608735013
+    Path: event:/SFX/Combat/Balista
   <Attacks>k__BackingField:
   - <Delay>k__BackingField: 2
     <Damage>k__BackingField: 10

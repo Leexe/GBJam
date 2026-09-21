@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FMODUnity;
 using Sirenix.OdinInspector;
 using StatusEffects;
 using UnityEngine;
@@ -45,6 +46,9 @@ public class TowerSO : ScriptableObject
 	[field: TabGroup("Tab", "Combat")]
 	[field: ShowIf(nameof(TowerType), TowerType.Melee)]
 	public float Knockback { get; private set; } = 0f;
+
+	[TabGroup("Tab", "Combat")]
+	public EventReference FireSfx;
 
 	[field: SerializeField]
 	[field: TabGroup("Tab", "Combat")]

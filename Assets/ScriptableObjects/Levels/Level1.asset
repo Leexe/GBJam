@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   LevelName: Level 1
+  Music:
+    Guid:
+      Data1: 1498187387
+      Data2: 1279534956
+      Data3: -984933187
+      Data4: 1200066419
+    Path: event:/BGM/Gameplay/Gameplay1
   MaxHealth: 100
   StartingGold: 60
   EnemyWaypoints:

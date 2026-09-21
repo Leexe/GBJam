@@ -266,7 +266,9 @@ public class LevelSO : ScriptableObject
 	public bool IsModifierValidForTowerPool(TowerModifierSO modifier)
 	{
 		if (modifier.Category == Modifiers.ModifierTowerCategory.Any)
+		{
 			return true;
+		}
 
 		TowerType required = modifier.Category switch
 		{

@@ -38,7 +38,7 @@ MonoBehaviour:
     - {fileID: -1659320916, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
     - {fileID: -140820160, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
     <ImpactFrame>k__BackingField: 1
-  - <Delay>k__BackingField: 0.6
+  - <Delay>k__BackingField: 1
     <Damage>k__BackingField: 10
     <ProjectileData>k__BackingField: {fileID: 11400000, guid: f75493b7748ee4c55b813a3fb38fb037, type: 2}
     <StatusEffects>k__BackingField: []
@@ -49,4 +49,4 @@ MonoBehaviour:
     - {fileID: -1659320916, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
     - {fileID: -140820160, guid: 7e44d6d1751c3478fb44fdb1c38941e2, type: 3}
     <ImpactFrame>k__BackingField: 1
-  <Cost>k__BackingField: 50
+  <Cost>k__BackingField: 60

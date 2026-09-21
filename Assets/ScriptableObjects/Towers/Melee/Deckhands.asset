@@ -18,7 +18,7 @@ MonoBehaviour:
   <TowerType>k__BackingField: 0
   <Icon>k__BackingField: {fileID: -1128811987, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
   <Range>k__BackingField: 1
-  <Knockback>k__BackingField: 0
+  <Knockback>k__BackingField: 0.1
   FireSfx:
     Guid:
       Data1: 358881418
@@ -28,7 +28,7 @@ MonoBehaviour:
     Path: event:/SFX/Combat/Meele
   <Attacks>k__BackingField:
   - <Delay>k__BackingField: 0.5
-    <Damage>k__BackingField: 7.5
+    <Damage>k__BackingField: 7
     <ProjectileData>k__BackingField: {fileID: 0}
     <StatusEffects>k__BackingField: []
     <TopSprites>k__BackingField:
@@ -41,7 +41,7 @@ MonoBehaviour:
     - {fileID: -1462548039, guid: 99df0ee9921c740acbfd902ea7dad007, type: 3}
     <ImpactFrame>k__BackingField: 1
   - <Delay>k__BackingField: 0.5
-    <Damage>k__BackingField: 7.5
+    <Damage>k__BackingField: 7
     <ProjectileData>k__BackingField: {fileID: 0}
     <StatusEffects>k__BackingField: []
     <TopSprites>k__BackingField:

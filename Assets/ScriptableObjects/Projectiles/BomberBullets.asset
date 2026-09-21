@@ -20,7 +20,7 @@ MonoBehaviour:
   <Lifetime>k__BackingField: 3
   <PierceCount>k__BackingField: 1
   <IsAoe>k__BackingField: 1
-  <AoeRadius>k__BackingField: 0.5
+  <AoeRadius>k__BackingField: 1
   <StatusEffects>k__BackingField:
   - {fileID: 11400000, guid: f6b4ece5e65d41cc8b667f9a2255436b, type: 2}
   <Sprite>k__BackingField: {fileID: 21300000, guid: 4541753b58bc64de287ba9eb5a25dc2f, type: 3}

@@ -29,7 +29,7 @@ MonoBehaviour:
     Path: event:/SFX/Combat/Meele
   <Attacks>k__BackingField:
   - <Delay>k__BackingField: 0.33
-    <Damage>k__BackingField: 10
+    <Damage>k__BackingField: 8
     <ProjectileData>k__BackingField: {fileID: 0}
     <StatusEffects>k__BackingField: []
     <TopSprites>k__BackingField:
@@ -42,7 +42,7 @@ MonoBehaviour:
     - {fileID: -1038217273, guid: 54f3aa0a92454c3d8163354363856b65, type: 3}
     <ImpactFrame>k__BackingField: 1
   - <Delay>k__BackingField: 0.33
-    <Damage>k__BackingField: 10
+    <Damage>k__BackingField: 8
     <ProjectileData>k__BackingField: {fileID: 0}
     <StatusEffects>k__BackingField: []
     <TopSprites>k__BackingField:

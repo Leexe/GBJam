@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Modifiers::RustedAnchorModifierSO
   <Id>k__BackingField: gilded_anchor
   <Name>k__BackingField: Gilded Anchor
-  <Description>k__BackingField: +75% damage, but -50% range
+  <Description>k__BackingField: -25% damage, but +50% range
   <Icon>k__BackingField: {fileID: 0}
   <Category>k__BackingField: 3
   <StatModifiers>k__BackingField:
   - StatName: 0
     FlatAdd: 0
-    PercentIncreaseAdd: -50
+    PercentIncreaseAdd: 50
     ModifierMult: 1
     FinalMult: 1
   - StatName: 1
     FlatAdd: 0
-    PercentIncreaseAdd: 75
+    PercentIncreaseAdd: -25
     ModifierMult: 1
     FinalMult: 1

@@ -232,7 +232,7 @@ MonoBehaviour:
       GoldMultiplier: 1
       ScaleMultiplier: 1
     - Enemy: {fileID: 11400000, guid: a3cec9b5c6a6c4668ad9bbc2b043cf74, type: 2}
-      Count: 1
+      Count: 2
       Interval: 1
       PathIndex: 0
       StartDelay: 7
@@ -241,6 +241,16 @@ MonoBehaviour:
       DamageMultiplier: 1
       GoldMultiplier: 1.5
       ScaleMultiplier: 1.25
+    - Enemy: {fileID: 11400000, guid: 9a0267c7fc1724adc8d15ba9701325eb, type: 2}
+      Count: 5
+      Interval: 0.5
+      PathIndex: 0
+      StartDelay: 9
+      SpeedMultiplier: 1.2
+      HealthMultiplier: 1
+      DamageMultiplier: 1
+      GoldMultiplier: 1
+      ScaleMultiplier: 1
   DefaultItemChoicesCount: 3
   ItemPool:
   - {fileID: 11400000, guid: c238c0b22817843eeb75cd27fc08e4f9, type: 2}

@@ -15,8 +15,8 @@ MonoBehaviour:
   <Name>k__BackingField: Gunner Bullets
   <Id>k__BackingField: gunnerbullets
   <Speed>k__BackingField: 8
-  <Damage>k__BackingField: 9
-  <Knockback>k__BackingField: 0
+  <Damage>k__BackingField: 15
+  <Knockback>k__BackingField: 0.1
   <Lifetime>k__BackingField: 4
   <PierceCount>k__BackingField: 1
   <IsAoe>k__BackingField: 0

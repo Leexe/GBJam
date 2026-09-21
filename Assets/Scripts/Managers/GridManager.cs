@@ -99,9 +99,10 @@ public class GridManager : MonoSingleton<GridManager>
 			}
 		}
 
-		LevelSO level = GameManager.SelectedLevel != null
-			? GameManager.SelectedLevel
-			: (GameManager.Instance != null ? GameManager.Instance.Level : null);
+		LevelSO level =
+			GameManager.SelectedLevel != null
+				? GameManager.SelectedLevel
+				: (GameManager.Instance != null ? GameManager.Instance.Level : null);
 
 		if (level != null && level.EnemyWaypoints != null && level.EnemyWaypoints.Count > 0)
 		{
@@ -241,9 +242,7 @@ public class GridManager : MonoSingleton<GridManager>
 
 	public Tower GetTower(Vector2Int position, int width = 2, int height = 2)
 	{
-		return CanRemoveTower(position, width, height)
-			? GetGridNode(position.x, position.y).Tower
-			: null;
+		return CanRemoveTower(position, width, height) ? GetGridNode(position.x, position.y).Tower : null;
 	}
 
 	public bool RemoveTower(Vector2Int position, int width = 2, int height = 2)
@@ -268,6 +267,7 @@ public class GridManager : MonoSingleton<GridManager>
 		TowerPool.Instance.Release(tower);
 		OnTowerRemoved?.Invoke(position);
 		OnTowerDespawned?.Invoke(tower);
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PickUp_Sfx);
 		return true;
 	}
 

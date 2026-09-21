@@ -78,6 +78,8 @@ public class AudioManager : PersistentMonoSingleton<AudioManager>
 
 	// Music Instances
 	private EventInstance _musicTrack;
+	private float _musicTrackMultiplier = 1f;
+	private Coroutine _musicMultiplierCoroutine;
 	private readonly Dictionary<GUID, EventInstance> _musicTrackInstances = new();
 	private readonly Dictionary<GUID, EventInstance> _activeSnapshots = new();
 
@@ -231,6 +233,13 @@ public class AudioManager : PersistentMonoSingleton<AudioManager>
 	/// </summary>
 	public void StopMusic(bool fadeOut = true)
 	{
+		if (_musicMultiplierCoroutine != null)
+		{
+			StopCoroutine(_musicMultiplierCoroutine);
+			_musicMultiplierCoroutine = null;
+		}
+		_musicTrackMultiplier = 1f;
+
 		StopInstance(_musicTrack, fadeOut);
 		_currentMusicReference = default;
 	}
@@ -241,9 +250,78 @@ public class AudioManager : PersistentMonoSingleton<AudioManager>
 	public void PlayMusic(EventReference music, bool playOnSwitch = true)
 	{
 		SwitchTrack(music, ref _currentMusicReference, ref _musicTrack, _musicTrackInstances);
+		ApplyMusicMultiplier();
 		if (playOnSwitch)
 		{
 			ResumeMusic();
+		}
+	}
+
+	/// <summary>
+	///     Current volume multiplier for the music track (independent of settings VCA)
+	/// </summary>
+	public float MusicTrackMultiplier => _musicTrackMultiplier;
+
+	/// <summary>
+	///     Immediately sets the music track volume multiplier (independent of settings VCA)
+	/// </summary>
+	public void SetMusicMultiplier(float multiplier)
+	{
+		if (_musicMultiplierCoroutine != null)
+		{
+			StopCoroutine(_musicMultiplierCoroutine);
+			_musicMultiplierCoroutine = null;
+		}
+
+		_musicTrackMultiplier = Mathf.Clamp01(multiplier);
+		ApplyMusicMultiplier();
+	}
+
+	/// <summary>
+	///     Lerps the music track volume multiplier to target value over specified duration
+	/// </summary>
+	public void LerpMusicMultiplier(float targetMultiplier, float duration = 1f)
+	{
+		if (_musicMultiplierCoroutine != null)
+		{
+			StopCoroutine(_musicMultiplierCoroutine);
+		}
+
+		_musicMultiplierCoroutine = StartCoroutine(
+			LerpMusicMultiplierRoutine(Mathf.Clamp01(targetMultiplier), duration)
+		);
+	}
+
+	private IEnumerator LerpMusicMultiplierRoutine(float targetMultiplier, float duration)
+	{
+		if (duration <= 0f)
+		{
+			_musicTrackMultiplier = targetMultiplier;
+			ApplyMusicMultiplier();
+			_musicMultiplierCoroutine = null;
+			yield break;
+		}
+
+		float startMultiplier = _musicTrackMultiplier;
+		float elapsed = 0f;
+		while (elapsed < duration)
+		{
+			elapsed += UnityEngine.Time.unscaledDeltaTime;
+			_musicTrackMultiplier = Mathf.Lerp(startMultiplier, targetMultiplier, Mathf.Clamp01(elapsed / duration));
+			ApplyMusicMultiplier();
+			yield return null;
+		}
+
+		_musicTrackMultiplier = targetMultiplier;
+		ApplyMusicMultiplier();
+		_musicMultiplierCoroutine = null;
+	}
+
+	private void ApplyMusicMultiplier()
+	{
+		if (_musicTrack.isValid())
+		{
+			_musicTrack.setVolume(_musicTrackMultiplier);
 		}
 	}
 

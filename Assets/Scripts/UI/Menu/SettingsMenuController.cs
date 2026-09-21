@@ -51,10 +51,7 @@ public class SettingsMenuController : MonoBehaviour
 	{
 		_isActive = false;
 		StopTestSound();
-		if (AudioManager.Instance != null)
-		{
-			AudioManager.Instance.SaveAudioPref();
-		}
+		AudioManager.Instance.SaveAudioPref();
 	}
 
 	private void OnDisable()
@@ -95,11 +92,6 @@ public class SettingsMenuController : MonoBehaviour
 
 	private void PlaySliderTestSound(int row)
 	{
-		if (row == RowBack || FMODEvents.Instance == null || AudioManager.Instance == null)
-		{
-			return;
-		}
-
 		StopTestSound();
 
 		EventReference sound = row switch

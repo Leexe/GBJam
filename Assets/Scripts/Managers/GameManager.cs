@@ -13,18 +13,39 @@ public class GameManager : MonoSingleton<GameManager>
 	[SerializeField]
 	private WaveController _waveController;
 
+	[Header("Music Settings")]
+	[SerializeField, Range(0f, 1f)]
+	private float _preWaveMusicVolume = 0.7f;
+
+	[SerializeField]
+	private float _musicLerpDuration = 1f;
+
+	public float PreWaveMusicVolume
+	{
+		get => _preWaveMusicVolume;
+		set => _preWaveMusicVolume = Mathf.Clamp01(value);
+	}
+
+	public float MusicLerpDuration
+	{
+		get => _musicLerpDuration;
+		set => _musicLerpDuration = Mathf.Max(0f, value);
+	}
+
 	private readonly ModifierManager _modifierManager = new();
 
 	private int _health;
 	private float _time;
 	private int _gold;
 	private bool _hasLost;
+	private bool _hasWon;
 
 	public int Health => _health;
 	public int MaxHealth => _levelSO.MaxHealth;
 	public float Time => _time;
 	public int Gold => _gold;
 	public bool HasLost => _hasLost;
+	public bool HasWon => _hasWon;
 	public WaveController WaveController => _waveController;
 	public ModifierManager ModifierManager => _modifierManager;
 	public LevelSO Level => _levelSO;
@@ -67,14 +88,31 @@ public class GameManager : MonoSingleton<GameManager>
 		}
 		_health = _levelSO.MaxHealth;
 		_gold = _levelSO.StartingGold;
+		_time = 0f;
+		_hasLost = false;
+		_hasWon = false;
 		_modifierManager.Initialize();
 		_waveController.OnWaveItemsOffered += HandleWaveItemsOffered;
+		_waveController.OnWaveStarted += HandleWaveStarted;
+		_waveController.OnWaveCompleted += HandleWaveCompleted;
 		_waveController.Initialize(_levelSO);
-		_waveController.StartNextWave();
 
 		PlayLevelMusic();
+		AudioManager.Instance.SetMusicMultiplier(_preWaveMusicVolume);
+
+		_waveController.StartNextWave();
 
 		DisablePrimeTween();
+	}
+
+	private void HandleWaveStarted(int waveIndex)
+	{
+		AudioManager.Instance.LerpMusicMultiplier(1f, _musicLerpDuration);
+	}
+
+	private void HandleWaveCompleted(int waveIndex)
+	{
+		AudioManager.Instance.LerpMusicMultiplier(_preWaveMusicVolume, _musicLerpDuration);
 	}
 
 	private void PlayLevelMusic()
@@ -87,8 +125,16 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void OnDisable()
 	{
+		if (_waveController != null)
+		{
+			_waveController.OnWaveItemsOffered -= HandleWaveItemsOffered;
+			_waveController.OnWaveStarted -= HandleWaveStarted;
+			_waveController.OnWaveCompleted -= HandleWaveCompleted;
+		}
+
 		if (AudioManager.Instance != null)
 		{
+			AudioManager.Instance.SetMusicMultiplier(1f);
 			AudioManager.Instance.StopMusic();
 		}
 	}
@@ -115,7 +161,7 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void HandleTimer()
 	{
-		if (_hasLost)
+		if (_hasLost || _hasWon)
 		{
 			return;
 		}
@@ -155,6 +201,12 @@ public class GameManager : MonoSingleton<GameManager>
 
 	public void WinGame()
 	{
+		if (_hasWon || _hasLost)
+		{
+			return;
+		}
+
+		_hasWon = true;
 		AudioManager.Instance.PauseMusic();
 		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WinningJingle_Sfx);
 		OnWin?.Invoke();
@@ -162,7 +214,7 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void LoseGame()
 	{
-		if (_hasLost)
+		if (_hasLost || _hasWon)
 		{
 			return;
 		}

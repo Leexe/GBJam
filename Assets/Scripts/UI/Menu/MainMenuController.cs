@@ -14,29 +14,54 @@ public class MainMenuController : MonoBehaviour
 	}
 
 	[Header("Canvas & Fade")]
-	[SerializeField] private Canvas _canvas;
-	[SerializeField] private CanvasGroup _fadeOverlay;
+	[SerializeField]
+	private Canvas _canvas;
+
+	[SerializeField]
+	private CanvasGroup _fadeOverlay;
 
 	[Header("Panels")]
-	[SerializeField] private GameObject _splashPanel;
-	[SerializeField] private GameObject _mainMenuPanel;
-	[SerializeField] private GameObject _levelsPanel;
-	[SerializeField] private GameObject _settingsPanel;
-	[SerializeField] private GameObject _creditsPanel;
+	[SerializeField]
+	private GameObject _splashPanel;
+
+	[SerializeField]
+	private GameObject _mainMenuPanel;
+
+	[SerializeField]
+	private GameObject _levelsPanel;
+
+	[SerializeField]
+	private GameObject _settingsPanel;
+
+	[SerializeField]
+	private GameObject _creditsPanel;
 
 	[Header("Sub Controllers")]
-	[SerializeField] private LevelMenuController _levelController;
-	[SerializeField] private SettingsMenuController _settingsController;
-	[SerializeField] private CreditsMenuController _creditsController;
+	[SerializeField]
+	private LevelMenuController _levelController;
+
+	[SerializeField]
+	private SettingsMenuController _settingsController;
+
+	[SerializeField]
+	private CreditsMenuController _creditsController;
 
 	[Header("Menu Items")]
-	[SerializeField] private RectTransform[] _menuItems;
-	[SerializeField] private RectTransform _mainCursor;
-	[SerializeField] private float _cursorXOffset = -8f;
+	[SerializeField]
+	private RectTransform[] _menuItems;
+
+	[SerializeField]
+	private RectTransform _mainCursor;
+
+	[SerializeField]
+	private float _cursorXOffset = -8f;
 
 	[Header("Settings")]
-	[SerializeField] private float _splashDuration = 1.8f;
-	[SerializeField] private string _gameplaySceneName = "Main";
+	[SerializeField]
+	private float _splashDuration = 1.8f;
+
+	[SerializeField]
+	private string _gameplaySceneName = "Game";
 
 	private MenuState _currentState = MenuState.Splash;
 	private int _currentMenuItem;
@@ -65,8 +90,10 @@ public class MainMenuController : MonoBehaviour
 		{
 			SubscribeInput();
 		}
-		if (_settingsController != null) _settingsController.OnBackRequested += ReturnToMainMenu;
-		if (_creditsController != null) _creditsController.OnBackRequested += ReturnToMainMenu;
+		if (_settingsController != null)
+			_settingsController.OnBackRequested += ReturnToMainMenu;
+		if (_creditsController != null)
+			_creditsController.OnBackRequested += ReturnToMainMenu;
 		if (_levelController != null)
 		{
 			_levelController.OnBackRequested += ReturnToMainMenu;
@@ -77,8 +104,10 @@ public class MainMenuController : MonoBehaviour
 	private void OnDisable()
 	{
 		UnsubscribeInput();
-		if (_settingsController != null) _settingsController.OnBackRequested -= ReturnToMainMenu;
-		if (_creditsController != null) _creditsController.OnBackRequested -= ReturnToMainMenu;
+		if (_settingsController != null)
+			_settingsController.OnBackRequested -= ReturnToMainMenu;
+		if (_creditsController != null)
+			_creditsController.OnBackRequested -= ReturnToMainMenu;
 		if (_levelController != null)
 		{
 			_levelController.OnBackRequested -= ReturnToMainMenu;
@@ -116,7 +145,8 @@ public class MainMenuController : MonoBehaviour
 
 	private void SubscribeInput()
 	{
-		if (_isSubscribed || InputManager.Instance == null) return;
+		if (_isSubscribed || InputManager.Instance == null)
+			return;
 
 		InputManager.Instance.OnMovement += HandleMovement;
 		InputManager.Instance.OnConfirm += HandleConfirm;
@@ -127,7 +157,8 @@ public class MainMenuController : MonoBehaviour
 
 	private void UnsubscribeInput()
 	{
-		if (!_isSubscribed || InputManager.Instance == null) return;
+		if (!_isSubscribed || InputManager.Instance == null)
+			return;
 
 		InputManager.Instance.OnMovement -= HandleMovement;
 		InputManager.Instance.OnConfirm -= HandleConfirm;
@@ -138,11 +169,14 @@ public class MainMenuController : MonoBehaviour
 
 	private void HandleMovement(Vector2 direction)
 	{
-		if (_isTransitioning) return;
+		if (_isTransitioning)
+			return;
 
 		Vector2Int dir = Vector2Int.zero;
-		if (Mathf.Abs(direction.y) >= 0.5f) dir.y = direction.y > 0 ? 1 : -1;
-		else if (Mathf.Abs(direction.x) >= 0.5f) dir.x = direction.x > 0 ? 1 : -1;
+		if (Mathf.Abs(direction.y) >= 0.5f)
+			dir.y = direction.y > 0 ? 1 : -1;
+		else if (Mathf.Abs(direction.x) >= 0.5f)
+			dir.x = direction.x > 0 ? 1 : -1;
 
 		if (dir == Vector2Int.zero)
 		{
@@ -195,7 +229,8 @@ public class MainMenuController : MonoBehaviour
 
 	private void HandleConfirm()
 	{
-		if (_isTransitioning) return;
+		if (_isTransitioning)
+			return;
 
 		if (_currentState == MenuState.Splash)
 		{
@@ -209,20 +244,24 @@ public class MainMenuController : MonoBehaviour
 				ExecuteMenuItem(_currentMenuItem);
 				break;
 			case MenuState.Levels:
-				if (_levelController != null) _levelController.HandleConfirm();
+				if (_levelController != null)
+					_levelController.HandleConfirm();
 				break;
 			case MenuState.Settings:
-				if (_settingsController != null) _settingsController.HandleConfirm();
+				if (_settingsController != null)
+					_settingsController.HandleConfirm();
 				break;
 			case MenuState.Credits:
-				if (_creditsController != null) _creditsController.HandleConfirm();
+				if (_creditsController != null)
+					_creditsController.HandleConfirm();
 				break;
 		}
 	}
 
 	private void HandleCancel()
 	{
-		if (_isTransitioning) return;
+		if (_isTransitioning)
+			return;
 
 		if (_currentState == MenuState.Splash)
 		{
@@ -233,13 +272,16 @@ public class MainMenuController : MonoBehaviour
 		switch (_currentState)
 		{
 			case MenuState.Levels:
-				if (_levelController != null) _levelController.HandleCancel();
+				if (_levelController != null)
+					_levelController.HandleCancel();
 				break;
 			case MenuState.Settings:
-				if (_settingsController != null) _settingsController.HandleCancel();
+				if (_settingsController != null)
+					_settingsController.HandleCancel();
 				break;
 			case MenuState.Credits:
-				if (_creditsController != null) _creditsController.HandleCancel();
+				if (_creditsController != null)
+					_creditsController.HandleCancel();
 				break;
 		}
 	}
@@ -278,7 +320,8 @@ public class MainMenuController : MonoBehaviour
 		_isTransitioning = true;
 		if (_fadeOverlay != null)
 		{
-			Tween.Alpha(_fadeOverlay, 1f, 0.25f, useUnscaledTime: true)
+			Tween
+				.Alpha(_fadeOverlay, 1f, 0.25f, useUnscaledTime: true)
 				.OnComplete(() => SceneManager.LoadScene(_gameplaySceneName));
 		}
 		else
@@ -297,16 +340,20 @@ public class MainMenuController : MonoBehaviour
 	{
 		_currentState = newState;
 
-		if (_splashPanel != null) _splashPanel.SetActive(newState == MenuState.Splash);
-		if (_mainMenuPanel != null) _mainMenuPanel.SetActive(newState == MenuState.Main);
+		if (_splashPanel != null)
+			_splashPanel.SetActive(newState == MenuState.Splash);
+		if (_mainMenuPanel != null)
+			_mainMenuPanel.SetActive(newState == MenuState.Main);
 
 		if (_levelsPanel != null)
 		{
 			_levelsPanel.SetActive(newState == MenuState.Levels);
 			if (_levelController != null)
 			{
-				if (newState == MenuState.Levels) _levelController.Open();
-				else _levelController.Close();
+				if (newState == MenuState.Levels)
+					_levelController.Open();
+				else
+					_levelController.Close();
 			}
 		}
 
@@ -315,8 +362,10 @@ public class MainMenuController : MonoBehaviour
 			_settingsPanel.SetActive(newState == MenuState.Settings);
 			if (_settingsController != null)
 			{
-				if (newState == MenuState.Settings) _settingsController.Open();
-				else _settingsController.Close();
+				if (newState == MenuState.Settings)
+					_settingsController.Open();
+				else
+					_settingsController.Close();
 			}
 		}
 
@@ -325,8 +374,10 @@ public class MainMenuController : MonoBehaviour
 			_creditsPanel.SetActive(newState == MenuState.Credits);
 			if (_creditsController != null)
 			{
-				if (newState == MenuState.Credits) _creditsController.Open();
-				else _creditsController.Close();
+				if (newState == MenuState.Credits)
+					_creditsController.Open();
+				else
+					_creditsController.Close();
 			}
 		}
 
@@ -343,17 +394,20 @@ public class MainMenuController : MonoBehaviour
 
 	private void UpdateCursorPosition()
 	{
-		if (_mainCursor == null || _menuItems == null || _menuItems.Length == 0) return;
+		if (_mainCursor == null || _menuItems == null || _menuItems.Length == 0)
+			return;
 
 		RectTransform target = _menuItems[_currentMenuItem];
-		if (target == null) return;
+		if (target == null)
+			return;
 
 		_cursorTween.Stop();
 		float leftEdge = target.anchoredPosition.x - (target.rect.width * target.pivot.x);
 		_mainCursor.anchoredPosition = new Vector2(leftEdge + _cursorXOffset, target.anchoredPosition.y);
 
 		float originX = _mainCursor.anchoredPosition.x;
-		_cursorTween = Sequence.Create(-1, Sequence.SequenceCycleMode.Yoyo, useUnscaledTime: true)
+		_cursorTween = Sequence
+			.Create(-1, Sequence.SequenceCycleMode.Yoyo, useUnscaledTime: true)
 			.Chain(Tween.UIAnchoredPositionX(_mainCursor, originX - 2f, 0.35f, Ease.InOutSine))
 			.Chain(Tween.UIAnchoredPositionX(_mainCursor, originX, 0.35f, Ease.InOutSine));
 	}

@@ -115,6 +115,8 @@ public class TowerSelector : MonoBehaviour
 		SetSelected(initialIndex);
 		SubscribeInput();
 
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SelectorClick_Sfx);
+
 		OnOpened?.Invoke(_targetGridPosition);
 	}
 

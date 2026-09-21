@@ -229,6 +229,8 @@ public class Enemy : MonoBehaviour
 	{
 		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CreatureEnters_Sfx);
 		GameManager.Instance.DamageHealth(Mathf.RoundToInt(_data.Damage * _modifier.EffectiveDamage));
+		CameraManager.Instance.ShakeScreen();
+
 		Deactivate();
 	}
 

@@ -102,6 +102,16 @@ public class GridCursorController : MonoBehaviour
 	[SerializeField]
 	private ItemSelector _itemSelector;
 
+	[Header("Text Display UI")]
+	[SerializeField]
+	private TextDisplayUI _textDisplayUI;
+
+	[SerializeField]
+	private string _placeTowerPrompt = "Place the Mercenary";
+
+	[SerializeField]
+	private string _fireTowerPrompt = "Fire The Mercanary?";
+
 	private bool IsSelectorOpen => _towerSelector.IsOpen || _itemSelector.IsOpen;
 
 	private Vector2Int _gridCoordinates;
@@ -161,6 +171,11 @@ public class GridCursorController : MonoBehaviour
 		_cursorTween.Stop();
 		_animTween.Stop();
 
+		if (_textDisplayUI != null)
+		{
+			_textDisplayUI.Hide();
+		}
+
 		if (_currentHoveredTower)
 		{
 			_currentHoveredTower.OnCursorExit();
@@ -170,6 +185,11 @@ public class GridCursorController : MonoBehaviour
 
 	private void Start()
 	{
+		if (_textDisplayUI == null)
+		{
+			_textDisplayUI = FindFirstObjectByType<TextDisplayUI>();
+		}
+
 		_defaultCursorType = _cursorType;
 		int startX = (GridManager.Instance.GetMaxColumns - _cursorSize.x) / 2;
 		int startY = (GridManager.Instance.GetMaxRows - _cursorSize.y) / 2;
@@ -385,12 +405,36 @@ public class GridCursorController : MonoBehaviour
 		SetCursorType(enable ? _selectionCursorType : _defaultCursorType);
 		UpdateVisual();
 		OnPlacementModeChanged?.Invoke(_isPlacingTower);
+
+		if (_textDisplayUI != null)
+		{
+			if (enable)
+			{
+				_textDisplayUI.Show(_placeTowerPrompt, TargetWorldPosition);
+			}
+			else if (!_isConfirmingRemove)
+			{
+				_textDisplayUI.Hide();
+			}
+		}
 	}
 
 	private void SetRemoveConfirmationMode(bool enable)
 	{
 		_isConfirmingRemove = enable;
 		OnRemoveConfirmationChanged?.Invoke(_isConfirmingRemove);
+
+		if (_textDisplayUI != null)
+		{
+			if (enable)
+			{
+				_textDisplayUI.Show(_fireTowerPrompt, TargetWorldPosition);
+			}
+			else if (!_isPlacingTower)
+			{
+				_textDisplayUI.Hide();
+			}
+		}
 	}
 
 	private void UpdateGhostVisual()
@@ -437,6 +481,10 @@ public class GridCursorController : MonoBehaviour
 		_cursorTween.Stop();
 		_cursorTween = Tween.Position(transform, targetPos, _movementDuration, Ease.OutQuad, useUnscaledTime: true);
 		UpdateVisual();
+		if (_textDisplayUI != null && _textDisplayUI.IsVisible)
+		{
+			_textDisplayUI.UpdatePosition(targetPos);
+		}
 		OnCursorMoved?.Invoke(_gridCoordinates);
 	}
 
